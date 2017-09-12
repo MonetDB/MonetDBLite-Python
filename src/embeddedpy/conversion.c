@@ -707,7 +707,10 @@ BAT *PyObject_ConvertToBAT(PyReturn *ret, sql_subtype *type, int bat_type, int i
 				ele_blob->nitems = blob_len;
 				memcpy(ele_blob->data, data, blob_len);
 			}
-			BUNappend(b, ele_blob, FALSE);
+			if (BUNappend(b, ele_blob, FALSE) == GDK_FAIL) {
+				msg = createException(MAL, "pyapi.eval", "Data append failed");
+				goto wrapup;
+			}
 			GDKfree(ele_blob);
 			data += ret->memory_size;
 		}
@@ -848,7 +851,9 @@ str ConvertFromSQLType(BAT *b, sql_subtype *sql_subtype, BAT **ret_bat,  int *re
 			if (strConversion(&result, &length, element) == 0) {
 				return createException(MAL, "pyapi.eval", "Failed to convert element to string.");
 			}
-			BUNappend(*ret_bat, result, FALSE);
+			if (BUNappend(*ret_bat, result, FALSE) == GDK_FAIL) {
+				return createException(MAL, "pyapi.eval", "Data append failed");
+			}
 		}
 		return res;
 	}

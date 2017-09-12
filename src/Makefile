@@ -1,7 +1,7 @@
 OPTIMIZE=$(OPT)
 
 ifneq ($(OPTIMIZE), true)
-	OPTFLAGS=-O0 -g -Wall -Wextra -Werror -Wmissing-prototypes -Wold-style-definition
+	OPTFLAGS=-O0 -g -Wall -Wextra -Wmissing-prototypes -Wold-style-definition # -Werror
 	OBJDIR=build/debug
 else
 	OPTFLAGS=-O2 -g
@@ -46,8 +46,12 @@ else
 endif
 
 
-
 OBJECTS=\
+$(OBJDIR)/embeddedpy/conversion.o \
+$(OBJDIR)/embeddedpy/embeddedpy.o \
+$(OBJDIR)/embeddedpy/pytypes.o \
+$(OBJDIR)/embeddedpy/type_conversion.o \
+$(OBJDIR)/embeddedpy/unicode.o \
 $(OBJDIR)/monetdblite/common/monet_options.o \
 $(OBJDIR)/monetdblite/common/stream.o \
 $(OBJDIR)/monetdblite/common/mutils.o \
@@ -242,7 +246,9 @@ clean:
 
 $(OBJDIR)/monetdblite/%.o: monetdblite/src/%.c
 	$(CC) $(CFLAGS) -MMD -MF $(subst $(OBJDIR),$(DEPSDIR),$(subst .o,.d,$@)) $(OPTFLAGS) -c $(subst $(OBJDIR)/monetdblite,monetdblite/src,$(subst .o,.c,$@)) -o $@
-	
+
+$(OBJDIR)/embeddedpy/%.o: embeddedpy/%.c
+	$(CC) $(CFLAGS) $(MONETDBLITE_PYTHON_INCLUDE_FLAGS) -MMD -MF $(subst $(OBJDIR),$(DEPSDIR),$(subst .o,.d,$@)) $(OPTFLAGS) -c $(subst $(OBJDIR)/,,$(subst .o,.c,$@)) -o $@
 
 $(LIBFILE): $(OBJECTS) 
-	$(CC) $(LDFLAGS) $(OBJECTS) $(OPTFLAGS) -o $(LIBFILE) -shared
+	$(CC) $(LDFLAGS) $(MONETDBLITE_PYTHON_LINK_FLAGS) $(OBJECTS) $(OPTFLAGS) -o $(LIBFILE) -shared

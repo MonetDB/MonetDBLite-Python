@@ -12,6 +12,13 @@
  * This file should be included after MonetDB headers are included and before Python headers are included to clean up conflicting #defines.
  */
 
+#undef SIZEOF_LONG_LONG
+#undef SIZEOF_LONG
+#undef SIZEOF_SIZE_T
+#undef SIZEOF_INT
+#undef SIZEOF_VOID_P
+
+
 #ifdef WIN32
 
 #undef HAVE_IO_H

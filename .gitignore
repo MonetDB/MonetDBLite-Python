@@ -4,3 +4,4 @@
 src/build
 *.so
 .settings
+.pydevproject

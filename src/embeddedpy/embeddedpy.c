@@ -70,7 +70,7 @@ PyObject* python_monetdb_sql(void* client, char* query) {
 	}
 	{
 		PyObject *result;
-		res_table* output = NULL;
+		monetdb_result* output = NULL;
 		char *querystring;
 		size_t querylength;
 		char* msg = NULL;
@@ -87,7 +87,7 @@ PyObject* python_monetdb_sql(void* client, char* query) {
 		// Perform the SQL query
 Py_BEGIN_ALLOW_THREADS
 		MT_lock_set(query_lock);
-		msg = monetdb_query(c, querystring, true, (void**)&output);
+		msg = monetdb_query(c, querystring, true, &output, NULL, NULL);
 		MT_lock_unset(query_lock);
 Py_END_ALLOW_THREADS
 		free(querystring);
@@ -96,26 +96,26 @@ Py_END_ALLOW_THREADS
 		}
 		// Construct a dictionary from the output columns (dict[name] = column)
 		result = PyDict_New();
-		if (output && output->nr_cols > 0) {
+		if (output && output->ncols > 0) {
 			PyInput input;
 			PyObject *numpy_array;
-			int i;
-			for (i = 0; i < output->nr_cols; i++) {
-				res_col col = output->cols[i];
-				BAT* b = BATdescriptor(col.b);
+			size_t i;
+			for (i = 0; i < output->ncols; i++) {
+				res_col *col = (res_col*) monetdb_result_fetch_rawcol(output, i);
+				BAT* b = BATdescriptor(col->b);
 
 				input.bat = b;
 				input.count = BATcount(b);
 				input.bat_type = ATOMstorage(getBatType(b->ttype));
 				input.scalar = false;
-				input.sql_subtype = &col.type;
+				input.sql_subtype = &col->type;
 
 				numpy_array = PyMaskedArray_FromBAT(&input, 0, input.count, &msg, true);
 				if (!numpy_array) {
 					monetdb_cleanup_result(c, output);
 					return PyString_FromFormat("SQL Query Failed: %s", msg);
 				}
-				PyDict_SetItem(result, PyString_FromString(output->cols[i].name), numpy_array);
+				PyDict_SetItem(result, PyString_FromString(col->name), numpy_array);
 			}
 			monetdb_cleanup_result(c, output);
 			return result;
