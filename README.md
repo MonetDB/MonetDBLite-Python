@@ -13,7 +13,11 @@ MonetDBLite for Python requires ```numpy``` to be installed.
 
 ```pip install monetdblite```
 
-* The latest development version can be downloaded by cloning this github repository, and running ```python setup.py install```
+* The latest development version can be downloaded by cloning this github repository, and running the setup script:
+````
+git clone https://github.com/hannesmuehleisen/MonetDBLite-Python.git --depth 1 --recursive
+python setup.py install
+````
 
 If you encounter a bug, please file a minimal reproducible example on [github](https://github.com/hannesmuehleisen/MonetDBLite/issues). For questions and other discussion, please use [stack overflow](http://stackoverflow.com/questions/tagged/monetdblite) with the tag `monetdblite`.  The development version of MonetDBLite endures [sisyphean perpetual testing](http://monetdb.cwi.nl/testweb/web/sisyphus/) on both unix and windows machines.
 
