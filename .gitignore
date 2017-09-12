@@ -1,0 +1,6 @@
+.DS_store
+.project
+.cproject
+src/build
+*.so
+.settings
