@@ -32,6 +32,9 @@ PyObject* python_monetdb_init(char* directory, int silent) {
 		/*if (GDKcreatedir(directory) != GDK_SUCCEED) {
 			return PyString_FromFormat("Failed to create directory %s.", directory);
 		}*/
+		if (strcmp(directory, ":memory:") == 0) {
+			directory = NULL;
+		}
 		msg = monetdb_startup(directory, silent, 0);
 		if (msg != MAL_SUCCEED) {
 			return PyString_FromFormat("Failed to initialize MonetDB: %s.", msg);
