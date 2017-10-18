@@ -3,11 +3,13 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # Copyright 1997 - July 2008 CWI, August 2008 - 2016 MonetDB B.V.
+from itertools import repeat
 
 from monetdblite.exceptions import *
 from monetdblite import embeddedmonetdb
 from monetdblite import monetize
 import numpy
+
 
 class Cursor(object):
     """This object represents a database cursor, which is used to manage
@@ -142,7 +144,12 @@ class Cursor(object):
         result = self.connection.execute(query, client=self.monetdblite_connection)
         result_set_length = 0 if type(result) != type({}) or len(result) == 0 else len(result[list(result.keys())[0]])
         if result_set_length > 0:
-            self.__results.append([result.keys(), result, result_set_length])
+            keys, dtypes = zip(*((k, v.dtype) for k, v in result.items()))
+            # description fields: name, type_code, display_size, internal_size, precision, scale, null_ok
+            self.description = zip(keys, dtypes, repeat(None), repeat(None), repeat(None), repeat(None), repeat(None))
+            self.__results.append([keys, result, result_set_length])
+        else:
+            self.description = None
         self.rowcount = result_set_length
         self.rownumber = 0
         self.__executed = operation
@@ -161,7 +168,6 @@ class Cursor(object):
         self.rowcount = count
         return count
 
-
     def fetchone(self):
         """Fetch the next row of a query result set, returning a
         single sequence, or None when no more data is available."""
@@ -179,7 +185,6 @@ class Cursor(object):
         result = [x if x is not numpy.ma.masked else None for x in result]
         self.rownumber += 1
         return result
-
 
     def fetchmany(self, size=None):
         """Fetch the next set of rows of a query result, returning a
@@ -360,7 +365,6 @@ class Cursor(object):
             self.__exception_handler(IndexError,
                                      "value beyond length of resultset")
         self.__offset = value
-
 
     def __exception_handler(self, exception_class, message):
         """ raises the exception specified by exception, and add the error

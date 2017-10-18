@@ -5,3 +5,9 @@ src/build
 *.so
 .settings
 .pydevproject
+.virtualenv/
+.virtualenv3/
+.venv2/
+.venv3/
+monetdblite.egg-info/
+
