@@ -24,6 +24,8 @@ pyapi_export PyObject* python_monetdb_sql(void* client, char* query);
 pyapi_export PyObject* python_monetdb_insert(void* client, char* schema, char* table_name, PyObject* values);
 //! Creates a new MonetDB client context and returns it as a PyClientObject
 pyapi_export void* python_monetdb_client(void);
+//! turn autocommit on (1) or off (0)
+pyapi_export PyObject* python_monetdb_set_autocommit(void* client, int val);
 //! Disconnect a MonetDB client context
 pyapi_export PyObject* python_monetdb_disconnect(void* client);
 //! Shuts down the database in-process so python_monetdb_init can be called again

@@ -43,6 +43,9 @@ dll.python_monetdb_sql.restype = ctypes.py_object
 dll.python_monetdb_insert.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_char_p, ctypes.py_object]
 dll.python_monetdb_insert.restype = ctypes.py_object
 
+dll.python_monetdb_set_autocommit.argtypes = [ctypes.c_void_p, ctypes.c_int]
+dll.python_monetdb_set_autocommit.restype = ctypes.py_object
+
 dll.python_monetdb_client.argtypes = []
 dll.python_monetdb_client.restype = ctypes.c_void_p
 
@@ -189,3 +192,15 @@ def shutdown():
     else:
         return retval
 
+def set_autocommit(val, client=None):
+    if client != None and not isinstance(client, PyClient):
+        raise __throw_exception("client must be of type PyClient")
+    client_object = None
+    if client != None:
+        client_object = client.get_client()
+
+    retval = dll.python_monetdb_set_autocommit(client_object, val)
+    if type(retval) == type(''):
+        raise __throw_exception(str(retval))
+    else:
+        return retval

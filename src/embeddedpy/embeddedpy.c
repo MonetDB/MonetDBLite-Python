@@ -258,6 +258,25 @@ void* python_monetdb_client(void) {
 	return c;
 }
 
+PyObject* python_monetdb_set_autocommit(void* client, int val) {
+	str msg;
+	Client c;
+	MT_Lock* query_lock;
+
+	msg = PyClientObject_GetClient(client, &c, &query_lock);
+	if (msg != NULL) {
+		return PyString_FromString(msg);
+	}
+	msg = monetdb_set_autocommit(c, (char) val);
+	if (query_lock != &monetdb_default_query_lock) {
+		MT_lock_unset(query_lock);
+	}
+	if (msg != NULL) {
+		return PyString_FromString(msg);
+	}
+	Py_RETURN_NONE;
+}
+
 PyObject* python_monetdb_disconnect(void* client) {
 	str msg;
 	Client c;
