@@ -52,7 +52,6 @@ $(OBJDIR)/embeddedpy/embeddedpy.o \
 $(OBJDIR)/embeddedpy/pytypes.o \
 $(OBJDIR)/embeddedpy/type_conversion.o \
 $(OBJDIR)/embeddedpy/unicode.o \
-$(OBJDIR)/monetdblite/common/monet_options.o \
 $(OBJDIR)/monetdblite/common/stream.o \
 $(OBJDIR)/monetdblite/common/mutils.o \
 $(OBJDIR)/monetdblite/embedded/embedded.o \
