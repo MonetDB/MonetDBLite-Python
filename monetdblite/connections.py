@@ -8,11 +8,10 @@ from monetdblite import cursors
 from monetdblite import exceptions
 from monetdblite import embeddedmonetdb
 
-monetdblite_is_initialized = False
 
 class Connection(object):
     """A MonetDBLite SQL database connection"""
-    def __init__(self, database, autocommit=False, 
+    def __init__(self, database=None, autocommit=False, 
         hostname=None, username="monetdb", password="monetdb", 
         host=None, user=None, dsn=None):
         """ Initializes the MonetDBLite database.
@@ -24,9 +23,16 @@ class Connection(object):
         returns:
             Connection object
         """
-        if monetdblite_is_initialized:
-            raise Exception("MonetDBLite is already initialized. Close the previous connection first.")
-        embeddedmonetdb.init(database)
+        if database == None:
+            if not embeddedmonetdb.is_initialized():
+                raise Exception("No database supplied and MonetDBLite was not initialized")
+        elif database != embeddedmonetdb.dbpath():
+            if embeddedmonetdb.is_initialized():
+                raise Exception("MonetDBLite is already initialized. Close the previous connection first.")
+            embeddedmonetdb.init(database)
+            monetdblite_current_database = database
+
+        self.__monetdblite_connection = embeddedmonetdb.connect()
         self.set_autocommit(autocommit)
         self.replysize = 1
         self.__cursors = []
@@ -41,26 +47,28 @@ class Connection(object):
         embeddedmonetdb.shutdown()
 
     def set_autocommit(self, autocommit):
-    	# FIXME
-        #embeddedmonetdb.set_autocommit(autocommit)
+        embeddedmonetdb.set_autocommit(autocommit, self.__monetdblite_connection)
         pass
 
-    def transaction(self, client=None):
-        embeddedmonetdb.sql('START TRANSACTION', client)
+    def transaction(self):
+        embeddedmonetdb.sql('START TRANSACTION', self.__monetdblite_connection)
 
-    def commit(self, client=None):
-        embeddedmonetdb.sql('COMMIT', client)
+    def commit(self):
+        embeddedmonetdb.sql('COMMIT', self.__monetdblite_connection)
 
-    def rollback(self, client=None):
-        embeddedmonetdb.sql('ROLLBACK', client)
+    def rollback(self):
+        embeddedmonetdb.sql('ROLLBACK', self.__monetdblite_connection)
 
     def cursor(self):
         cursor = cursors.Cursor(self)
         self.__cursors.append(cursor)
         return cursor
 
-    def execute(self, query, client=None):
-        return embeddedmonetdb.sql(query, client)
+    def execute(self, query):
+        return embeddedmonetdb.sql(query, self.__monetdblite_connection)
+
+    def get_connection(self):
+        return self.__monetdblite_connection
 
     Warning = exceptions.Warning
     Error = exceptions.Error

@@ -55,6 +55,9 @@ dll.python_monetdb_disconnect.restype = None
 dll.python_monetdb_shutdown.argtypes = []
 dll.python_monetdb_shutdown.restype = None
 
+monetdblite_is_initialized = False
+monetdblite_current_database = None
+
 class PyClient:
     def __init__(self):
         self.client = dll.python_monetdb_client()
@@ -77,10 +80,22 @@ def __throw_exception(str):
     raise exceptions.DatabaseError(str.replace('MALException:', ''))
 
 def init(directory):
+    if directory == ':memory:':
+        directory = None
+    else:
+        directory = utf8_encode(directory)
     """Initializes the MonetDBLite database in the specified directory."""
-    retval = dll.python_monetdb_init(utf8_encode(directory), 0)
+    retval = dll.python_monetdb_init(directory, 0)
     if retval != None:
         raise __throw_exception(str(retval) + ' in ' + str(directory))
+    monetdblite_is_initialized = True
+    monetdblite_current_database = directory
+
+def is_initialized():
+    return monetdblite_is_initialized
+
+def dbpath():
+    return monetdblite_current_database
 
 def sql(query, client=None):
     """Executes a SQL statement on the database if the database 
@@ -186,6 +201,8 @@ def disconnect(client):
     dll.python_monetdb_disconnect(client.get_client())
 
 def shutdown():
+    monetdblite_is_initialized = False
+    monetdblite_current_database = None
     retval = dll.python_monetdb_shutdown()
     if type(retval) == type(''):
         raise __throw_exception(str(retval))

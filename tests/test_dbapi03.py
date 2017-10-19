@@ -18,6 +18,7 @@ class ShutdownTests(unittest.TestCase):
         dbfarm = monetdblitetest.tempdir()
         conn = monetdblite.connect(dbfarm)
         c = conn.cursor()
+        conn.set_autocommit(True)
 
     def tearDown(self):
         conn.close()
@@ -72,6 +73,7 @@ class ShutdownTests(unittest.TestCase):
             conn.close()
 
             conn = monetdblite.connect(dbfarm)
+            conn.set_autocommit(True)
             c = conn.cursor()
 
     def test_use_old_cursor(self):

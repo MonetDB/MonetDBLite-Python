@@ -19,9 +19,6 @@ class Cursor(object):
     cursors"""
 
     def __init__(self, connection):
-
-        self.monetdblite_connection = embeddedmonetdb.connect()
-
         """This read-only attribute return a reference to the Connection
         object on which the cursor was created."""
         self.connection = connection
@@ -102,8 +99,6 @@ class Cursor(object):
         if self.connection != None:
             self.connection.remove_cursor(self)
             self.connection = None
-            embeddedmonetdb.disconnect(self.monetdblite_connection)
-            self.monetdblite_connection = None
 
     def execute(self, operation, parameters=None, discard_previous=True):
         """Prepare and execute a database operation (query or
@@ -141,7 +136,7 @@ class Cursor(object):
             self.__results = []
 
         query = embeddedmonetdb.utf8_encode(query)
-        result = self.connection.execute(query, client=self.monetdblite_connection)
+        result = self.connection.execute(query)
         result_set_length = 0 if type(result) != type({}) or len(result) == 0 else len(result[list(result.keys())[0]])
         if result_set_length > 0:
             keys, dtypes = zip(*((k, v.dtype) for k, v in result.items()))
@@ -272,31 +267,31 @@ class Cursor(object):
            provided, the default client context is used. """
         if not self.connection:
             self.__exception_handler(ProgrammingError, "cursor is closed")
-        return embeddedmonetdb.insert(table, values, schema=schema, client=self.monetdblite_connection)
+        return embeddedmonetdb.insert(table, values, schema=schema, client=self.connection.get_connection())
 
     def create(self, table, values, schema=None):
         """Creates a table from a set of values or a pandas DataFrame."""
         if not self.connection:
             self.__exception_handler(ProgrammingError, "cursor is closed")
-        return embeddedmonetdb.create(table, values, schema=schema, client=self.monetdblite_connection)
+        return embeddedmonetdb.create(table, values, schema=schema, client=self.connection.get_connection())
 
     def commit(self):
         """Commits the current transaction."""
         if not self.connection:
             self.__exception_handler(ProgrammingError, "cursor is closed")
-        self.connection.commit(self.monetdblite_connection)
+        self.connection.commit()
 
     def rollback(self):
         """Rollbacks the current transaction."""
         if not self.connection:
             self.__exception_handler(ProgrammingError, "cursor is closed")
-        self.connection.rollback(self.monetdblite_connection)
+        self.connection.rollback()
 
     def transaction(self):
         """Starts a transaction. Non-Standard."""
         if not self.connection:
             self.__exception_handler(ProgrammingError, "cursor is closed")
-        self.connection.transaction(self.monetdblite_connection)
+        self.connection.transaction()
 
     def nextset(self):
         """This method will make the cursor skip to the next
