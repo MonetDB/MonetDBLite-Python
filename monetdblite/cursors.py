@@ -86,6 +86,17 @@ class Cursor(object):
         # verify correct operation of the method calls.
         self.messages = []
 
+        # This read-only attribute provides the rowid of the last
+        # modified row (most databases return a rowid only when a single
+        # INSERT operation is performed). If the operation does not set
+        # a rowid or if the database does not support rowids, this
+        # attribute should be set to None.
+        #
+        # The semantics of .lastrowid are undefined in case the last
+        # executed statement modified more than one row, e.g. when
+        # using INSERT with .executemany().
+        self.lastrowid = None
+
     def __check_executed(self):
         if not self.__executed:
             self.__exception_handler(ProgrammingError, "do a execute() first")
@@ -138,13 +149,15 @@ class Cursor(object):
         query = embeddedmonetdb.utf8_encode(query)
         result = self.connection.execute(query)
         result_set_length = 0 if type(result) != type({}) or len(result) == 0 else len(result[list(result.keys())[0]])
-        if result_set_length > 0:
+
+        if result:
             keys, dtypes = zip(*((k, v.dtype) for k, v in result.items()))
             # description fields: name, type_code, display_size, internal_size, precision, scale, null_ok
             self.description = zip(keys, dtypes, repeat(None), repeat(None), repeat(None), repeat(None), repeat(None))
             self.__results.append([keys, result, result_set_length])
         else:
             self.description = None
+
         self.rowcount = result_set_length
         self.rownumber = 0
         self.__executed = operation
