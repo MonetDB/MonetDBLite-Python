@@ -153,7 +153,7 @@ class Cursor(object):
         if result:
             keys, dtypes = zip(*((k, v.dtype) for k, v in result.items()))
             # description fields: name, type_code, display_size, internal_size, precision, scale, null_ok
-            self.description = zip(keys, dtypes, repeat(None), repeat(None), repeat(None), repeat(None), repeat(None))
+            self.description = list(zip(keys, dtypes, repeat(None), repeat(None), repeat(None), repeat(None), repeat(None)))
             self.__results.append([keys, result, result_set_length])
         else:
             self.description = None
