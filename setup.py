@@ -9,6 +9,7 @@ import sys
 from shutil import copyfile
 import subprocess
 import platform
+import re
 
 PY3 = sys.version_info[0] >= 3
 bits = platform.architecture()[0]
@@ -35,7 +36,7 @@ def get_python_link_flags():
         libs.insert(0, '-L' + getvar('LIBPL'))
     if not getvar('PYTHONFRAMEWORK'):
         libs.extend(getvar('LINKFORSHARED').split())
-    return ' '.join(libs)
+    return re.sub('\S+stack_size\S+', '', ' '.join(libs))
 
 basedir = os.path.dirname(os.path.realpath(__file__))
 if os.name == 'nt':
