@@ -18,6 +18,7 @@
 #undef SIZEOF_INT
 #undef SIZEOF_VOID_P
 
+#undef HAVE_SYS_TYPES_H
 
 #ifdef WIN32
 

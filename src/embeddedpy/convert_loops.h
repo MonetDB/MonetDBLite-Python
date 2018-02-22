@@ -184,7 +184,7 @@
         for (iu = 0; iu < ret->count; iu++)                                                                                                           \
         {                                                                                                                                             \
             snprintf(utf8_string, utf8string_minlength, fmt, *((mtpe*)&data[(index_offset * ret->count + iu) * ret->memory_size]));                   \
-            BUNappend(bat, utf8_string, FALSE);                                                                                                       \
+            (void) BUNappend(bat, utf8_string, FALSE);                                                                                                       \
         }                                                                                                                                             \
     }                                                                                                                                                 \
     else                                                                                                                                              \
@@ -194,12 +194,12 @@
             if (mask[index_offset * ret->count + iu] == TRUE)                                                                                         \
             {                                                                                                                                         \
                 bat->tnil = 1;                                                                                                                      \
-                BUNappend(bat, str_nil, FALSE);                                                                                                         \
+                (void) BUNappend(bat, str_nil, FALSE);                                                                                                         \
             }                                                                                                                                         \
             else                                                                                                                                      \
             {                                                                                                                                         \
                 snprintf(utf8_string, utf8string_minlength, fmt, *((mtpe*)&data[(index_offset * ret->count + iu) * ret->memory_size]));               \
-                BUNappend(bat, utf8_string, FALSE);                                                                                                   \
+                (void) BUNappend(bat, utf8_string, FALSE);                                                                                                   \
             }                                                                                                                                         \
         }                                                                                                                                             \
     }
@@ -254,13 +254,13 @@
 	        for (iu = 0; iu < ret->count; iu++) {                                                                                                                         \
 	            if (mask != NULL && (mask[index_offset * ret->count + iu]) == TRUE) {                                                                                     \
 	                b->tnil = 1;                                                                                                                                        \
-	                BUNappend(b, str_nil, FALSE);                                                                                                                         \
+	                (void) BUNappend(b, str_nil, FALSE);                                                                                                                         \
 	            }  else {                                                                                                                                                 \
 	                if (!string_copy(&data[(index_offset * ret->count + iu) * ret->memory_size], utf8_string, ret->memory_size, false)) {                                  \
 	                    msg = createException(MAL, "pyapi.eval", "Invalid string encoding used. Please return a regular ASCII string, or a Numpy_Unicode object.\n");     \
 	                    goto wrapup;                                                                                                                                      \
 	                }                                                                                                                                                     \
-	                BUNappend(b, utf8_string, FALSE);                                                                                                                     \
+	                (void) BUNappend(b, utf8_string, FALSE);                                                                                                                     \
 	            }                                                                                                                                                         \
 	        }                                                                                                                                                             \
 	        break;                                                                                                                                                        \
@@ -268,10 +268,10 @@
 	        for (iu = 0; iu < ret->count; iu++) {                                                                                                                         \
 	            if (mask != NULL && (mask[index_offset * ret->count + iu]) == TRUE) {                                                                                     \
 	                b->tnil = 1;                                                                                                                                        \
-	                BUNappend(b, str_nil, FALSE);                                                                                                                         \
+	                (void) BUNappend(b, str_nil, FALSE);                                                                                                                         \
 	            }  else {                                                                                                                                                 \
 	                utf32_to_utf8(0, ret->memory_size / 4, utf8_string, (const Py_UNICODE*)(&data[(index_offset * ret->count + iu) * ret->memory_size]));                 \
-	                BUNappend(b, utf8_string, FALSE);                                                                                                                     \
+	                (void) BUNappend(b, utf8_string, FALSE);                                                                                                                     \
 	            }                                                                                                                                                         \
 	        }                                                                                                                                                             \
 	        break;                                                                                                                                                        \
@@ -293,11 +293,11 @@
 	        for (iu = 0; iu < ret->count; iu++) {                                                                                                                         \
 	            if (mask != NULL && (mask[index_offset * ret->count + iu]) == TRUE) {                                                                                     \
 	                b->tnil = 1;                                                                                                                                        \
-	                BUNappend(b, str_nil, FALSE);                                                                                                                         \
+	                (void) BUNappend(b, str_nil, FALSE);                                                                                                                         \
 	            } else {                                                                                                                                                  \
 	                /* we try to handle as many types as possible */                                                                                                      \
 	                pyobject_to_str(((PyObject**) &data[(index_offset * ret->count + iu) * ret->memory_size]), utf8_size, &utf8_string);                                  \
-	                BUNappend(b, utf8_string, FALSE);                                                                                                                     \
+	                (void) BUNappend(b, utf8_string, FALSE);                                                                                                                     \
 	            }                                                                                                                                                         \
 	        }                                                                                                                                                             \
 	        break;                                                                                                                                                        \
