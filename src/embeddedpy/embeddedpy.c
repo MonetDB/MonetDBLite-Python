@@ -186,7 +186,7 @@ static str monetdblite_insert(void *client, char *schema_name, char *table_name,
 
 	append_bats = GDKzalloc(sizeof(append_data) * columns);
 	for(i = 0; i < columns; i++) {
-		append_bats[i].batid = int_nil;
+		append_bats[i].batid = oid_nil;
 		append_bats[i].colname = column_names[i];
 	}
 	for(i = 0; i < columns; i++) {
@@ -207,7 +207,7 @@ cleanup:
 	if (key_map) GDKfree(key_map);
 	if (append_bats) {
 		for(i = 0; i < columns; i++) {
-			if (append_bats[i].batid != int_nil) BBPunfix(append_bats[i].batid);
+			if (append_bats[i].batid != oid_nil) BBPunfix(append_bats[i].batid);
 		}
 		GDKfree(append_bats);
 	}
