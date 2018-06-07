@@ -23,7 +23,7 @@ class Connection(object):
         returns:
             Connection object
         """
-        if database == None:
+        if database is None:
             if not embeddedmonetdb.is_initialized():
                 raise Exception("No database supplied and MonetDBLite was not initialized")
         elif database != embeddedmonetdb.dbpath():

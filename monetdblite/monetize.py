@@ -13,15 +13,15 @@ PY3 = sys.version_info[0] >= 3
 from monetdblite.exceptions import ProgrammingError
 
 if PY3:
-    def utf8_encode(str):
-        if str == None:
+    def utf8_encode(instr):
+        if instr is None:
             return None
-        if type(str) == type(""):
-            return str.encode('utf-8')
-        return str
+        if isinstance(instr, str):
+            return instr.encode('utf-8')
+        return instr
 else:
-    def utf8_encode(str):
-        return str
+    def utf8_encode(instr):
+        return instr
 
 
 def monet_none(data):
