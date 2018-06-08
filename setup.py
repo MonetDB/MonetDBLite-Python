@@ -16,6 +16,7 @@ bits = platform.architecture()[0]
 
 pypi_upload = 'MONETDBLITE_PIP_UPLOAD' in os.environ
 
+
 def get_python_include_flags():
     pyver = sysconfig.get_config_var('VERSION')
     getvar = sysconfig.get_config_var
@@ -25,10 +26,11 @@ def get_python_include_flags():
     flags.append('-I' + numpy.get_include())
     return ' '.join(flags)
 
+
 def get_python_link_flags():
     pyver = sysconfig.get_config_var('VERSION')
     getvar = sysconfig.get_config_var
-    libs = ['-L' + sysconfig.get_config_var('LIBDIR') + 
+    libs = ['-L' + sysconfig.get_config_var('LIBDIR') +
            ' -l' + sysconfig.get_config_var('LIBRARY').replace('.a', '').replace('.so', '').replace('.dll', '').replace('.so', '').replace('lib', '')]
     libs += getvar('LIBS').split()
     libs += getvar('SYSLIBS').split()
@@ -38,6 +40,7 @@ def get_python_link_flags():
         libs.extend(getvar('LINKFORSHARED').split())
     return re.sub('\S+stack_size\S+', '', ' '.join(libs))
 
+
 basedir = os.path.dirname(os.path.realpath(__file__))
 if os.name == 'nt':
     basedir = 'C:\\monetdblite\\build\\ffd2a0a35d2fed128a199f8537628c58a43c49ab\\python%d-%s' % (3 if PY3 else 2, platform.architecture()[0])
@@ -45,11 +48,10 @@ if os.name == 'nt':
     monetdb_shared_lib_base = "libmonetdb5.dll"
     monetdb_shared_lib = os.path.join(basedir, monetdb_shared_lib_base)
     so_extension = '.dll'
-
 else:
     try:
         import numpy
-    except:
+    except ImportError:
         print('Building MonetDBLite from source requires NumPy to be installed.')
         exit(1)
 
@@ -63,8 +65,8 @@ else:
         proc = subprocess.Popen(['make -C src -j'], stderr=subprocess.PIPE, shell=True)
         if proc.wait() != 0:
             error = proc.stderr.read()
-            raise Exception('Failed to compile MonetDBLite sources: ' + 
-                ("No error specified" if error == None else 
+            raise Exception('Failed to compile MonetDBLite sources: ' +
+                ("No error specified" if error is None else
                 (error.decode('utf8') if PY3 else error)))
     so_extension = '.so'
     os.chdir(current_directory)
@@ -106,4 +108,3 @@ setup(
     url="https://github.com/hannesmuehleisen/MonetDBLite-Python",
     long_description = long_description
     )
-

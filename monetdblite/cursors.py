@@ -216,7 +216,7 @@ class Cursor(object):
 
         self.__check_executed()
 
-        if size == None:
+        if size is None:
             size = self.arraysize
 
         if self.rownumber >= self.rowcount:
@@ -225,7 +225,7 @@ class Cursor(object):
         result = []
         for i in range(size):
             row = self.fetchone()
-            if row == None:
+            if row is None:
                 break
             result.append(row)
         return result
@@ -244,7 +244,7 @@ class Cursor(object):
         result = []
         while True:
             row = self.fetchone()
-            if row == None:
+            if row is None:
                 break
             result.append(row)
         return result
@@ -269,7 +269,7 @@ class Cursor(object):
         """
         import pandas
         result = self.fetchnumpy()
-        if result == None:
+        if result is None:
             return None
         return pandas.DataFrame.from_dict(result)
 
