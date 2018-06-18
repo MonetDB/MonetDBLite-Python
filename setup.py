@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup, find_packages
 from distutils import sysconfig
 import ntpath
 import os
@@ -10,6 +9,7 @@ from shutil import copyfile
 import subprocess
 import platform
 import re
+from setuptools import setup, find_packages
 
 PY3 = sys.version_info[0] >= 3
 bits = platform.architecture()[0]
@@ -56,8 +56,8 @@ else:
         exit(1)
 
     # build the dynamic library (.so/.dylib) on linux/osx
-    os.environ['MONETDBLITE_PYTHON_INCLUDE_FLAGS'] = get_python_include_flags();
-    os.environ['MONETDBLITE_PYTHON_LINK_FLAGS'] = get_python_link_flags();
+    os.environ['MONETDBLITE_PYTHON_INCLUDE_FLAGS'] = get_python_include_flags()
+    os.environ['MONETDBLITE_PYTHON_LINK_FLAGS'] = get_python_link_flags()
     current_directory = os.getcwd()
     os.chdir(basedir)
     if not pypi_upload:
@@ -96,7 +96,7 @@ else:
 # loads functions from libmonetdb5.[so|dylib|dll]
 setup(
     name = "monetdblite",
-    version = '0.2.1',
+    version = '0.2.2',
     description = 'Embedded MonetDB Python Database.',
     author = 'Mark Raasveldt, Hannes Mühleisen',
     author_email = 'm.raasveldt@cwi.nl',
