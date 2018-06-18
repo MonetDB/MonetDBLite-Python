@@ -61,8 +61,10 @@ dll.python_monetdb_disconnect.restype = None
 dll.python_monetdb_shutdown.argtypes = []
 dll.python_monetdb_shutdown.restype = None
 
-monetdblite_is_initialized = False
-monetdblite_current_database = None
+# Global variables. Every function *assinging* to them needs to declare
+# them. See: https://docs.python.org/3/reference/simple_stmts.html#the-global-statement
+MONETDBLITE_IS_INITIALIZED = False
+MONETDBLITE_CURRENT_DATABASE = None
 
 
 class PyClient:
@@ -90,6 +92,8 @@ def __throw_exception(str):
 
 
 def init(directory):
+    global MONETDBLITE_CURRENT_DATABASE
+    global MONETDBLITE_IS_INITIALIZED
     if directory == ':memory:':
         directory = None
     else:
@@ -98,16 +102,16 @@ def init(directory):
     retval = dll.python_monetdb_init(directory, 0)
     if retval is not None:
         raise __throw_exception(str(retval) + ' in ' + str(directory))
-    monetdblite_is_initialized = True
-    monetdblite_current_database = directory
+    MONETDBLITE_IS_INITIALIZED = True
+    MONETDBLITE_CURRENT_DATABASE = directory
 
 
 def is_initialized():
-    return monetdblite_is_initialized
+    return MONETDBLITE_IS_INITIALIZED
 
 
 def dbpath():
-    return monetdblite_current_database
+    return MONETDBLITE_CURRENT_DATABASE
 
 
 def sql(query, client=None):
@@ -223,8 +227,11 @@ def disconnect(client):
 
 
 def shutdown():
-    monetdblite_is_initialized = False
-    monetdblite_current_database = None
+    global MONETDBLITE_CURRENT_DATABASE
+    global MONETDBLITE_IS_INITIALIZED
+
+    MONETDBLITE_IS_INITIALIZED = False
+    MONETDBLITE_CURRENT_DATABASE = None
     retval = dll.python_monetdb_shutdown()
     if isinstance(retval, str):
         raise __throw_exception(str(retval))
