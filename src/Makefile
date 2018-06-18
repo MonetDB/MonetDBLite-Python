@@ -1,7 +1,7 @@
 OPTIMIZE=$(OPT)
 
 ifneq ($(OPTIMIZE), true)
-	OPTFLAGS=-O0 -g -Wall -Wextra -Wmissing-prototypes -Wold-style-definition # -Werror
+	OPTFLAGS=-O0 -g -Wall -Wextra -Wmissing-prototypes -Wold-style-definition -std=c99 # -Werror
 	OBJDIR=build/debug
 else
 	OPTFLAGS=-O2 -g
