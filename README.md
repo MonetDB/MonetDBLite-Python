@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/hannesmuehleisen/MonetDBLite.svg?branch=Dec2016Lite-Python)](https://travis-ci.org/hannesmuehleisen/MonetDBLite)
+[![Build Status](https://travis-ci.org/hannesmuehleisen/MonetDBLite-Python.svg)](https://travis-ci.org/hannesmuehleisen/MonetDBLite-Python)
 
 # MonetDBLite for Python
 
