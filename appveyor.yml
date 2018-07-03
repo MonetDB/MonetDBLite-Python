@@ -25,7 +25,9 @@ install:
   - "%PYTHON%\\python.exe -m pip install pytest"
   - "%PYTHON%\\python.exe -m pip install numpy"
 
-build: off
+build_script:
+  # Build the compiled extension
+  - "%PYTHON%\\python.exe setup.py build"
 
 test_script:
   # Put your test command here.
