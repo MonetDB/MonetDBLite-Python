@@ -65,12 +65,11 @@ current_directory = os.getcwd()
 os.chdir(basedir)
 if not pypi_upload:
     # don't build the package if we are uploading to pip
-    proc = subprocess.Popen(makecmd, stderr=subprocess.PIPE, shell=True)
+    proc = subprocess.Popen(makecmd, shell=True)
     if proc.wait() != 0:
         error = proc.stderr.read()
-        raise Exception('Failed to compile MonetDBLite sources: ' +
-            ("No error specified" if error is None else
-            (error.decode('utf8') if PY3 else error)))
+        raise Exception('Failed to compile MonetDBLite sources')
+
 os.chdir(current_directory)
 monetdb_shared_lib_base = "libmonetdb5" + so_extension
 monetdb_shared_lib = os.path.join(basedir, 'src', 'build', monetdb_shared_lib_base)
