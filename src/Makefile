@@ -12,7 +12,7 @@ DEPSDIR=$(OBJDIR)/deps
 
 CFLAGS=-DLIBGDK -DLIBMAL -DLIBOPTIMIZER -DLIBSTREAM
 
-LDFLAGS=-lm -lpthread -ldl
+LDFLAGS=-lm -lpthread 
 CFLAGS += -Imonetdblite/src/ -Imonetdblite/src/common  \
 -Imonetdblite/src/embedded -Imonetdblite/src/gdk \
 -Imonetdblite/src/mal/mal -Imonetdblite/src/mal/modules -Imonetdblite/src/mal/optimizer -Imonetdblite/src/mal/sqlbackend \
@@ -37,6 +37,7 @@ ifeq ($(OS),Windows_NT)
 else
     UNAME_S := $(shell uname -s)
     CFLAGS += -fPIC
+    LDFLAGS += -ldl
     ifeq ($(UNAME_S),Linux)
 		LDFLAGS += -lrt
     endif

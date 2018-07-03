@@ -10,86 +10,80 @@ import subprocess
 import platform
 import re
 from setuptools import setup, find_packages
+from setuptools.command.install import install
+import numpy
 
-PY3 = sys.version_info[0] >= 3
-bits = platform.architecture()[0]
-
-pypi_upload = 'MONETDBLITE_PIP_UPLOAD' in os.environ
-
-def getvar(n):
-    val = sysconfig.get_config_var(n)
-    if (val is None):
-        val = ''
-    return val
-
-def get_python_include_flags():
-    pyver = getvar('VERSION')
-    flags = ['-I' + sysconfig.get_python_inc(),
-             '-I' + sysconfig.get_python_inc(plat_specific=True)]
-    flags.extend(getvar('CFLAGS').split())
-    flags.append('-I' + numpy.get_include())
-    return ' '.join(flags)
+# else:
+#     os.chdir(os.path.join(basedir, 'src'))
+#     os.system('make clean')
+#     os.system('rm ../monetdblite/*.so ../monetdblite/*.dylib ../monetdblite/*.dll')
+#     os.chdir(current_directory)
+#     try:
+#         import pypandoc
+#         long_description = pypandoc.convert('README.md', 'rst')
+#     except(IOError, ImportError):
+#         long_description = open('README.md').read()
 
 
-def get_python_link_flags():
-    pyver = getvar('VERSION')
-    libs = ['-L' + getvar('LIBDIR') +
-           ' -l' + getvar('LIBRARY').replace('.a', '').replace('.so', '').replace('.dll', '').replace('.so', '').replace('lib', '')]
-    libs += getvar('LIBS').split()
-    libs += getvar('SYSLIBS').split()
-    if not getvar('Py_ENABLE_SHARED'):
-        libs.insert(0, '-L' + getvar('LIBPL'))
-    if not getvar('PYTHONFRAMEWORK'):
-        libs.extend(getvar('LINKFORSHARED').split())
-    return re.sub('\S+stack_size\S+', '', ' '.join(libs))
+def build_monetdblite():
+
+    def getvar(n):
+        val = sysconfig.get_config_var(n)
+        if (val is None):
+            val = ''
+        return val
+
+    def get_python_include_flags():
+        pyver = getvar('VERSION')
+        flags = ['-I' + sysconfig.get_python_inc(),
+                 '-I' + sysconfig.get_python_inc(plat_specific=True)]
+        flags.extend(getvar('CFLAGS').split())
+        flags.append('-I' + numpy.get_include())
+        return ' '.join(flags)
 
 
-basedir = os.path.dirname(os.path.realpath(__file__))
-if os.name == 'nt':
-    so_extension = '.dll'
-    makecmd = 'mingw32-make -C src OPT=true'
-else:
-    so_extension = '.so'
-    makecmd = 'make -C src -j OPT=true'
+    def get_python_link_flags():
+        pyver = getvar('VERSION')
+        libs = ['-L' + getvar('LIBDIR') +
+               ' -l' + getvar('LIBRARY').replace('.a', '').replace('.so', '').replace('.dll', '').replace('.so', '').replace('lib', '')]
+        libs += getvar('LIBS').split()
+        libs += getvar('SYSLIBS').split()
+        if not getvar('Py_ENABLE_SHARED'):
+            libs.insert(0, '-L' + getvar('LIBPL'))
+        if not getvar('PYTHONFRAMEWORK'):
+            libs.extend(getvar('LINKFORSHARED').split())
+        return re.sub('\S+stack_size\S+', '', ' '.join(libs))
 
-try:
-    import numpy
-except ImportError:
-    print('Building MonetDBLite from source requires NumPy to be installed.')
-    exit(1)
+    basedir = os.path.dirname(os.path.realpath(__file__))
+    if os.name == 'nt':
+        so_extension = '.dll'
+        makecmd = 'mingw32-make -C src OPT=true'
+    else:
+        so_extension = '.so'
+        makecmd = 'make -C src -j OPT=true'
 
-# build the dynamic library (.so/.dylib) on linux/osx
-os.environ['MONETDBLITE_PYTHON_INCLUDE_FLAGS'] = get_python_include_flags()
-os.environ['MONETDBLITE_PYTHON_LINK_FLAGS'] = get_python_link_flags()
-current_directory = os.getcwd()
-os.chdir(basedir)
-if not pypi_upload:
-    # don't build the package if we are uploading to pip
+    # build the dynamic library (.so/.dylib) on linux/osx
+    os.environ['MONETDBLITE_PYTHON_INCLUDE_FLAGS'] = get_python_include_flags()
+    os.environ['MONETDBLITE_PYTHON_LINK_FLAGS'] = get_python_link_flags()
+    current_directory = os.getcwd()
+    os.chdir(basedir)
     proc = subprocess.Popen(makecmd, shell=True)
     if proc.wait() != 0:
-        error = proc.stderr.read()
-        raise Exception('Failed to compile MonetDBLite sources')
+        raise Exception('Failed to compile MonetDBLite sources. Check output for error messages.')
 
-os.chdir(current_directory)
-monetdb_shared_lib_base = "libmonetdb5" + so_extension
-monetdb_shared_lib = os.path.join(basedir, 'src', 'build', monetdb_shared_lib_base)
-final_shared_library = os.path.join('monetdblite', monetdb_shared_lib_base)
-
-long_description = ""
-if not pypi_upload:
-    # don't include the [so|dylib|dll] in the packaged version uploaded to pip
+    os.chdir(current_directory)
+    monetdb_shared_lib_base = "libmonetdb5" + so_extension
+    monetdb_shared_lib = os.path.join(basedir, 'src', 'build', monetdb_shared_lib_base)
+    final_shared_library = os.path.join('monetdblite', monetdb_shared_lib_base)
     copyfile(monetdb_shared_lib, final_shared_library)
 
-else:
-    os.chdir(os.path.join(basedir, 'src'))
-    os.system('make clean')
-    os.system('rm ../monetdblite/*.so ../monetdblite/*.dylib ../monetdblite/*.dll')
-    os.chdir(current_directory)
-    try:
-        import pypandoc
-        long_description = pypandoc.convert('README.md', 'rst')
-    except(IOError, ImportError):
-        long_description = open('README.md').read()
+
+class CustomInstall(install):
+    """Custom handler for the 'install' command."""
+    def run(self):
+        build_monetdblite()
+        super().run()
+
 
 # now actually create the package
 # the package is a single C file that only dynamically
@@ -106,5 +100,9 @@ setup(
         'monetdblite': ['*.so', '*.dylib', '*.dll'],
     },
     url="https://github.com/hannesmuehleisen/MonetDBLite-Python",
-    long_description = long_description
-    )
+    long_description = "", # FIXME
+    install_requires=[
+        'numpy',
+    ],
+    cmdclass={'install': CustomInstall}
+)
