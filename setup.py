@@ -47,10 +47,10 @@ def get_python_link_flags():
 basedir = os.path.dirname(os.path.realpath(__file__))
 if os.name == 'nt':
     so_extension = '.dll'
-    makecmd = 'mingw32-make -C src'
+    makecmd = 'mingw32-make -C src OPT=true'
 else:
     so_extension = '.so'
-    makecmd = 'make -C src -j'
+    makecmd = 'make -C src -j OPT=true'
 
 try:
     import numpy
