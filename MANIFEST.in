@@ -1,4 +1,6 @@
 recursive-include src *
+prune src/build
 include build-unix.sh
 include build-windows.sh
 include README.md
+global-exclude *.so
