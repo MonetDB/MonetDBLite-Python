@@ -23,7 +23,7 @@ def getvar(n):
     return val
 
 def get_python_include_flags():
-    pyver = sysconfig.get_config_var('VERSION')
+    pyver = getvar('VERSION')
     flags = ['-I' + sysconfig.get_python_inc(),
              '-I' + sysconfig.get_python_inc(plat_specific=True)]
     flags.extend(getvar('CFLAGS').split())
@@ -32,9 +32,9 @@ def get_python_include_flags():
 
 
 def get_python_link_flags():
-    pyver = sysconfig.get_config_var('VERSION')
-    libs = ['-L' + sysconfig.get_config_var('LIBDIR') +
-           ' -l' + sysconfig.get_config_var('LIBRARY').replace('.a', '').replace('.so', '').replace('.dll', '').replace('.so', '').replace('lib', '')]
+    pyver = getvar('VERSION')
+    libs = ['-L' + getvar('LIBDIR') +
+           ' -l' + getvar('LIBRARY').replace('.a', '').replace('.so', '').replace('.dll', '').replace('.so', '').replace('lib', '')]
     libs += getvar('LIBS').split()
     libs += getvar('SYSLIBS').split()
     if not getvar('Py_ENABLE_SHARED'):
