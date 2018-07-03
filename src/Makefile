@@ -23,7 +23,7 @@ SOEXT=so
 ifeq ($(OS),Windows_NT)
 	SOEXT=dll
 	CC=gcc
-    CFLAGS += -DWIN32 -D__CYGWIN__
+#    CFLAGS += -DWIN32 -D__CYGWIN__
 #    ifeq ($(PROCESSOR_ARCHITEW6432),AMD64)
 #        CFLAGS += -D AMD64
 #    else
