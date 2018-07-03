@@ -43,36 +43,34 @@ def get_python_link_flags():
 
 basedir = os.path.dirname(os.path.realpath(__file__))
 if os.name == 'nt':
-    basedir = 'C:\\monetdblite\\build\\ffd2a0a35d2fed128a199f8537628c58a43c49ab\\python%d-%s' % (3 if PY3 else 2, platform.architecture()[0])
-    print(basedir)
-    monetdb_shared_lib_base = "libmonetdb5.dll"
-    monetdb_shared_lib = os.path.join(basedir, monetdb_shared_lib_base)
     so_extension = '.dll'
+    makecmd = 'mingw32-make -C src'
 else:
-    try:
-        import numpy
-    except ImportError:
-        print('Building MonetDBLite from source requires NumPy to be installed.')
-        exit(1)
-
-    # build the dynamic library (.so/.dylib) on linux/osx
-    os.environ['MONETDBLITE_PYTHON_INCLUDE_FLAGS'] = get_python_include_flags()
-    os.environ['MONETDBLITE_PYTHON_LINK_FLAGS'] = get_python_link_flags()
-    current_directory = os.getcwd()
-    os.chdir(basedir)
-    if not pypi_upload:
-        # don't build the package if we are uploading to pip
-        proc = subprocess.Popen(['make -C src -j'], stderr=subprocess.PIPE, shell=True)
-        if proc.wait() != 0:
-            error = proc.stderr.read()
-            raise Exception('Failed to compile MonetDBLite sources: ' +
-                ("No error specified" if error is None else
-                (error.decode('utf8') if PY3 else error)))
     so_extension = '.so'
-    os.chdir(current_directory)
-    monetdb_shared_lib_base = "libmonetdb5" + so_extension
-    monetdb_shared_lib = os.path.join(basedir, 'src', 'build', monetdb_shared_lib_base)
+    makecmd = 'make -C src -j'
 
+try:
+    import numpy
+except ImportError:
+    print('Building MonetDBLite from source requires NumPy to be installed.')
+    exit(1)
+
+# build the dynamic library (.so/.dylib) on linux/osx
+os.environ['MONETDBLITE_PYTHON_INCLUDE_FLAGS'] = get_python_include_flags()
+os.environ['MONETDBLITE_PYTHON_LINK_FLAGS'] = get_python_link_flags()
+current_directory = os.getcwd()
+os.chdir(basedir)
+if not pypi_upload:
+    # don't build the package if we are uploading to pip
+    proc = subprocess.Popen([makecmd], stderr=subprocess.PIPE, shell=True)
+    if proc.wait() != 0:
+        error = proc.stderr.read()
+        raise Exception('Failed to compile MonetDBLite sources: ' +
+            ("No error specified" if error is None else
+            (error.decode('utf8') if PY3 else error)))
+os.chdir(current_directory)
+monetdb_shared_lib_base = "libmonetdb5" + so_extension
+monetdb_shared_lib = os.path.join(basedir, 'src', 'build', monetdb_shared_lib_base)
 final_shared_library = os.path.join('monetdblite', monetdb_shared_lib_base)
 
 long_description = ""
@@ -96,7 +94,7 @@ else:
 # loads functions from libmonetdb5.[so|dylib|dll]
 setup(
     name = "monetdblite",
-    version = '0.6.0-2',
+    version = '0.6.0.post3',
     description = 'Embedded MonetDB Python Database.',
     author = 'Mark Raasveldt, Hannes Mühleisen',
     author_email = 'm.raasveldt@cwi.nl',

@@ -2,41 +2,46 @@ environment:
 
   matrix:
 
-    # For Python versions available on Appveyor, see
-    # http://www.appveyor.com/docs/installed-software#python
-    # The list here is complete (excluding Python 2.6, which
-    # isn't covered by this document) at the time of writing.
-
     - PYTHON: "C:\\Python27"
+      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
+
     - PYTHON: "C:\\Python33"
+      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
+
     - PYTHON: "C:\\Python34"
+      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
+
     - PYTHON: "C:\\Python35"
+      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
+
     - PYTHON: "C:\\Python27-x64"
+      mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'
+
     - PYTHON: "C:\\Python33-x64"
+      mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'
       DISTUTILS_USE_SDK: "1"
+
     - PYTHON: "C:\\Python34-x64"
+      mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'
       DISTUTILS_USE_SDK: "1"
+
     - PYTHON: "C:\\Python35-x64"
+      mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'
+
     - PYTHON: "C:\\Python36-x64"
+      mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'
 
 install:
-  # We need wheel installed to build wheels
   - "%PYTHON%\\python.exe -m pip install wheel"
   - "%PYTHON%\\python.exe -m pip install pytest"
   - "%PYTHON%\\python.exe -m pip install numpy"
+  - set "PATH=%mingw_bin%;%PATH%"
+
 
 build_script:
-  # Build the compiled extension
   - "%PYTHON%\\python.exe setup.py build"
 
 test_script:
-  # Put your test command here.
-  # If you don't need to build C extensions on 64-bit Python 3.3 or 3.4,
-  # you can remove "build.cmd" from the front of the command, as it's
-  # only needed to support those cases.
-  # Note that you must use the environment variable %PYTHON% to refer to
-  # the interpreter you're using - Appveyor does not do anything special
-  # to put the Python version you want to use on PATH.
   - "%PYTHON%\\python.exe -m pytest"
 
 after_test:
@@ -47,7 +52,6 @@ after_test:
   - "%PYTHON%\\python.exe setup.py bdist_wheel"
 
 artifacts:
-  # bdist_wheel puts your built wheel in the dist directory
   - path: dist\*
 
 #on_success:
