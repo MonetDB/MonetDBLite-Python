@@ -15,7 +15,7 @@ MonetDBLite for Python requires ```numpy``` to be installed.
 
 * The latest development version can be downloaded by cloning this github repository, and running the setup script:
 ````
-git clone https://github.com/hannesmuehleisen/MonetDBLite-Python.git --depth 1 --recursive
+git clone https://github.com/hannesmuehleisen/MonetDBLite-Python.git
 python setup.py install
 ````
 
