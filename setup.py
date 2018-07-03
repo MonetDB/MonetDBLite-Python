@@ -16,10 +16,14 @@ bits = platform.architecture()[0]
 
 pypi_upload = 'MONETDBLITE_PIP_UPLOAD' in os.environ
 
+def getvar(n):
+    val = sysconfig.get_config_var(n)
+    if (val is None):
+        val = ''
+    return val
 
 def get_python_include_flags():
     pyver = sysconfig.get_config_var('VERSION')
-    getvar = sysconfig.get_config_var
     flags = ['-I' + sysconfig.get_python_inc(),
              '-I' + sysconfig.get_python_inc(plat_specific=True)]
     flags.extend(getvar('CFLAGS').split())
@@ -29,7 +33,6 @@ def get_python_include_flags():
 
 def get_python_link_flags():
     pyver = sysconfig.get_config_var('VERSION')
-    getvar = sysconfig.get_config_var
     libs = ['-L' + sysconfig.get_config_var('LIBDIR') +
            ' -l' + sysconfig.get_config_var('LIBRARY').replace('.a', '').replace('.so', '').replace('.dll', '').replace('.so', '').replace('lib', '')]
     libs += getvar('LIBS').split()
