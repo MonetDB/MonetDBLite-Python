@@ -65,7 +65,7 @@ current_directory = os.getcwd()
 os.chdir(basedir)
 if not pypi_upload:
     # don't build the package if we are uploading to pip
-    proc = subprocess.Popen([makecmd], stderr=subprocess.PIPE, shell=True)
+    proc = subprocess.Popen(makecmd, stderr=subprocess.PIPE, shell=True)
     if proc.wait() != 0:
         error = proc.stderr.read()
         raise Exception('Failed to compile MonetDBLite sources: ' +
