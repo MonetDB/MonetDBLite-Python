@@ -43,10 +43,8 @@ def build_monetdblite():
 
 
     def get_python_link_flags():
-        libpython = glob.glob(path.join(getvar('prefix'), 'lib*', 'libpython*'))[0]
-        libpythonpath = path.dirname(libpython)
-        libpythonlib = path.basename(libpython).replace('.a', '').replace('.so', '').replace('.dll', '').replace('.so', '').replace('.dylib', '').replace('lib', '')
-        libs = ['-L' + getvar('prefix') + ' -L' + libpythonpath + ' -l' + libpythonlib]
+        libpythonlib = 'python' + sysconfig.get_python_version()
+        libs = ['-L' + getvar('prefix') + ' -L' + path.join(getvar('prefix'),'libs') +  ' -L' + path.join(getvar('prefix'),'lib') + ' -l' + libpythonlib]
         libs += getvar('LIBS').split()
         libs += getvar('SYSLIBS').split()
         if getvar('Py_ENABLE_SHARED') == '' and getvar('LIBPL') != '':
