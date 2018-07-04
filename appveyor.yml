@@ -5,9 +5,6 @@ environment:
     - PYTHON: "C:\\Python27"
       mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
 
-    - PYTHON: "C:\\Python33"
-      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
-
     - PYTHON: "C:\\Python34"
       mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
 
@@ -16,10 +13,6 @@ environment:
 
     - PYTHON: "C:\\Python27-x64"
       mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'
-
-    - PYTHON: "C:\\Python33-x64"
-      mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'
-      DISTUTILS_USE_SDK: "1"
 
     - PYTHON: "C:\\Python34-x64"
       mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'

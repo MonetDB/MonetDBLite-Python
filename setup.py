@@ -82,7 +82,7 @@ def build_monetdblite():
 class CustomBuild(build_py):
     def run(self):
         build_monetdblite()
-        super().run()
+        build_py.run(self)
 
 # now actually create the package
 # the package is a single C file that only dynamically
