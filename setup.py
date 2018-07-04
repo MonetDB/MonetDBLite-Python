@@ -96,7 +96,7 @@ setup(
     keywords = 'MonetDB, MonetDBLite, Database',
     packages = ['monetdblite'],
     package_data={
-        'monetdblite': ['*.so', '*.dll'],
+        'monetdblite': ['libmonetdb5.so', 'libmonetdb5.dll'],
     },
     url="https://github.com/hannesmuehleisen/MonetDBLite-Python",
     long_description = "", # FIXME
