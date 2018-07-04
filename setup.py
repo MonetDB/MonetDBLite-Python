@@ -42,14 +42,14 @@ def build_monetdblite():
         return ' '.join(flags)
 
 
-    def get_python_link_flags():
-        libpythonlib = 'python' + sysconfig.get_python_version().replace('.','')
-        libs = ['-L' + getvar('prefix') + ' -L' + path.join(getvar('prefix'),'libs') +  ' -L' + path.join(getvar('prefix'),'lib') + ' -l' + libpythonlib]
+    def get_python_link_flags_unix():
+        libs = ['-L' + getvar('LIBDIR') +
+               ' -l' + getvar('LIBRARY').replace('.a', '').replace('.so', '').replace('.so', '').replace('.dylib', '').replace('lib', '')]
         libs += getvar('LIBS').split()
         libs += getvar('SYSLIBS').split()
-        if getvar('Py_ENABLE_SHARED') == '' and getvar('LIBPL') != '':
+        if not getvar('Py_ENABLE_SHARED'):
             libs.insert(0, '-L' + getvar('LIBPL'))
-        if getvar('PYTHONFRAMEWORK') == '':
+        if not getvar('PYTHONFRAMEWORK'):
             libs.extend(getvar('LINKFORSHARED').split())
         return re.sub('\S+stack_size\S+', '', ' '.join(libs))
 
@@ -57,13 +57,15 @@ def build_monetdblite():
     if os.name == 'nt':
         so_extension = '.dll'
         makecmd = 'mingw32-make -C src OPT=true'
+        linkerflags = '-L' + getvar('prefix') + ' -L' + path.join(getvar('prefix'),'libs') + ' -lpython' + sysconfig.get_python_version().replace('.','')
     else:
         so_extension = '.so'
         makecmd = 'make -C src -j OPT=true'
+        linkerflags = get_python_link_flags_unix()
 
     # build the dynamic library (.so/.dylib) on linux/osx
     os.environ['MONETDBLITE_PYTHON_INCLUDE_FLAGS'] = get_python_include_flags()
-    os.environ['MONETDBLITE_PYTHON_LINK_FLAGS'] = get_python_link_flags()
+    os.environ['MONETDBLITE_PYTHON_LINK_FLAGS'] = linkerflags
     current_directory = os.getcwd()
     os.chdir(basedir)
     proc = subprocess.Popen(makecmd, shell=True)
