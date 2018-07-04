@@ -43,7 +43,7 @@ def build_monetdblite():
 
 
     def get_python_link_flags():
-        libpythonlib = 'python' + sysconfig.get_python_version()
+        libpythonlib = 'python' + sysconfig.get_python_version().replace('.','')
         libs = ['-L' + getvar('prefix') + ' -L' + path.join(getvar('prefix'),'libs') +  ' -L' + path.join(getvar('prefix'),'lib') + ' -l' + libpythonlib]
         libs += getvar('LIBS').split()
         libs += getvar('SYSLIBS').split()
