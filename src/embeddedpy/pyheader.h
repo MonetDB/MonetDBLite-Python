@@ -54,7 +54,7 @@
 #include <numpy/npy_common.h>
 
 // DLL Export Flags
-#ifdef WIN32
+#ifdef _WIN32
 #ifndef LIBPYAPI
 #define pyapi_export extern __declspec(dllimport)
 #else
