@@ -88,9 +88,12 @@ PyObject* python_monetdb_sql(void* client, char* query) {
 		querystring[querylength] = ';';
 		querystring[querylength + 1] = '\0';
 		// Perform the SQL query
+		PyObject *py_prepare_id = NULL;
 Py_BEGIN_ALLOW_THREADS
 		MT_lock_set(query_lock);
-		msg = monetdb_query(c, querystring, true, &output, NULL, NULL);
+		long prepare_id;
+		msg = monetdb_query(c, querystring, true, &output, NULL, &prepare_id);
+		py_prepare_id = PyLong_FromLong(prepare_id);
 		MT_lock_unset(query_lock);
 Py_END_ALLOW_THREADS
 		free(querystring);
@@ -120,6 +123,7 @@ Py_END_ALLOW_THREADS
 				}
 				PyDict_SetItem(result, PyString_FromString(col->name), numpy_array);
 			}
+			PyDict_SetItem(result, PyString_FromString("__prepare_id"), py_prepare_id);
 			monetdb_cleanup_result(c, output);
 			return result;
 		} else {
