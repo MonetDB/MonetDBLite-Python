@@ -10,8 +10,10 @@ import subprocess
 import platform
 import re
 from setuptools import setup, find_packages
-from setuptools.command.install import install
+from setuptools.command.build_py import build_py
+from os import path
 import numpy
+import glob
 
 # else:
 #     os.chdir(os.path.join(basedir, 'src'))
@@ -26,7 +28,6 @@ import numpy
 
 
 def build_monetdblite():
-
     def getvar(n):
         val = sysconfig.get_config_var(n)
         if (val is None):
@@ -34,7 +35,6 @@ def build_monetdblite():
         return val
 
     def get_python_include_flags():
-        pyver = getvar('VERSION')
         flags = ['-I' + sysconfig.get_python_inc(),
                  '-I' + sysconfig.get_python_inc(plat_specific=True)]
         flags.extend(getvar('CFLAGS').split())
@@ -43,14 +43,15 @@ def build_monetdblite():
 
 
     def get_python_link_flags():
-        pyver = getvar('VERSION')
-        libs = ['-L' + getvar('LIBDIR') +
-               ' -l' + getvar('LIBRARY').replace('.a', '').replace('.so', '').replace('.dll', '').replace('.so', '').replace('lib', '')]
+        libpython = glob.glob(path.join(getvar('prefix'), 'lib*', 'libpython*'))[0]
+        libpythonpath = path.dirname(libpython)
+        libpythonlib = path.basename(libpython).replace('.a', '').replace('.so', '').replace('.dll', '').replace('.so', '').replace('lib', '')
+        libs = ['-L' + getvar('prefix') + ' -L' + libpythonpath + ' -l' + libpythonlib]
         libs += getvar('LIBS').split()
         libs += getvar('SYSLIBS').split()
-        if not getvar('Py_ENABLE_SHARED'):
+        if getvar('Py_ENABLE_SHARED') == '' and getvar('LIBPL') != '':
             libs.insert(0, '-L' + getvar('LIBPL'))
-        if not getvar('PYTHONFRAMEWORK'):
+        if getvar('PYTHONFRAMEWORK') == '':
             libs.extend(getvar('LINKFORSHARED').split())
         return re.sub('\S+stack_size\S+', '', ' '.join(libs))
 
@@ -77,20 +78,18 @@ def build_monetdblite():
     final_shared_library = os.path.join('monetdblite', monetdb_shared_lib_base)
     copyfile(monetdb_shared_lib, final_shared_library)
 
-
-class CustomInstall(install):
-    """Custom handler for the 'install' command."""
+# hook to call our build script only when building
+class CustomBuild(build_py):
     def run(self):
         build_monetdblite()
         super().run()
-
 
 # now actually create the package
 # the package is a single C file that only dynamically
 # loads functions from libmonetdb5.[so|dylib|dll]
 setup(
     name = "monetdblite",
-    version = '0.6.0.post3',
+    version = '0.6.0.post34',
     description = 'Embedded MonetDB Python Database.',
     author = 'Mark Raasveldt, Hannes Mühleisen',
     author_email = 'm.raasveldt@cwi.nl',
@@ -104,5 +103,5 @@ setup(
     install_requires=[
         'numpy',
     ],
-    cmdclass={'install': CustomInstall}
+    cmdclass={'build_py': CustomBuild}
 )
