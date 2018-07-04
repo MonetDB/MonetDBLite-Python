@@ -75,12 +75,12 @@ def build_monetdblite():
     os.chdir(current_directory)
     monetdb_shared_lib_base = "libmonetdb5" + so_extension
     monetdb_shared_lib = os.path.join(basedir, 'src', 'build', monetdb_shared_lib_base)
-    final_shared_library = os.path.join('monetdblite', monetdb_shared_lib_base)
+    libpath = os.path.join('build', 'lib', 'monetdblite')
+    os.makedirs(libpath)
+    final_shared_library = os.path.join(libpath, monetdb_shared_lib_base)
     if (not os.path.isfile(monetdb_shared_lib)):
         raise Exception('Failed to compile MonetDBLite sources. Check output for error messages.')
 
-    print(monetdb_shared_lib)
-    print(final_shared_library)
     copyfile(monetdb_shared_lib, final_shared_library)
     if (not os.path.isfile(final_shared_library)):
         raise Exception('Failed to move MonetDBLite library. Check output for error messages.')
