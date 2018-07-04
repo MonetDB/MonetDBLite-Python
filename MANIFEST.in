@@ -1,5 +1,5 @@
 recursive-include src *
 prune src/build
-include build-unix.sh
-include build-windows.sh
 include README.md
+include monetdblite/*.so
+include monetdblite/*.dll

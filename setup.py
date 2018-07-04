@@ -47,9 +47,9 @@ def build_monetdblite():
                ' -l' + getvar('LIBRARY').replace('.a', '').replace('.so', '').replace('.so', '').replace('.dylib', '').replace('lib', '')]
         libs += getvar('LIBS').split()
         libs += getvar('SYSLIBS').split()
-        if not getvar('Py_ENABLE_SHARED'):
+        if getvar('Py_ENABLE_SHARED') != '':
             libs.insert(0, '-L' + getvar('LIBPL'))
-        if not getvar('PYTHONFRAMEWORK'):
+        if getvar('PYTHONFRAMEWORK') != '':
             libs.extend(getvar('LINKFORSHARED').split())
         return re.sub('\S+stack_size\S+', '', ' '.join(libs))
 
@@ -76,6 +76,8 @@ def build_monetdblite():
     monetdb_shared_lib_base = "libmonetdb5" + so_extension
     monetdb_shared_lib = os.path.join(basedir, 'src', 'build', monetdb_shared_lib_base)
     final_shared_library = os.path.join('monetdblite', monetdb_shared_lib_base)
+    print(monetdb_shared_lib)
+    print(final_shared_library)
     copyfile(monetdb_shared_lib, final_shared_library)
 
 # hook to call our build script only when building
@@ -89,14 +91,14 @@ class CustomBuild(build_py):
 # loads functions from libmonetdb5.[so|dylib|dll]
 setup(
     name = "monetdblite",
-    version = '0.6.0.post34',
+    version = '0.6.0.post4',
     description = 'Embedded MonetDB Python Database.',
     author = 'Mark Raasveldt, Hannes Mühleisen',
     author_email = 'm.raasveldt@cwi.nl',
     keywords = 'MonetDB, MonetDBLite, Database',
     packages = ['monetdblite'],
     package_data={
-        'monetdblite': ['libmonetdb5.so', 'libmonetdb5.dll'],
+        'monetdblite': ['*.so', '*.dll'],
     },
     url="https://github.com/hannesmuehleisen/MonetDBLite-Python",
     long_description = "", # FIXME
