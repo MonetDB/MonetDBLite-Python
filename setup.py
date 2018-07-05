@@ -91,7 +91,7 @@ def build_monetdblite():
 class CustomBuild(build_py):
     def run(self):
         # needless to say, this is a hack
-        self.data_files[0][3].append( build_monetdblite())
+        self.data_files[0][3].append(build_monetdblite())
         build_py.run(self)
 
 # now actually create the package
