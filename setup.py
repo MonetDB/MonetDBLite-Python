@@ -15,10 +15,11 @@ from os import path
 import numpy
 import glob
 
+basedir = os.path.dirname(os.path.realpath(__file__))
 
 try:
     import pypandoc
-    long_description = pypandoc.convert_file('README.md', 'rst')
+    long_description = pypandoc.convert_file(os.path.join(basedir, 'README.md'), 'rst')
 except(IOError, ImportError):
     long_description = ''
 
@@ -50,7 +51,6 @@ def build_monetdblite():
             libs.extend(getvar('LINKFORSHARED').split())
         return re.sub('\S+stack_size\S+', '', ' '.join(libs))
 
-    basedir = os.path.dirname(os.path.realpath(__file__))
     if os.name == 'nt':
         so_extension = '.dll'
         makecmd = 'mingw32-make -C src OPT=true'
@@ -96,7 +96,7 @@ class CustomBuild(build_py):
 # loads functions from libmonetdb5.[so|dylib|dll]
 setup(
     name = "monetdblite",
-    version = '0.6.0.post4',
+    version = '0.6.0.post6',
     description = 'Embedded MonetDB Python Database.',
     author = 'Mark Raasveldt, Hannes Mühleisen',
     author_email = 'm.raasveldt@cwi.nl',

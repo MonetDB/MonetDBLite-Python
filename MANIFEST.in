@@ -1,5 +1,8 @@
 recursive-include src *
 prune src/build
 prune tests
-prune src/monetdblite/tests/
+prune src/monetdblite/tests
+prune *.mal
+prune *.sql
+prune *.yml
 include README.md
