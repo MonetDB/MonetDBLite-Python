@@ -80,7 +80,3 @@ class Connection(object):
     InternalError = exceptions.InternalError
     ProgrammingError = exceptions.ProgrammingError
     NotSupportedError = exceptions.NotSupportedError
-
-
-
-
