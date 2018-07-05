@@ -71,3 +71,8 @@ def shutdown(*args, **kwargs):
     return embeddedmonetdb.shutdown(*args, **kwargs)
 
 shutdown.__doc__ = embeddedmonetdb.shutdown.__doc__
+
+def prepare(*args, **kwargs):
+    return embeddedmonetdb.prepare(*args, **kwargs)
+
+prepare.__doc__ = prepare.__doc__
