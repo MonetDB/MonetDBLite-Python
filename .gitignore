@@ -13,3 +13,4 @@ src/build
 monetdblite.egg-info/
 build
 dist
+.pytest_cache
