@@ -1,24 +1,23 @@
 environment:
 
   matrix:
-
-    - PYTHON: "C:\\Python27"
-      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
-
-    - PYTHON: "C:\\Python35"
-      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
-
-    - PYTHON: "C:\\Python36"
-      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
-
-    - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python36-x64"
       mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'
 
     - PYTHON: "C:\\Python35-x64"
       mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'
 
-    - PYTHON: "C:\\Python36-x64"
+    - PYTHON: "C:\\Python27-x64"
       mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'
+
+    - PYTHON: "C:\\Python36"
+      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
+
+    - PYTHON: "C:\\Python35"
+      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
+
+    - PYTHON: "C:\\Python27"
+      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
 
 install:
   - "%PYTHON%\\python.exe -m pip install wheel"
