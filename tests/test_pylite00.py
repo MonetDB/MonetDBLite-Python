@@ -6,6 +6,7 @@ import monetdblite
 import numpy
 import unittest
 import sys
+import os
 
 PY26 = sys.version_info[0] == 2 and sys.version_info[1] <= 6
 
@@ -85,10 +86,11 @@ class MonetDBLiteBaseTests(unittest.TestCase):
 
     def test_errors(self):
         global dbfarm
-        monetdblite.shutdown()
 
-        if PY26:
+        if PY26 or os.name == 'nt':
             return
+
+        monetdblite.shutdown()
 
         # select before init
         with self.assertRaises(monetdblite.DatabaseError):
