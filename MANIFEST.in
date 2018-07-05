@@ -1,5 +1,3 @@
 recursive-include src *
 prune src/build
 include README.md
-include monetdblite/*.so
-include monetdblite/*.dll

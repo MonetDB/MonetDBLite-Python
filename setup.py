@@ -84,10 +84,14 @@ def build_monetdblite():
     if (not os.path.isfile(final_shared_library)):
         raise Exception('Failed to move MonetDBLite library. Check output for error messages.')
 
+    return monetdb_shared_lib_base
+
 # hook to call our build script only when building
+# TODO this should really use build_ext instead of build_py
 class CustomBuild(build_py):
     def run(self):
-        build_monetdblite()
+        # needless to say, this is a hack
+        self.data_files[0][3].append( build_monetdblite())
         build_py.run(self)
 
 # now actually create the package
@@ -101,13 +105,11 @@ setup(
     author_email = 'm.raasveldt@cwi.nl',
     keywords = 'MonetDB, MonetDBLite, Database',
     packages = ['monetdblite'],
-    package_data={
-        'monetdblite': ['libmonetdb5.so', 'libmonetdb5.dll'],
-    },
     url="https://github.com/hannesmuehleisen/MonetDBLite-Python",
     long_description = "", # FIXME
     install_requires=[
         'numpy',
     ],
+    zip_safe = True,
     cmdclass={'build_py': CustomBuild}
 )
