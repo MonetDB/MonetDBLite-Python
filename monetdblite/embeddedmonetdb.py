@@ -10,6 +10,7 @@ import sys
 
 from monetdblite import monetize
 from monetdblite import exceptions
+from monetdblite.preparedstatement import PreparedStatement
 
 PY3 = sys.version_info[0] >= 3
 
@@ -114,7 +115,7 @@ def dbpath():
     return MONETDBLITE_CURRENT_DATABASE
 
 
-def sql(query, client=None):
+def sql(query, client=None, prepare=False):
     """Executes a SQL statement on the database if the database
        has been initialized. If no client context is provided,
        the default client context is used. Otherwise the specified
@@ -130,6 +131,10 @@ def sql(query, client=None):
     if isinstance(retval, str):
         raise __throw_exception(str(retval))
     else:
+        # in case we are not preparing a statement remove the prepare
+        # id from the result set
+        if retval is not None and not prepare:
+            del retval['__prepare_id']
         return retval
 
 
@@ -251,3 +256,38 @@ def set_autocommit(val, client=None):
         raise __throw_exception(str(retval))
     else:
         return retval
+
+
+def prepare(query, client=None):
+    """Prepare a statement"""
+    # TODO: (transition to PY3) normalize with str.casefold
+    # see: https://docs.python.org/3.6/library/stdtypes.html#str.casefold
+    normalized_sql = query.lower()
+    if not normalized_sql.startswith('prepare'):
+        normalized_sql = 'prepare ' + normalized_sql
+
+    if client is not None and not isinstance(client, PyClient):
+        raise __throw_exception("client must be of type PyClient")
+    client_object = None
+    if client is not None:
+        client_object = client.get_client()
+
+    result = sql(normalized_sql, prepare=True)
+
+    parameter_type_array = list()
+    # Optimize?
+    for idx, itm in enumerate(result['result_or_param']):
+        if itm == 'param':
+            parameter_type_array.append({
+                'sql_type_name': result['type'][idx],
+                'digits': result['digits'][idx],
+                'index': result['col_index'][idx],
+            })
+    prepared_statement = PreparedStatement(result['__prepare_id'],
+                                           client_object,
+                                           parameter_type_array,
+                                           query)
+
+    # print(prepared_statement)
+
+    return prepared_statement
