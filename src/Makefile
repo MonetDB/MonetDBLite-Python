@@ -4,15 +4,15 @@ ifneq ($(OPTIMIZE), true)
 	OPTFLAGS=-O0 -g -Wall -Wextra -Wmissing-prototypes -Wold-style-definition -std=c99 # -Werror
 	OBJDIR=build/debug
 else
-	OPTFLAGS=-O2 -g
+	OPTFLAGS=-O2 -g -DNDEBUG
 	OBJDIR=build/optimized
 endif
 
 DEPSDIR=$(OBJDIR)/deps
 
-CFLAGS=-DLIBGDK -DLIBMAL -DLIBOPTIMIZER -DLIBSTREAM
+CFLAGS=-DLIBGDK -DLIBMAL -DLIBOPTIMIZER -DLIBSTREAM -DLIBSQL -DLIBPYAPI -DMONETDBLITE_COMPILE -std=c99
 
-LDFLAGS=-lm -lpthread -ldl
+LDFLAGS=-lm -lpthread 
 CFLAGS += -Imonetdblite/src/ -Imonetdblite/src/common  \
 -Imonetdblite/src/embedded -Imonetdblite/src/gdk \
 -Imonetdblite/src/mal/mal -Imonetdblite/src/mal/modules -Imonetdblite/src/mal/optimizer -Imonetdblite/src/mal/sqlbackend \
@@ -23,7 +23,7 @@ SOEXT=so
 ifeq ($(OS),Windows_NT)
 	SOEXT=dll
 	CC=gcc
-    CFLAGS += -DWIN32 -D__CYGWIN__
+#    CFLAGS += -DWIN32 -D__CYGWIN__
 #    ifeq ($(PROCESSOR_ARCHITEW6432),AMD64)
 #        CFLAGS += -D AMD64
 #    else
@@ -37,6 +37,7 @@ ifeq ($(OS),Windows_NT)
 else
     UNAME_S := $(shell uname -s)
     CFLAGS += -fPIC
+    LDFLAGS += -ldl
     ifeq ($(UNAME_S),Linux)
 		LDFLAGS += -lrt
     endif

@@ -3,6 +3,7 @@
 .cproject
 src/build
 *.so
+*.pyc
 .settings
 .pydevproject
 .virtualenv/
@@ -10,4 +11,6 @@ src/build
 .venv2/
 .venv3/
 monetdblite.egg-info/
-
+build
+dist
+.pytest_cache

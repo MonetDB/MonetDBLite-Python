@@ -1,4 +1,3 @@
 recursive-include src *
-include build-unix.sh
-include build-windows.sh
+prune src/build
 include README.md
