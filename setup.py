@@ -75,10 +75,8 @@ def build_monetdblite():
     os.chdir(current_directory)
     monetdb_shared_lib_base = "libmonetdb5" + so_extension
     monetdb_shared_lib = os.path.join(basedir, 'src', 'build', monetdb_shared_lib_base)
-    libpath = os.path.join('build', 'lib', 'monetdblite')
-    if not os.path.exists(libpath):
-        os.makedirs(libpath)
-    final_shared_library = os.path.join(libpath, monetdb_shared_lib_base)
+
+    final_shared_library = os.path.join('monetdblite', monetdb_shared_lib_base)
     if (not os.path.isfile(monetdb_shared_lib)):
         raise Exception('Failed to compile MonetDBLite sources. Check output for error messages.')
 
@@ -104,7 +102,7 @@ setup(
     keywords = 'MonetDB, MonetDBLite, Database',
     packages = ['monetdblite'],
     package_data={
-        'monetdblite': ['*.so', '*.dll'],
+        'monetdblite': ['libmonetdb5.so', 'libmonetdb5.dll'],
     },
     url="https://github.com/hannesmuehleisen/MonetDBLite-Python",
     long_description = "", # FIXME

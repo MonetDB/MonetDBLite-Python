@@ -20,7 +20,7 @@
 
 #undef HAVE_SYS_TYPES_H
 
-#ifdef WIN32
+#ifdef _WIN32
 
 #undef HAVE_IO_H
 #undef HAVE_SYS_UTIME_H

@@ -81,7 +81,7 @@
 #define PythonUnicodeType Py_UNICODE
 #endif
 
-#if defined(WIN32) && !defined(HAVE_EMBEDDED)
+#if defined(_WIN32) && !defined(HAVE_EMBEDDED)
 // On Windows we need to dynamically load any SQL functions we use 
 // For embedded, this is not necessary because we create one large shared object
 #define CREATE_SQL_FUNCTION_PTR(retval, fcnname)     \
