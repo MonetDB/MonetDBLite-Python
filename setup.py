@@ -15,17 +15,14 @@ from os import path
 import numpy
 import glob
 
-# else:
-#     os.chdir(os.path.join(basedir, 'src'))
-#     os.system('make clean')
-#     os.system('rm ../monetdblite/*.so ../monetdblite/*.dylib ../monetdblite/*.dll')
-#     os.chdir(current_directory)
-#     try:
-#         import pypandoc
-#         long_description = pypandoc.convert('README.md', 'rst')
-#     except(IOError, ImportError):
-#         long_description = open('README.md').read()
 
+try:
+    import pypandoc
+    long_description = pypandoc.convert_file('README.md', 'rst')
+except(IOError, ImportError):
+    long_description = ''
+
+print(long_description)
 
 def build_monetdblite():
     def getvar(n):
@@ -106,7 +103,7 @@ setup(
     keywords = 'MonetDB, MonetDBLite, Database',
     packages = ['monetdblite'],
     url="https://github.com/hannesmuehleisen/MonetDBLite-Python",
-    long_description = "", # FIXME
+    long_description = long_description,
     install_requires=[
         'numpy',
     ],
