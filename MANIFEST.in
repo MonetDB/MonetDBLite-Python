@@ -5,4 +5,5 @@ prune src/monetdblite/tests
 prune *.mal
 prune *.sql
 prune *.yml
+prune Makefile
 include README.md
