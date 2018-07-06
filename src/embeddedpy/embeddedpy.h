@@ -31,7 +31,10 @@ pyapi_export PyObject* python_monetdb_disconnect(void* client);
 //! Shuts down the database in-process so python_monetdb_init can be called again
 pyapi_export PyObject* python_monetdb_shutdown(void);
 
-
 pyapi_export void python_monetdblite_init(void);
+
+// dummy for builds
+pyapi_export void initlibmonetdb5(void);
+
 
 #endif /* _EMBEDDEDPY_LIB_ */

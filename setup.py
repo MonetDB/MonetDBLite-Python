@@ -3,6 +3,7 @@
 
 import os
 import numpy
+import sys
 from distutils.core import setup, Extension
 
 basedir = os.path.dirname(os.path.realpath(__file__))
@@ -12,6 +13,9 @@ try:
     long_description = pypandoc.convert_file(os.path.join(basedir, 'README.md'), 'rst')
 except(IOError, ImportError):
     long_description = ''
+
+# don't ask
+sys.version = sys.version.replace('MSC', 'XXX')
 
 sources = []
 includes = [numpy.get_include()]
@@ -59,3 +63,4 @@ setup(
     zip_safe = False,
     ext_modules = [libmonetdb5]
 )
+
