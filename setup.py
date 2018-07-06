@@ -14,9 +14,6 @@ try:
 except(IOError, ImportError):
     long_description = ''
 
-# don't ask
-sys.version = sys.version.replace('MSC', 'XXX')
-
 sources = []
 includes = [numpy.get_include()]
 excludes = ['strptime.c', 'inlined_scripts.c', 'decompress.c', 'fsync.c']
