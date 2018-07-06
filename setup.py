@@ -15,7 +15,7 @@ except(IOError, ImportError):
 
 sources = []
 includes = [numpy.get_include()]
-excludes = ['strptime.c', 'inlined_scripts.c', 'decompress.c']
+excludes = ['strptime.c', 'inlined_scripts.c', 'decompress.c', 'fsync.c']
 
 def generate_sources_includes(dir):
     includes.append(dir)
@@ -28,6 +28,7 @@ def generate_sources_includes(dir):
 
 generate_sources_includes('src/monetdblite/src')
 generate_sources_includes('src/embeddedpy')
+
 
 libmonetdb5 = Extension('monetdblite.libmonetdb5',
     define_macros = [('LIBGDK',              None),
