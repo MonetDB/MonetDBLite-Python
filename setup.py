@@ -1,19 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from distutils import sysconfig
-import ntpath
 import os
-import sys
-from shutil import copyfile
-import subprocess
-import platform
-import re
-from setuptools import setup, find_packages
-from setuptools.command.build_py import build_py
-from os import path
 import numpy
-import glob
 from distutils.core import setup, Extension
 
 basedir = os.path.dirname(os.path.realpath(__file__))
@@ -41,13 +30,13 @@ generate_sources_includes('src/monetdblite/src')
 generate_sources_includes('src/embeddedpy')
 
 libmonetdb5 = Extension('monetdblite.libmonetdb5',
-    define_macros = [('LIBGDK',                 None),
-                     ('LIBMAL',                 None),
-                     ('LIBOPTIMIZER',           None),
-                     ('LIBSTREAM',              None),
-                     ('LIBSQL',                 None),
-                     ('LIBPYAPI',               None),
-                     ('LIBMONETDBLITE_COMPILE', None)],
+    define_macros = [('LIBGDK',              None),
+                     ('LIBMAL',              None),
+                     ('LIBOPTIMIZER',        None),
+                     ('LIBSTREAM',           None),
+                     ('LIBSQL',              None),
+                     ('LIBPYAPI',            None),
+                     ('MONETDBLITE_COMPILE', None)],
     include_dirs = includes,
     sources = sources,
     extra_compile_args=['-std=c99'],
