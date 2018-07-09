@@ -904,7 +904,7 @@ typedef lng ptrdiff_t;
 #undef HAVE_SYS_TIME_H
 #undef HAVE_UNISTD_H
 #undef HAVE_DIRENT_H
-#undef HAVE_SYS_TIME_H
+#undef TIME_WITH_SYS_TIME
 
 #endif
 
