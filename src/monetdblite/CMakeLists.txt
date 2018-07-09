@@ -18,7 +18,8 @@ include_directories(src/sql/server)
 include_directories(src/sql/storage)
 include_directories(src/sql/storage/bat)
 
-add_library(libmonetdb5 SHARED
+add_library(monetdb5 SHARED
+        src/common/fsync.c
         src/common/mutils.c
         src/common/mutils.h
         src/common/stream.c
