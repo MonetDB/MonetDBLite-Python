@@ -1,6 +1,6 @@
 OPTIMIZE=$(OPT)
 ifneq ($(OPTIMIZE), true)
-	OPTFLAGS=-g -Wall -Wextra -Werror
+	OPTFLAGS=-g -Wall -Wextra -Werror -std=c99
 	OBJDIR=build/debug
 else
 	OPTFLAGS=-O2
@@ -9,7 +9,7 @@ endif
 
 DEPSDIR=$(OBJDIR)/deps
 
-CFLAGS=-DLIBGDK -DLIBMAL -DLIBOPTIMIZER -DLIBSTREAM -DLIBSQL -std=c99
+CFLAGS=-DLIBGDK -DLIBMAL -DLIBOPTIMIZER -DLIBSTREAM -DLIBSQL
 LDFLAGS=-lm
 INCLUDE_FLAGS= -Isrc/ -Isrc/common  \
 -Isrc/embedded -Isrc/gdk \
