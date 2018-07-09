@@ -19,13 +19,12 @@
 
 #include "mutils.h"
 #include <sys/types.h> /* opendir */
-#ifdef HAVE_DIRENT_H
-#include <dirent.h>
-#endif
 #ifdef HAVE_FCNTL_H
 #include <fcntl.h>
 #endif
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 
 #if defined(_MSC_VER) && _MSC_VER >= 1400
 #define open _open
