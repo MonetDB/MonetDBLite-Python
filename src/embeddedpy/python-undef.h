@@ -41,7 +41,3 @@
 #endif
 
 #endif
-
-#ifdef _MSC_VER
-#undef HAVE_SYS_TIME_H
-#endif
