@@ -27,7 +27,7 @@ install:
 
 
 build_script:
-  - "%PYTHON%\\python.exe setup.py build -c mingw32"
+  - "%PYTHON%\\python.exe setup.py build"
 
 test_script:
   - "%PYTHON%\\python.exe -m pytest"

@@ -50,14 +50,14 @@ setup(
     description = 'Embedded MonetDB Python Database.',
     author = 'Mark Raasveldt, Hannes Mühleisen',
     author_email = 'm.raasveldt@cwi.nl',
-    keywords = 'MonetDB, MonetDBLite, Database',
+    keywords = 'MonetDB, MonetDBLite, Database, SQL, OLAP',
     packages = ['monetdblite'],
     url="https://github.com/hannesmuehleisen/MonetDBLite-Python",
     long_description = long_description,
-    install_requires=[
-        'numpy',
-    ],
-    zip_safe = False,
+    # install_requires=[
+    #     'numpy',
+    # ],
+    # zip_safe = False,
     ext_modules = [libmonetdb5]
 )
 
