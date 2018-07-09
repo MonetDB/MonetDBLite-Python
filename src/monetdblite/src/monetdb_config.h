@@ -5,7 +5,9 @@
 #ifndef _SEEN_MONETDB_CONFIG_H
 #define _SEEN_MONETDB_CONFIG_H 1
 
-
+#ifdef _MSC_VER
+#define NATIVE_WIN32
+#endif
 
 
 #ifdef __MINGW32__
@@ -17,8 +19,6 @@
 #ifdef NATIVE_WIN32
 #include <windows.h>
 #undef ERROR
-
-
 #endif
 
 #ifdef _MSC_VER
