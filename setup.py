@@ -52,6 +52,7 @@ setup(
     author_email = 'm.raasveldt@cwi.nl',
     keywords = 'MonetDB, MonetDBLite, Database, SQL, OLAP',
     packages = ['monetdblite'],
+    package_dir = {'': 'lib'},
     url="https://github.com/hannesmuehleisen/MonetDBLite-Python",
     long_description = long_description,
     # install_requires=[
