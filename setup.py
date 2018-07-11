@@ -40,7 +40,7 @@ libmonetdb5 = Extension('monetdblite.libmonetdb5',
                      ('MONETDBLITE_COMPILE', None)],
     include_dirs = includes,
     sources = sources,
-#    extra_compile_args=['-std=c99'],
+    extra_compile_args=['-std=c99'], # needed for linux build 
     language='c')
 
 setup(
