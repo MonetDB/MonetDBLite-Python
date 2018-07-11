@@ -28,9 +28,11 @@ except ImportError:
 
 if os.name == 'nt':
     os.environ["PATH"] += os.pathsep + os.path.dirname(os.path.abspath(__file__))
-
+# make mal_linker happy
+os.environ["MONETDBLITE_LIBNAME"] = libs[0]
 dll = ctypes.PyDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                 libs[0]), mode=ctypes.RTLD_GLOBAL)
+
 dll.python_monetdblite_init.argtypes = []
 dll.python_monetdblite_init.restype = None
 dll.python_monetdblite_init()
