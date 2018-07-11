@@ -27,9 +27,8 @@ def generate_sources_includes(dir):
         for name in dirs:
             includes.append(os.path.join(root, name))
 
-generate_sources_includes('src/monetdblite/src')
 generate_sources_includes('src/embeddedpy')
-
+generate_sources_includes('src/monetdblite/src')
 
 libmonetdb5 = Extension('monetdblite.libmonetdb5',
     define_macros = [('LIBGDK',              None),
