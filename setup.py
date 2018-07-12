@@ -18,29 +18,31 @@ sources = []
 includes = [numpy.get_include()]
 excludes = ['strptime.c', 'inlined_scripts.c', 'decompress.c', 'fsync.c']
 
+
 def generate_sources_includes(dir):
     includes.append(dir)
     for root, dirs, files in os.walk(dir):
         for name in files:
-            if name.endswith('.c') and not name in excludes:
+            if name.endswith('.c') and name not in excludes:
                 sources.append(os.path.join(root, name))
         for name in dirs:
             includes.append(os.path.join(root, name))
+
 
 generate_sources_includes('src/embeddedpy')
 generate_sources_includes('src/monetdblite/src')
 
 libmonetdb5 = Extension('monetdblite.libmonetdb5',
-    define_macros = [('LIBGDK',              None),
-                     ('LIBMAL',              None),
-                     ('LIBOPTIMIZER',        None),
-                     ('LIBSTREAM',           None),
-                     ('LIBSQL',              None),
-                     ('LIBPYAPI',            None),
-                     ('MONETDBLITE_COMPILE', None)],
-    include_dirs = includes,
-    sources = sources,
-    extra_compile_args=['-std=c99'], # needed for linux build 
+                        define_macros=[('LIBGDK',              None),
+                                       ('LIBMAL',              None),
+                                       ('LIBOPTIMIZER',        None),
+                                       ('LIBSTREAM',           None),
+                                       ('LIBSQL',              None),
+                                       ('LIBPYAPI',            None),
+                                       ('MONETDBLITE_COMPILE', None)],
+    include_dirs=includes,
+    sources=sources,
+    extra_compile_args=['-std=c99'],  # needed for linux build
     language='c')
 
 setup(
@@ -60,4 +62,3 @@ setup(
     # zip_safe = False,
     ext_modules = [libmonetdb5]
 )
-
