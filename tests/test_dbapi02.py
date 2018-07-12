@@ -1,42 +1,24 @@
 # test proper escaping
 
-import monetdblitetest
 import monetdblite
 import numpy
-import unittest
 
 identifier_escape = monetdblite.monetize.monet_identifier_escape
 
 
-class MultipleResultSets(unittest.TestCase):
-    def setup_method(self, method):
-        dbfarm = monetdblitetest.tempdir()
-        self.connection = monetdblite.connect(dbfarm)
-        self.cursor = self.connection.cursor()
-        self.cursor.create('integers', {'i': numpy.arange(10)})
+class TestMultipleResultSets(object):
+    def test_string_insertion(self, monetdblite_cursor):
+        monetdblite_cursor.execute('CREATE TABLE strings(s STRING)')
+        monetdblite_cursor.executemany('INSERT INTO strings VALUES (%s)', ["'hello\" world\"'"])
+        monetdblite_cursor.execute('SELECT * FROM strings')
+        result = monetdblite_cursor.fetchall()
+        assert result == [["'hello\" world\"'"]], "Incorrect result returned"
 
-    def teardown_method(self, method):
-        self.connection.close()
-        monetdblitetest.cleantempdir()
-
-    def test_string_insertion(self):
-        self.cursor.execute('CREATE TABLE strings(s STRING)')
-        self.cursor.executemany('INSERT INTO strings VALUES (%s)', ["'hello\" world\"'"])
-        self.cursor.execute('SELECT * FROM strings')
-        result = self.cursor.fetchall()
-        self.assertEqual(result, [["'hello\" world\"'"]],
-                         "Incorrect result returned")
-
-    def test_table_name(self):
+    def test_table_name(self, monetdblite_cursor):
         sname = "table"
         tname = 'integer'
-        self.cursor.execute('CREATE SCHEMA %s' % identifier_escape(sname))
-        self.cursor.create(tname, {'i': numpy.arange(3)}, schema=sname)
-        self.cursor.execute('SELECT * FROM %s.%s' % (identifier_escape(sname), identifier_escape(tname)))
-        result = self.cursor.fetchall()
-        self.assertEqual(result, [[0],[1],[2]],
-                         "Incorrect result returned")
-
-
-if __name__ == '__main__':
-    unittest.main()
+        monetdblite_cursor.execute('CREATE SCHEMA %s' % identifier_escape(sname))
+        monetdblite_cursor.create(tname, {'i': numpy.arange(3)}, schema=sname)
+        monetdblite_cursor.execute('SELECT * FROM %s.%s' % (identifier_escape(sname), identifier_escape(tname)))
+        result = monetdblite_cursor.fetchall()
+        assert result == [[0],[1],[2]], "Incorrect result returned"
