@@ -1,4 +1,3 @@
-
 # Test basic monetdblite statements
 
 import monetdblitetest
@@ -10,11 +9,11 @@ import os
 
 PY26 = sys.version_info[0] == 2 and sys.version_info[1] <= 6
 
+
 class MonetDBLiteBaseTests(unittest.TestCase):
     def setUp(self):
-        global dbfarm
-        dbfarm = monetdblitetest.tempdir()
-        monetdblite.init(dbfarm)
+        self.dbfarm = monetdblitetest.tempdir()
+        monetdblite.init(self.dbfarm)
 
     def tearDown(self):
         monetdblite.shutdown()
@@ -85,7 +84,6 @@ class MonetDBLiteBaseTests(unittest.TestCase):
         self.assertEquals(result['minimum'][0], 0, "Incorrect result")
 
     def test_errors(self):
-        global dbfarm
 
         if PY26 or os.name == 'nt':
             return
@@ -105,7 +103,7 @@ class MonetDBLiteBaseTests(unittest.TestCase):
             monetdblite.init('/unwritabledir')
 
         # proper init
-        monetdblite.init(dbfarm)
+        monetdblite.init(self.dbfarm)
 
         # select from non-existent table
         with self.assertRaises(monetdblite.DatabaseError):
@@ -156,6 +154,7 @@ class MonetDBLiteBaseTests(unittest.TestCase):
             monetdblite.sql('DROP TABLE pylite09', client=conn)
             monetdblite.sql('ROLLBACK', client=conn)
             del conn
+
 
 if __name__ == '__main__':
     unittest.main()

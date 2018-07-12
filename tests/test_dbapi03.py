@@ -1,4 +1,3 @@
-
 # test database shutdown/startup
 
 import monetdblitetest
@@ -12,83 +11,75 @@ PY26 = sys.version_info[0] == 2 and sys.version_info[1] <= 6
 
 identifier_escape = monetdblite.monetize.monet_identifier_escape
 
+
 class ShutdownTests(unittest.TestCase):
     def setUp(self):
-        global conn, c, dbfarm
-        dbfarm = monetdblitetest.tempdir()
-        conn = monetdblite.connect(dbfarm)
-        c = conn.cursor()
-        conn.set_autocommit(True)
+        self.dbfarm = monetdblitetest.tempdir()
+        self.connection = monetdblite.connect(self.dbfarm)
+        self.cursor = self.connection.cursor()
+        self.connection.set_autocommit(True)
 
     def tearDown(self):
-        conn.close()
+        self.connection.close()
         monetdblitetest.cleantempdir()
 
     def test_commited_on_restart(self):
-        global conn, c, dbfarm
-        c.transaction()
-        c.execute('CREATE TABLE integers (i INTEGER)')
-        c.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(3)])
-        c.execute('SELECT * FROM integers')
-        result = c.fetchall()
+        self.cursor.transaction()
+        self.cursor.execute('CREATE TABLE integers (i INTEGER)')
+        self.cursor.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(3)])
+        self.cursor.execute('SELECT * FROM integers')
+        result = self.cursor.fetchall()
         self.assertEqual(result, [[0],[1],[2]], 
             "Incorrect result returned")
-        c.commit()
-        conn.close()
+        self.cursor.commit()
+        self.connection.close()
 
-        conn = monetdblite.connect(dbfarm)
-        c = conn.cursor()
-        c.execute('SELECT * FROM integers')
+        self.connection = monetdblite.connect(self.dbfarm)
+        self.cursor = self.connection.cursor()
+        self.cursor.execute('SELECT * FROM integers')
         self.assertEqual(result, [[0],[1],[2]], 
             "Incorrect result returned")
 
     def test_transaction_aborted_on_shutdown(self):
-        global conn, c, dbfarm
-        c.transaction()
-        c.execute('CREATE TABLE integers (i INTEGER)')
-        c.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(3)])
-        c.execute('SELECT * FROM integers')
-        result = c.fetchall()
+        self.cursor.transaction()
+        self.cursor.execute('CREATE TABLE integers (i INTEGER)')
+        self.cursor.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(3)])
+        self.cursor.execute('SELECT * FROM integers')
+        result = self.cursor.fetchall()
         self.assertEqual(result, [[0],[1],[2]], 
             "Incorrect result returned")
-        conn.close()
+        self.connection.close()
 
-        conn = monetdblite.connect(dbfarm)
-        c = conn.cursor()
+        self.connection = monetdblite.connect(self.dbfarm)
+        self.cursor = self.connection.cursor()
         if not PY26:
             with self.assertRaises(monetdblite.DatabaseError):
-                c.execute('SELECT * FROM integers')
+                self.cursor.execute('SELECT * FROM integers')
 
 
     def test_many_shutdowns(self):
-        global conn, c, dbfarm
         for i in range(10):
-            c.transaction()
-            c.execute('CREATE TABLE integers (i INTEGER)')
-            c.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(10)])
-            c.execute('SELECT MIN(i * 3 + 5) FROM integers')
-            result = c.fetchall()
+            self.cursor.transaction()
+            self.cursor.execute('CREATE TABLE integers (i INTEGER)')
+            self.cursor.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(10)])
+            self.cursor.execute('SELECT MIN(i * 3 + 5) FROM integers')
+            result = self.cursor.fetchall()
             self.assertEqual(result, [[5]], 
                 "Incorrect result returned")
-            conn.close()
+            self.connection.close()
 
-            conn = monetdblite.connect(dbfarm)
-            conn.set_autocommit(True)
-            c = conn.cursor()
+            self.connection = monetdblite.connect(self.dbfarm)
+            self.connection.set_autocommit(True)
+            self.cursor = self.connection.cursor()
 
     def test_use_old_cursor(self):
-        global conn, c, dbfarm
-        conn.close()
+        self.connection.close()
 
-        conn = monetdblite.connect(dbfarm)
+        self.connection = monetdblite.connect(self.dbfarm)
         if not PY26:
             with self.assertRaises(monetdblite.ProgrammingError):
-                c.execute('SELECT * FROM integers')
-
+                self.cursor.execute('SELECT * FROM integers')
 
 
 if __name__ == '__main__':
     unittest.main()
-
-
-

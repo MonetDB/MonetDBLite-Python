@@ -1,15 +1,16 @@
-
-import shutil, os
+import os
+import shutil
 import tempfile
 
-dbfarm = os.path.join(tempfile.gettempdir(), '.{0}'.format(hash(os.times())))
+TEST_DBFARM = tempfile.mkdtemp()
 
 def tempdir():
-	if os.path.isdir(dbfarm): shutil.rmtree(dbfarm)
-	return dbfarm
+        global TEST_DBFARM
+        if os.path.isdir(TEST_DBFARM):
+                shutil.rmtree(TEST_DBFARM)
+        TEST_DBFARM = tempfile.mkdtemp()
+        return TEST_DBFARM
+
 
 def cleantempdir():
-	shutil.rmtree(dbfarm)
-
-
-
+        shutil.rmtree(TEST_DBFARM)
