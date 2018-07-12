@@ -1,25 +1,26 @@
 environment:
 
   matrix:
+    - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python27"
+    - PYTHON: "C:\\Python35-x64"
+      image: Visual Studio 2015
+    - PYTHON: "C:\\Python35"
+      image: Visual Studio 2015
     - PYTHON: "C:\\Python36-x64"
     - PYTHON: "C:\\Python36"
-    - PYTHON: "C:\\Python27-x64"
-      image: Visual Studio 2015
-    - PYTHON: "C:\\Python27"
-      image: Visual Studio 2015
-    - PYTHON: "C:\\Python35-x64"
-    - PYTHON: "C:\\Python35"
 
 install:
   - "%PYTHON%\\python.exe -m pip install wheel"
   - "%PYTHON%\\python.exe -m pip install pytest"
   - "%PYTHON%\\python.exe -m pip install numpy"
 
+test_script:
+  - "%PYTHON%\\python.exe -m pytest"
+
 build_script:
   - "%PYTHON%\\python.exe setup.py install"
 
-test_script:
-  - "%PYTHON%\\python.exe -m pytest"
 
 # after_test:
 #   # This step builds your wheels.
