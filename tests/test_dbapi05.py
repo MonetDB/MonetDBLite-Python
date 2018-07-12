@@ -1,4 +1,5 @@
 import monetdblitetest
+
 import monetdblite
 import numpy
 import unittest
@@ -15,7 +16,7 @@ class DescriptionTest(unittest.TestCase):
         cls.conn.close()
         monetdblitetest.cleantempdir()
 
-    def setUp(self):
+    def setup_method(self, method):
         self.cursor = self.conn.cursor()
 
     def test_description(self):

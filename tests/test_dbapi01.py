@@ -7,13 +7,13 @@ import unittest
 
 
 class MultipleResultSets(unittest.TestCase):
-    def setUp(self):
+    def setup_method(self, method):
         dbfarm = monetdblitetest.tempdir()
         self.connection = monetdblite.connect(dbfarm)
         self.cursor = self.connection.cursor()
         self.cursor.create('integers', {'i': numpy.arange(10)})
 
-    def tearDown(self):
+    def teardown_method(self, method):
         self.connection.close()
         monetdblitetest.cleantempdir()
 

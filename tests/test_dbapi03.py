@@ -13,13 +13,13 @@ identifier_escape = monetdblite.monetize.monet_identifier_escape
 
 
 class ShutdownTests(unittest.TestCase):
-    def setUp(self):
+    def setup_method(self, method):
         self.dbfarm = monetdblitetest.tempdir()
         self.connection = monetdblite.connect(self.dbfarm)
         self.cursor = self.connection.cursor()
         self.connection.set_autocommit(True)
 
-    def tearDown(self):
+    def teardown_method(self, method):
         self.connection.close()
         monetdblitetest.cleantempdir()
 

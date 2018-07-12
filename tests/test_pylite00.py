@@ -11,11 +11,11 @@ PY26 = sys.version_info[0] == 2 and sys.version_info[1] <= 6
 
 
 class MonetDBLiteBaseTests(unittest.TestCase):
-    def setUp(self):
+    def setup_method(self, method):
         self.dbfarm = monetdblitetest.tempdir()
         monetdblite.init(self.dbfarm)
 
-    def tearDown(self):
+    def teardown_method(self, method):
         monetdblite.shutdown()
         monetdblitetest.cleantempdir()
 

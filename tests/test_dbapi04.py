@@ -7,14 +7,14 @@ import unittest
 
 
 class SimpleDBAPITest(unittest.TestCase):
-    def setUp(self):
+    def setup_method(self, method):
         dbfarm = monetdblitetest.tempdir()
         self.connection = monetdblite.connect(dbfarm)
         self.cursor = self.connection.cursor()
         self.cursor.create('integers', {'i': numpy.arange(10)})
         self.cursor.execute('INSERT INTO integers VALUES (NULL)')
 
-    def tearDown(self):
+    def teardown_method(self, method):
         self.connection.close()
         monetdblitetest.cleantempdir()
 
