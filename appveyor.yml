@@ -11,8 +11,8 @@ environment:
   image: Visual Studio 2015
 
   platform:
-    - x86
-    - x64
+    - "x86"
+    - "x64"
 
 install:
   - "%PYTHON%\\python.exe -m pip install wheel"
