@@ -2,6 +2,7 @@ environment:
 
   matrix:
     - PYTHON_VERSION: 2.7
+      PYPATH: "C:\\Python27"
       # - PYTHON: "C:\\Python35-x64"
       # - PYTHON: "C:\\Python35"
       # - PYTHON: "C:\\Python36-x64"
@@ -13,18 +14,22 @@ platform:
   - x86
   - x64
 
+init:
+  - ps: if ($Env:PLATFORM -eq "x64") {$Env:PYPATH = "${Env:PYPATH}-x64"}
+  - ps: Write-Host $Env:PYPATH
+
 install:
-  - "python.exe -m pip install wheel"
-  - "python.exe -m pip install pytest"
-  - "python.exe -m pip install numpy"
+  - "%PYPATH%\python.exe -m pip install wheel"
+  - "%PYPATH%\python.exe -m pip install pytest"
+  - "%PYPATH%\python.exe -m pip install numpy"
   # Make sure the compiler is accessible
   - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
 
 test_script:
-  - "python.exe -m pytest"
+  - "%PYPATH%\python.exe -m pytest"
 
 build_script:
-  - "python.exe setup.py install"
+  - "%PYPATH%\python.exe setup.py install"
 
 
 # after_test:
