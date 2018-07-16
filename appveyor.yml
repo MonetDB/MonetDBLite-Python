@@ -14,17 +14,17 @@ platform:
   - x64
 
 install:
-  - "%PYTHON%\\python.exe -m pip install wheel"
-  - "%PYTHON%\\python.exe -m pip install pytest"
-  - "%PYTHON%\\python.exe -m pip install numpy"
+  - "python.exe -m pip install wheel"
+  - "python.exe -m pip install pytest"
+  - "python.exe -m pip install numpy"
   # Make sure the compiler is accessible
   - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
 
 test_script:
-  - "%PYTHON%\\python.exe -m pytest"
+  - "python.exe -m pytest"
 
 build_script:
-  - "%PYTHON%\\python.exe setup.py install"
+  - "python.exe setup.py install"
 
 
 # after_test:
