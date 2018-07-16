@@ -19,17 +19,17 @@ init:
   - ps: Write-Host $Env:PYPATH
 
 install:
-  - "%PYPATH%\python.exe -m pip install wheel"
-  - "%PYPATH%\python.exe -m pip install pytest"
-  - "%PYPATH%\python.exe -m pip install numpy"
+  - "%PYPATH%\\python.exe -m pip install wheel"
+  - "%PYPATH%\\python.exe -m pip install pytest"
+  - "%PYPATH%\\python.exe -m pip install numpy"
   # Make sure the compiler is accessible
   - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
 
 test_script:
-  - "%PYPATH%\python.exe -m pytest"
+  - "%PYPATH%\\python.exe -m pytest"
 
 build_script:
-  - "%PYPATH%\python.exe setup.py install"
+  - "%PYPATH%\\python.exe setup.py install"
 
 
 # after_test:
