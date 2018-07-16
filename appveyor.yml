@@ -10,6 +10,10 @@ environment:
 
   image: Visual Studio 2015
 
+  platform:
+    - x86
+    - x64
+
 install:
   - "%PYTHON%\\python.exe -m pip install wheel"
   - "%PYTHON%\\python.exe -m pip install pytest"
