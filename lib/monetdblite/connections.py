@@ -11,9 +11,9 @@ from monetdblite import embeddedmonetdb
 
 class Connection(object):
     """A MonetDBLite SQL database connection"""
-    def __init__(self, database=None, autocommit=False, 
-        hostname=None, username="monetdb", password="monetdb", 
-        host=None, user=None, dsn=None):
+    def __init__(self, database=None, autocommit=False,
+                 hostname=None, username="monetdb", password="monetdb",
+                 host=None, user=None, dsn=None):
         """ Initializes the MonetDBLite database.
         args:
             database (str): path to the database directory
@@ -23,6 +23,7 @@ class Connection(object):
         returns:
             Connection object
         """
+        global MONETDBLITE_CURRENT_DATABASE
         if database is None:
             if not embeddedmonetdb.is_initialized():
                 raise Exception("No database supplied and MonetDBLite was not initialized")
@@ -30,7 +31,7 @@ class Connection(object):
             if embeddedmonetdb.is_initialized():
                 raise Exception("MonetDBLite is already initialized. Close the previous connection first.")
             embeddedmonetdb.init(database)
-            monetdblite_current_database = database
+            MONETDBLITE_CURRENT_DATABASE = database
 
         self.__monetdblite_connection = embeddedmonetdb.connect()
         self.set_autocommit(autocommit)

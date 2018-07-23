@@ -1,25 +1,36 @@
 environment:
 
   matrix:
-    - PYTHON: "C:\\Python36-x64"
-    - PYTHON: "C:\\Python36"
-    - PYTHON: "C:\\Python27-x64"
-      image: Visual Studio 2015
-    - PYTHON: "C:\\Python27"
-      image: Visual Studio 2015
-    - PYTHON: "C:\\Python35-x64"
-    - PYTHON: "C:\\Python35"
+    - PYTHON_VERSION: 2.7
+      PYPATH: "C:\\Python27"
+    - PYTHON_VERSION: 3.5
+      PYPATH: "C:\\Python35"
+    - PYTHON_VERSION: 3.6
+      PYPATH: "C:\\Python36"
+
+image: Visual Studio 2015
+
+platform:
+  - x86
+  - x64
+
+init:
+  - ps: if ($Env:PLATFORM -eq "x64") {$Env:PYPATH = "${Env:PYPATH}-x64"}
+  - ps: Write-Host $Env:PYPATH
 
 install:
-  - "%PYTHON%\\python.exe -m pip install wheel"
-  - "%PYTHON%\\python.exe -m pip install pytest"
-  - "%PYTHON%\\python.exe -m pip install numpy"
-
-build_script:
-  - "%PYTHON%\\python.exe setup.py install"
+  - "%PYPATH%\\python.exe -m pip install wheel"
+  - "%PYPATH%\\python.exe -m pip install pytest"
+  - "%PYPATH%\\python.exe -m pip install numpy"
+  # Make sure the compiler is accessible
+  - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
 
 test_script:
-  - "%PYTHON%\\python.exe -m pytest"
+  - "%PYPATH%\\python.exe -m pytest"
+
+build_script:
+  - "%PYPATH%\\python.exe setup.py install"
+
 
 # after_test:
 #   # This step builds your wheels.

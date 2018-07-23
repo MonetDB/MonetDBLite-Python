@@ -1,94 +1,68 @@
-
 # test database shutdown/startup
 
-import monetdblitetest
 import monetdblite
-import numpy
-import unittest
 import sys
+import pytest
 
 
 PY26 = sys.version_info[0] == 2 and sys.version_info[1] <= 6
 
 identifier_escape = monetdblite.monetize.monet_identifier_escape
 
-class ShutdownTests(unittest.TestCase):
-    def setUp(self):
-        global conn, c, dbfarm
-        dbfarm = monetdblitetest.tempdir()
-        conn = monetdblite.connect(dbfarm)
-        c = conn.cursor()
-        conn.set_autocommit(True)
 
-    def tearDown(self):
-        conn.close()
-        monetdblitetest.cleantempdir()
+class TestShutdown(object):
+    def test_commited_on_restart(self, monetdblite_cursor_autocommit):
+        (cursor, connection, dbfarm) = monetdblite_cursor_autocommit
+        cursor.transaction()
+        cursor.execute('CREATE TABLE integers (i INTEGER)')
+        cursor.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(3)])
+        cursor.execute('SELECT * FROM integers')
+        result = cursor.fetchall()
+        assert result == [[0], [1], [2]], "Incorrect result returned"
+        cursor.commit()
+        connection.close()
 
-    def test_commited_on_restart(self):
-        global conn, c, dbfarm
-        c.transaction()
-        c.execute('CREATE TABLE integers (i INTEGER)')
-        c.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(3)])
-        c.execute('SELECT * FROM integers')
-        result = c.fetchall()
-        self.assertEqual(result, [[0],[1],[2]], 
-            "Incorrect result returned")
-        c.commit()
-        conn.close()
+        connection = monetdblite.connect(dbfarm)
+        cursor = connection.cursor()
+        cursor.execute('SELECT * FROM integers')
+        assert result == [[0], [1], [2]], "Incorrect result returned"
 
-        conn = monetdblite.connect(dbfarm)
-        c = conn.cursor()
-        c.execute('SELECT * FROM integers')
-        self.assertEqual(result, [[0],[1],[2]], 
-            "Incorrect result returned")
+    def test_transaction_aborted_on_shutdown(self, monetdblite_cursor_autocommit):
+        (cursor, connection, dbfarm) = monetdblite_cursor_autocommit
+        cursor.transaction()
+        cursor.execute('CREATE TABLE integers (i INTEGER)')
+        cursor.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(3)])
+        cursor.execute('SELECT * FROM integers')
+        result = cursor.fetchall()
+        assert result == [[0], [1], [2]], "Incorrect result returned"
+        connection.close()
 
-    def test_transaction_aborted_on_shutdown(self):
-        global conn, c, dbfarm
-        c.transaction()
-        c.execute('CREATE TABLE integers (i INTEGER)')
-        c.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(3)])
-        c.execute('SELECT * FROM integers')
-        result = c.fetchall()
-        self.assertEqual(result, [[0],[1],[2]], 
-            "Incorrect result returned")
-        conn.close()
-
-        conn = monetdblite.connect(dbfarm)
-        c = conn.cursor()
+        connection = monetdblite.connect(dbfarm)
+        cursor = connection.cursor()
         if not PY26:
-            with self.assertRaises(monetdblite.DatabaseError):
-                c.execute('SELECT * FROM integers')
+            with pytest.raises(monetdblite.DatabaseError):
+                cursor.execute('SELECT * FROM integers')
 
-
-    def test_many_shutdowns(self):
-        global conn, c, dbfarm
+    def test_many_shutdowns(self, monetdblite_cursor_autocommit):
+        (cursor, connection, dbfarm) = monetdblite_cursor_autocommit
         for i in range(10):
-            c.transaction()
-            c.execute('CREATE TABLE integers (i INTEGER)')
-            c.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(10)])
-            c.execute('SELECT MIN(i * 3 + 5) FROM integers')
-            result = c.fetchall()
-            self.assertEqual(result, [[5]], 
-                "Incorrect result returned")
-            conn.close()
+            cursor.transaction()
+            cursor.execute('CREATE TABLE integers (i INTEGER)')
+            cursor.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(10)])
+            cursor.execute('SELECT MIN(i * 3 + 5) FROM integers')
+            result = cursor.fetchall()
+            assert result == [[5]], "Incorrect result returned"
+            connection.close()
 
-            conn = monetdblite.connect(dbfarm)
-            conn.set_autocommit(True)
-            c = conn.cursor()
+            connection = monetdblite.connect(dbfarm)
+            connection.set_autocommit(True)
+            cursor = connection.cursor()
 
-    def test_use_old_cursor(self):
-        global conn, c, dbfarm
-        conn.close()
+    # TODO: rewrite this one
+    # def test_use_old_cursor(self, monetdblite_cursor):
+    #     self.connection.close()
 
-        conn = monetdblite.connect(dbfarm)
-        if not PY26:
-            with self.assertRaises(monetdblite.ProgrammingError):
-                c.execute('SELECT * FROM integers')
-
-
-
-if __name__ == '__main__':
-    unittest.main()
-
-
-
+    #     self.connection = monetdblite.connect(self.dbfarm)
+    #     if not PY26:
+    #         with self.assertRaises(monetdblite.ProgrammingError):
+    #             monetdblite_cursor.execute('SELECT * FROM integers')
