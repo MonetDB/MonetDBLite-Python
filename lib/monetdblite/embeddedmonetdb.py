@@ -16,10 +16,10 @@ PY3 = sys.version_info[0] >= 3
 basedir = os.path.dirname(os.path.abspath(__file__))
 libs = [x for x in os.listdir(basedir) if
         x.startswith('libmonetdb5') and
-        (x.endswith('.so') or x.endswith('.dylib') or x.endswith('.dll'))]
+        (x.endswith('.so') or x.endswith('.dylib') or x.endswith('.dll') or x.endswith('.pyd'))]
 
 if len(libs) == 0:
-    raise Exception('Could not locate library file "libmonetdb5.[dll|so|dylib] in folder %s' % basedir)
+    raise Exception('Could not locate library file "libmonetdb5.[dll|so|dylib|pyd] in folder %s' % basedir)
 
 try:
     import numpy
@@ -28,9 +28,11 @@ except ImportError:
 
 if os.name == 'nt':
     os.environ["PATH"] += os.pathsep + os.path.dirname(os.path.abspath(__file__))
-
+# make mal_linker happy
+os.environ["MONETDBLITE_LIBNAME"] = libs[0]
 dll = ctypes.PyDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                 libs[0]), mode=ctypes.RTLD_GLOBAL)
+
 dll.python_monetdblite_init.argtypes = []
 dll.python_monetdblite_init.restype = None
 dll.python_monetdblite_init()

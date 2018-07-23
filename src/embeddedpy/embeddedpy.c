@@ -313,3 +313,12 @@ void python_monetdblite_init(void) {
 	_typeconversion_init();
 	_unicode_init();
 }
+
+// dummy for building
+PyMODINIT_FUNC PyInit_libmonetdb5(void) {
+	return NULL;
+}
+
+void initlibmonetdb5(void) {
+}
+

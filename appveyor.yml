@@ -1,46 +1,46 @@
 environment:
 
   matrix:
-    - PYTHON: "C:\\Python36-x64"
-      mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'
+    - PYTHON_VERSION: 2.7
+      PYPATH: "C:\\Python27"
+    - PYTHON_VERSION: 3.5
+      PYPATH: "C:\\Python35"
+    - PYTHON_VERSION: 3.6
+      PYPATH: "C:\\Python36"
 
-    - PYTHON: "C:\\Python35-x64"
-      mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'
+image: Visual Studio 2015
 
-    - PYTHON: "C:\\Python27-x64"
-      mingw_bin: 'C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin'
+platform:
+  - x86
+  - x64
 
-    - PYTHON: "C:\\Python36"
-      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
-
-    - PYTHON: "C:\\Python35"
-      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
-
-    - PYTHON: "C:\\Python27"
-      mingw_bin: 'C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin'
+init:
+  - ps: if ($Env:PLATFORM -eq "x64") {$Env:PYPATH = "${Env:PYPATH}-x64"}
+  - ps: Write-Host $Env:PYPATH
 
 install:
-  - "%PYTHON%\\python.exe -m pip install wheel"
-  - "%PYTHON%\\python.exe -m pip install pytest"
-  - "%PYTHON%\\python.exe -m pip install numpy"
-  - set "PATH=%mingw_bin%;%PATH%"
-
-
-build_script:
-  - "%PYTHON%\\python.exe setup.py build"
+  - "%PYPATH%\\python.exe -m pip install wheel"
+  - "%PYPATH%\\python.exe -m pip install pytest"
+  - "%PYPATH%\\python.exe -m pip install numpy"
+  # Make sure the compiler is accessible
+  - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
 
 test_script:
-  - "%PYTHON%\\python.exe -m pytest"
+  - "%PYPATH%\\python.exe -m pytest"
 
-after_test:
-  # This step builds your wheels.
-  # Again, you only need build.cmd if you're building C extensions for
-  # 64-bit Python 3.3/3.4. And you need to use %PYTHON% to get the correct
-  # interpreter
-  - "%PYTHON%\\python.exe setup.py bdist_wheel"
+build_script:
+  - "%PYPATH%\\python.exe setup.py install"
 
-artifacts:
-  - path: dist\*
+
+# after_test:
+#   # This step builds your wheels.
+#   # Again, you only need build.cmd if you're building C extensions for
+#   # 64-bit Python 3.3/3.4. And you need to use %PYTHON% to get the correct
+#   # interpreter
+#   - "%PYTHON%\\python.exe setup.py bdist_wheel"
+
+# artifacts:
+#   - path: dist\*
 
 #on_success:
 #  You can use this step to upload your artifacts to a public website.

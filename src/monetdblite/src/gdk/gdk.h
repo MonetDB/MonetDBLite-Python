@@ -326,6 +326,10 @@
 
 #ifdef HAVE_DIRENT_H
 # include <dirent.h>
+#else
+#ifdef _MSC_VER
+#include "dirent-windows.h"
+#endif
 #endif
 
 #include <limits.h>		/* for *_MIN and *_MAX */
@@ -487,9 +491,9 @@ typedef int16_t sht;
 //typedef int64_t lng;
 //typedef uint64_t ulng;
 
-#define SIZEOF_OID	8
-typedef uint64_t oid;
-#define OIDFMT		ULLFMT
+#define SIZEOF_OID	SIZEOF_SIZE_T
+typedef size_t oid;
+#define OIDFMT		"%zu"
 
 typedef int bat;		/* Index into BBP */
 typedef void *ptr;		/* Internal coding of types */
