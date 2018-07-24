@@ -9,7 +9,6 @@ import pytest
 PY26 = sys.version_info[0] == 2 and sys.version_info[1] <= 6
 
 
-@pytest.mark.skip(reason="crashes")
 class TestMonetDBLiteBase(object):
     def test_regular_selection(self, initialize_monetdblite):
         monetdblite.sql('CREATE TABLE pylite00 (i INTEGER)')
