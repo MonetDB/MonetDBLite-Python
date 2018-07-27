@@ -316,7 +316,9 @@ void python_monetdblite_init(void) {
 
 // dummy for building
 PyMODINIT_FUNC PyInit_libmonetdb5(void) {
+#ifdef IS_PY3K
 	return NULL;
+#endif
 }
 
 void initlibmonetdb5(void) {
