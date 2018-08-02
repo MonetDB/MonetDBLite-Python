@@ -4,7 +4,8 @@
 import os
 import numpy
 import sys
-from distutils.core import setup, Extension
+from setuptools import setup, Extension
+
 
 basedir = os.path.dirname(os.path.realpath(__file__))
 
