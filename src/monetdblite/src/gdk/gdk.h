@@ -339,6 +339,12 @@
 #include "gdk_posix.h"
 #include "stream.h"
 
+/* if __has_attribute is not known to the preprocessor, we ignore
+ * attributes completely; if it is known, use it to find out whether
+ * specific attributes that we use are known */
+#define __has_attribute(attr)	0
+#define __attribute__(attr)	/* empty */
+
 
 #undef MIN
 #undef MAX
