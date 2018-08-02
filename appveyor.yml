@@ -33,7 +33,7 @@ build_script:
 
 
 after_test:
-  - "%PYTHON%\\python.exe setup.py bdist_wheel"
+  - "%PYPATH%\\python.exe setup.py bdist_wheel"
 
 artifacts:
   - path: dist\*
