@@ -339,30 +339,6 @@
 #include "gdk_posix.h"
 #include "stream.h"
 
-/* if __has_attribute is not known to the preprocessor, we ignore
- * attributes completely; if it is known, use it to find out whether
- * specific attributes that we use are known */
-#ifndef __has_attribute
-#define __has_attribute(attr)	0
-#ifndef __attribute__
-#define __attribute__(attr)	/* empty */
-#endif
-#endif
-#if !__has_attribute(__warn_unused_result__)
-#define __warn_unused_result__
-#endif
-#if !__has_attribute(__malloc__)
-#define __malloc__
-#endif
-#if !__has_attribute(__alloc_size__)
-#define __alloc_size__(a)
-#endif
-#if !__has_attribute(__format__)
-#define __format__(a,b,c)
-#endif
-#if !__has_attribute(__noreturn__)
-#define __noreturn__
-#endif
 
 #undef MIN
 #undef MAX
