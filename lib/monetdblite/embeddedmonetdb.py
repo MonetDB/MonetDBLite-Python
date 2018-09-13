@@ -142,7 +142,7 @@ def __convert_pandas_to_numpy_dict__(df):
     if type(df) == pandas.DataFrame:
         res = {}
         for tpl in df.to_dict().items():
-            res[tpl[0]] = numpy.array(tpl[1].values())
+            res[tpl[0]] = numpy.array(list(tpl[1].values()))
         return res
     return df
 
