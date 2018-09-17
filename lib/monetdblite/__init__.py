@@ -37,6 +37,10 @@ def connect(*args, **kwargs):
 # connect.__doc__ = Connection.__init__.__doc__
 connect.__doc__ = embeddedmonetdb.connect.__doc__
 
+def make_connection(*args, **kwargs):
+    return Connection(*args, **kwargs)
+
+make_connection.__doc__ = Connection.__init__.__doc__
 
 def init(*args, **kwargs):
     return embeddedmonetdb.init(*args, **kwargs)

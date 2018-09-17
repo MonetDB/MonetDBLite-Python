@@ -94,13 +94,15 @@ def __throw_exception(str):
 
 
 def init(directory):
+    """Initializes the MonetDBLite database in the specified directory."""
     global MONETDBLITE_CURRENT_DATABASE
     global MONETDBLITE_IS_INITIALIZED
+    if is_initialized():
+        raise exceptions.DatabaseError('Directory {} has already been initialized'.format(directory))
     if directory == ':memory:':
         directory = None
     else:
         directory = utf8_encode(directory)
-    """Initializes the MonetDBLite database in the specified directory."""
     retval = dll.python_monetdb_init(directory, 0)
     if retval is not None:
         raise __throw_exception(str(retval) + ' in ' + str(directory))
@@ -140,7 +142,7 @@ def __convert_pandas_to_numpy_dict__(df):
     if type(df) == pandas.DataFrame:
         res = {}
         for tpl in df.to_dict().items():
-            res[tpl[0]] = numpy.array(tpl[1].values())
+            res[tpl[0]] = numpy.array(list(tpl[1].values()))
         return res
     return df
 
