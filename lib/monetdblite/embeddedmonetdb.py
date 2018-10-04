@@ -26,6 +26,11 @@ try:
 except ImportError:
     raise Exception('MonetDBLite requires numpy but import of numpy failed')
 
+try:
+    import pandas
+except ImportError:
+    raise Exception('MonetDBLite requires pandas but importing pandas failed')
+
 if os.name == 'nt':
     os.environ["PATH"] += os.pathsep + os.path.dirname(os.path.abspath(__file__))
 # make mal_linker happy
@@ -138,7 +143,6 @@ def sql(query, client=None):
 
 
 def __convert_pandas_to_numpy_dict__(df):
-    import pandas, numpy
     if type(df) == pandas.DataFrame:
         res = {}
         for tpl in df.to_dict().items():

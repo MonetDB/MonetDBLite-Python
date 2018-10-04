@@ -1,6 +1,7 @@
 #simple DB API testcase
 
 import numpy
+import pandas
 import pytest
 import tempfile
 import monetdblite as mdbl
@@ -28,11 +29,6 @@ class TestSimpleDBAPI(object):
         assert str(result) == str(arr), "Incorrect result returned"
 
     def test_pandas_selection(self, monetdblite_cursor):
-        try:
-            import pandas
-        except:
-            # no pandas, skip this test
-            return
         monetdblite_cursor.execute('SELECT * FROM integers')
         result = monetdblite_cursor.fetchdf()
         arr = numpy.ma.masked_array(numpy.arange(11))
@@ -55,11 +51,6 @@ class TestSimpleDBAPI(object):
 
 
     def test_pandas_creation(self, monetdblite_cursor):
-        try:
-            import pandas
-        except:
-            # no pandas, skip this test
-            return
         data_dict = {'i': numpy.arange(10), 'v': numpy.random.randint(100, size=10)}
         dframe = pandas.DataFrame.from_dict(data_dict)
         monetdblite_cursor.create('dframe_creation', dframe)
@@ -82,11 +73,6 @@ class TestSimpleDBAPI(object):
         assert str(result['v']) == str(data_dict['v']), "Incorrect result returned"
 
     def test_pandas_insertion(self, monetdblite_cursor):
-        try:
-            import pandas
-        except:
-            # no pandas, skip this test
-            return
         data_dict = {'i': numpy.arange(10), 'v': numpy.random.randint(100, size=10)}
         dframe = pandas.DataFrame.from_dict(data_dict)
         monetdblite_cursor.execute("CREATE TABLE pandas_insertion (i INT, v INT)")

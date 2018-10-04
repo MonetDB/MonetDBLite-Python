@@ -2,6 +2,7 @@
 
 import monetdblite
 import numpy
+import pandas
 import sys
 import os
 import pytest
@@ -23,16 +24,9 @@ class TestMonetDBLiteBase(object):
 
     def test_monetdblite_insert(self, initialize_monetdblite):
         monetdblite.create('pylite02', {'i': numpy.arange(100000)})
-        try:
-            import pandas
-            monetdblite.insert('pylite02', numpy.arange(100000))
-            result = monetdblite.sql('select * from pylite02')
-            assert len(result['i']) == 200000, "Incorrect result"
-        except:
-            #no pandas
-            result = monetdblite.sql('select * from pylite02')
-            assert len(result['i']) == 100000, "Incorrect result"
-            return
+        monetdblite.insert('pylite02', numpy.arange(100000))
+        result = monetdblite.sql('select * from pylite02')
+        assert len(result['i']) == 200000, "Incorrect result"
 
     def test_monetdblite_create_multiple_columns(self, initialize_monetdblite):
         arrays = numpy.arange(100000).reshape((5, 20000))
@@ -127,12 +121,8 @@ class TestMonetDBLiteBase(object):
         #   monetdblite.insert('pylite08', dict(a=33,b=44))
 
         # too few columns in insert
-        try:
-            import pandas
-            with pytest.raises(monetdblite.DatabaseError):
-                monetdblite.insert('pylite08', [[33],[44]])
-        except:
-            return
+        with pytest.raises(monetdblite.DatabaseError):
+            monetdblite.insert('pylite08', [[33],[44]])
 
     def test_many_sql_statements(self, initialize_monetdblite):
         for i in range(5):  # FIXME 1000
