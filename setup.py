@@ -47,19 +47,34 @@ libmonetdb5 = Extension('monetdblite.libmonetdb5',
     language='c')
 
 setup(
-    name = "monetdblite",
-    version = '0.6.0.post6',
+    name = "monetdblite_test",
+    version = '0.7.0-dev',
+    # version = '0.7.0-dev+Aug2018.C-0.6.0',
     description = 'Embedded MonetDB Python Database.',
     author = 'Mark Raasveldt, Hannes Mühleisen',
     author_email = 'm.raasveldt@cwi.nl',
-    keywords = 'MonetDB, MonetDBLite, Database, SQL, OLAP',
+    keywords = 'MonetDB MonetDBLite Database SQL OLAP',
     packages = ['monetdblite'],
     package_dir = {'': 'lib'},
     url="https://github.com/hannesmuehleisen/MonetDBLite-Python",
     long_description = long_description,
-    # install_requires=[
-    #     'numpy',
-    # ],
+    install_requires=[
+        'numpy',
+        'pandas'
+    ],
     # zip_safe = False,
+    classifiers = [
+        'License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: C',
+        'Topic :: Database',
+        'Topic :: Database :: Database Engines/Servers',
+        'Intended Audience :: Developers',
+        'Development Status :: 3 - Alpha'
+    ],
     ext_modules = [libmonetdb5]
 )
