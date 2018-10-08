@@ -1,3 +1,5 @@
 pytest
+twine
+pypandoc
 numpy>=1.7
 pandas<=0.20
