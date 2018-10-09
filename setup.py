@@ -51,7 +51,7 @@ libmonetdb5 = Extension('monetdblite.libmonetdb5',
 
 setup(
     name = "monetdblite_test",
-    version = '0.7.0-dev5',
+    version = '0.7.0-dev6',
     # version = '0.7.0-dev+Aug2018.C-0.6.0',
     description = 'Embedded MonetDB Python Database.',
     author = 'Mark Raasveldt, Hannes Mühleisen',
@@ -68,6 +68,8 @@ setup(
     # zip_safe = False,
     classifiers = [
         'License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
