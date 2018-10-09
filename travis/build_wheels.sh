@@ -16,19 +16,27 @@ for ptn in "${pyver_list[@]}"; do
 done
 
 # Bundle external shared libraries into the wheels
-for whl in dist/*monetdblite*.whl; do
+pushd /io/dist/
+for whl in *monetdblite*-linux_*.whl; do
     auditwheel repair "$whl" -w /io/wheelhouse/
+    rm "$whl"
 done
+
+popd
+pushd /io/wheelhouse/
+
+for whl in *monetdblite*-manylinux1_*.whl; do
+    cp "$whl" /io/dist/
+done
+
+popd
 
 # Install packages and test
 for ptn in "${pyver_list[@]}"; do
     PYBIN="/opt/python/${ptn}/bin"
-    "${PYBIN}/pip" install monetdblite_test --no-index -f /io/wheelhouse
+    "${PYBIN}/pip" install monetdblite_test --no-index -f /io/dist
     "${PYBIN}/python" -m pytest
 done
 
 # Cleanup
-rm -rf build/ dist/
-
-# Prepare for travis to upload
-mv wheelhouse/ dist/
+rm -rf build/ wheelhouse/
