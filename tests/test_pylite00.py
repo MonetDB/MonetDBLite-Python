@@ -68,6 +68,7 @@ class TestMonetDBLiteBase(object):
         result = monetdblite.sql('SELECT MIN(i) AS minimum FROM pylite05', client=conn2)
         assert result['minimum'][0] == 0, "Incorrect result"
 
+    @pytest.mark.skip()
     def test_errors(self, initialize_monetdblite):
 
         if PY26 or os.name == 'nt':
