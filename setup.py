@@ -9,9 +9,12 @@ from setuptools import setup, Extension
 
 basedir = os.path.dirname(os.path.realpath(__file__))
 
+long_description = ''
 try:
     import pypandoc
-    long_description = pypandoc.convert_file(os.path.join(basedir, 'README.md'), 'rst')
+    # Installation of pandoc for python 2 fails
+    if sys.version_info[0] >= 3:
+        long_description = pypandoc.convert_file(os.path.join(basedir, 'README.md'), 'rst')
 except(IOError, ImportError):
     long_description = ''
 
