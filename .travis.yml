@@ -1,16 +1,48 @@
 language: python
-python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
-  - "3.6"
+# python:
+#   - "2.7"
+#   - "3.4"
+#   - "3.5"
+#   - "3.6"
+# matrix:
+#   include:
+#     - python: 3.7
+#       dist: xenial
+#       sudo: true
+# install:
+#   - pip install -r requirements.txt
+#   - python setup.py install
+# script:
+#   - pytest
+
+# notifications:
+#   email: false
+
 matrix:
   include:
-    - python: 3.7
-      dist: xenial
-      sudo: true
+    - sudo: required
+      services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
+    - sudo: required
+      services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
+           PRE_CMD=linux32
+
 install:
-  - pip install -r requirements.txt
-  - python setup.py install
+  - docker pull $DOCKER_IMAGE
+
 script:
-  - pytest
+  - docker run --rm -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build_wheels.sh
+  - ls wheelhouse/
+
+deploy:
+  provider: pypi
+  server: https://test.pypi.org/legacy/
+  user: kutsurak
+  password:
+    secure: "GRjtbiq6mgqaej6N/eVmpWHs+Um4aeGhp8+rnK03q9X5Ho7TsFZKjg56d45564GBcpdEdXdUnjfe61UzqQlSN0YhLafUHMiyUHz7SX+v4N0vzFUfXpoisnCT+WlYwWC8dOP2O/kvnS4elxOOB9BGRlxPxV5cxW1wUBRvg8NJBbucuxS5bi30lCwcnaN+hYOMsT+5iSNrAR8CHhL3Qm/OULBRYSR0TzI6Vi0Spm6tbvdq7eNZHL8nVRek+y9sivyVBzAMJze87veaCjj6eTycQzyo0vVRnZG+0RCIQQWllUbF19DiDfdu0AdQYzAYjUBUdNKVTSf6ws/9kBUY7iDROe5OwiI02batAq1+8hTa/xxj7R9scf9ctIf255GH4SMdQDukqbn6xIHKRVRQrfOyNI3SBTPAWz1Mmx5WzZpmWS7hySyBw5Uv1rg53mHWXZmClkxvhDGJVQ4JVxsTK4sP4pTxcf534IOWN7ljyerUJKh9xujuGpw5CR2Q52AOhOkMqNEDTvWNjj1f34BhgUVQhqbUWvhGveQBnZ9mkXaHUO8Lud1doNOuzspSosr1ZB1o75ioh7NX7fGDjUvIZXGLNzJdenmb0VXv6e45gHdJku8L5thiy2Wd51qWQdTD03tDfAQ2f2QEEtWbRimKC6DmrqlOKCPnR+SJjW26c6cNNDs="
+  on:
+    # tags: true
+    branch: distutils

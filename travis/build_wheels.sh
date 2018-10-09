@@ -4,22 +4,31 @@ set -e -x
 
 #yum install pandoc
 
-llst=(cp34-cp34m  cp35-cp35m  cp36-cp36m  cp37-cp37m)
+pyver_list=(cp27-cp27m cp34-cp34m cp35-cp35m cp36-cp36m cp37-cp37m)
+
+pushd /io/
 
 # Compile wheels
-for ptn in "${llst}"; do
+for ptn in "${pyver_list[@]}"; do
     PYBIN="/opt/python/${ptn}/bin"
     "${PYBIN}/pip" install -r /io/dev-requirements.txt
-    "${PYBIN}/pip" wheel /io/ -w wheelhouse/
+    "${PYBIN}/python" setup.py bdist_wheel
 done
 
 # Bundle external shared libraries into the wheels
-for whl in wheelhouse/*monetdblite*.whl; do
+for whl in dist/*monetdblite*.whl; do
     auditwheel repair "$whl" -w /io/wheelhouse/
 done
 
 # Install packages and test
-for ptn in "${llst}"; do
+for ptn in "${pyver_list[@]}"; do
+    PYBIN="/opt/python/${ptn}/bin"
     "${PYBIN}/pip" install monetdblite_test --no-index -f /io/wheelhouse
-    (cd "$HOME"; "${PYBIN}/python" -m pytest)
+    "${PYBIN}/python" -m pytest
 done
+
+# Cleanup
+rm -rf build/ dist/
+
+# Prepare for travis to upload
+mv wheelhouse/ dist/
