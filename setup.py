@@ -59,8 +59,8 @@ setup(
     url="https://github.com/hannesmuehleisen/MonetDBLite-Python",
     long_description = long_description,
     install_requires=[
-        'numpy',
-        'pandas'
+        'numpy>=1.7',
+        'pandas>=0.20'
     ],
     # zip_safe = False,
     classifiers = [
