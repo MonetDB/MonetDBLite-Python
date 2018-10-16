@@ -3,10 +3,14 @@ environment:
   matrix:
     - PYTHON_VERSION: 2.7
       PYPATH: "C:\\Python27"
+    - PYTHON_VERSION: 3.4
+      PYPATH: "C:\\Python34"
     - PYTHON_VERSION: 3.5
       PYPATH: "C:\\Python35"
     - PYTHON_VERSION: 3.6
       PYPATH: "C:\\Python36"
+    - PYTHON_VERSION: 3.7
+      PYPATH: "C:\\Python37"
 
 image: Visual Studio 2015
 
