@@ -1,12 +1,16 @@
 environment:
 
   matrix:
-    - PYTHON_VERSION: 2.7
-      PYPATH: "C:\\Python27"
+    # - PYTHON_VERSION: 2.7
+    #   PYPATH: "C:\\Python27"
+    # - PYTHON_VERSION: 3.4
+    #   PYPATH: "C:\\Python34"
     - PYTHON_VERSION: 3.5
       PYPATH: "C:\\Python35"
     - PYTHON_VERSION: 3.6
       PYPATH: "C:\\Python36"
+    - PYTHON_VERSION: 3.7
+      PYPATH: "C:\\Python37"
 
 image: Visual Studio 2015
 
@@ -15,7 +19,13 @@ platform:
   - x64
 
 init:
-  - ps: if ($Env:PLATFORM -eq "x64") {$Env:PYPATH = "${Env:PYPATH}-x64"}
+  - ps: if ($Env:PLATFORM -eq "x64") {
+            $Env:PYPATH = "${Env:PYPATH}-x64";
+            "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd /x64";
+            "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat x64";
+        } else {
+            "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat x86";
+        }
   - ps: Write-Host $Env:PYPATH
 
 install:
@@ -23,7 +33,7 @@ install:
   - "%PYPATH%\\python.exe -m pip install pytest"
   - "%PYPATH%\\python.exe -m pip install numpy"
   # Make sure the compiler is accessible
-  - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
+  # - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
 
 test_script:
   - "%PYPATH%\\python.exe -m pytest"
