@@ -2,10 +2,10 @@
 
 import monetdblite
 import numpy
-import pandas
 import sys
 import os
 import pytest
+import shutil
 
 PY26 = sys.version_info[0] == 2 and sys.version_info[1] <= 6
 
@@ -68,45 +68,37 @@ class TestMonetDBLiteBase(object):
         result = monetdblite.sql('SELECT MIN(i) AS minimum FROM pylite05', client=conn2)
         assert result['minimum'][0] == 0, "Incorrect result"
 
-    @pytest.mark.skip()
-    def test_errors(self, initialize_monetdblite):
-
-        if PY26 or os.name == 'nt':
-            return
-
-        monetdblite.shutdown()
-
+    def test_uninitialized(self):
         # select before init
         with pytest.raises(monetdblite.DatabaseError):
             monetdblite.sql('select * from tables')
 
+    def test_erroneous_initialization(self):
         # init with weird argument
         with pytest.raises(Exception):
             monetdblite.init(33)
 
-        # init in unwritable directory
-        with pytest.raises(monetdblite.DatabaseError):
-            monetdblite.init('/unwritabledir')
-
-        # proper init
-        monetdblite.init(initialize_monetdblite)
-
+    def test_non_existent_table(self, initialize_monetdblite):
         # select from non-existent table
         with pytest.raises(monetdblite.DatabaseError):
             monetdblite.sql('select * from nonexistenttable')
 
+    def test_invalid_connection_object(self, initialize_monetdblite):
         # invalid connection object
         with pytest.raises(monetdblite.DatabaseError):
             monetdblite.sql('select * from tables', client=33)
 
+    def test_invalid_colnames(self, initialize_monetdblite):
         # invalid colnames
         with pytest.raises(monetdblite.DatabaseError):
             monetdblite.create('pylite08', {33: []})
 
+    def test_empty_colnames(self, initialize_monetdblite):
         # empty colnames
         with pytest.raises(monetdblite.DatabaseError):
             monetdblite.create('pylite08', {'': []})
 
+    def test_invalid_key_dict(self, initialize_monetdblite):
         # dictionary with invalid keys
         d = dict()
         d[33] = 44
@@ -114,16 +106,18 @@ class TestMonetDBLiteBase(object):
             monetdblite.create('pylite08', d)
 
         monetdblite.sql('DROP TABLE pylite08')
-        monetdblite.create('pylite08', dict(a=[],b=[],c=[]))
+        monetdblite.create('pylite08', dict(a=[], b=[], c=[]))
 
+    def test_missing_dict_key(self, initialize_monetdblite):
         # FIXME: segfault
         # missing dict key in insert
-        #with pytest.raises(monetdblite.DatabaseError):
-        #   monetdblite.insert('pylite08', dict(a=33,b=44))
+        with pytest.raises(monetdblite.DatabaseError):
+            monetdblite.insert('pylite08', dict(a=33, b=44))
 
+    def test_bad_column_number(self, initialize_monetdblite):
         # too few columns in insert
         with pytest.raises(monetdblite.DatabaseError):
-            monetdblite.insert('pylite08', [[33],[44]])
+            monetdblite.insert('pylite08', [[33], [44]])
 
     def test_many_sql_statements(self, initialize_monetdblite):
         for i in range(5):  # FIXME 1000
@@ -136,3 +130,12 @@ class TestMonetDBLiteBase(object):
             monetdblite.sql('DROP TABLE pylite09', client=conn)
             monetdblite.sql('ROLLBACK', client=conn)
             del conn
+
+    def test_unwriteable_dir(self):
+        # init in unwritable directory
+        os.mkdir('/tmp/unwriteabledir')
+        os.chmod('/tmp/unwriteabledir', 0o555)
+        with pytest.raises(monetdblite.DatabaseError):
+            monetdblite.init('/tmp/unwriteabledir')
+        os.chmod('/tmp/unwriteabledir', 0o755)
+        shutil.rmtree('/tmp/unwriteabledir')
