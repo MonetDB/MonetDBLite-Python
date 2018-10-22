@@ -91,12 +91,13 @@ class TestMonetDBLiteBase(object):
     def test_invalid_colnames(self, initialize_monetdblite):
         # invalid colnames
         with pytest.raises(monetdblite.DatabaseError):
-            monetdblite.create('pylite08', {33: []})
+            monetdblite.create('pylite06', {33: []})
 
+    @pytest.mark.skip(reason='Bug in upstream MonetDB')
     def test_empty_colnames(self, initialize_monetdblite):
         # empty colnames
         with pytest.raises(monetdblite.DatabaseError):
-            monetdblite.create('pylite08', {'': []})
+            monetdblite.create('pylite07', {'': []})
 
     def test_invalid_key_dict(self, initialize_monetdblite):
         # dictionary with invalid keys
@@ -105,29 +106,29 @@ class TestMonetDBLiteBase(object):
         with pytest.raises(monetdblite.DatabaseError):
             monetdblite.create('pylite08', d)
 
-        monetdblite.sql('DROP TABLE pylite08')
-        monetdblite.create('pylite08', dict(a=[], b=[], c=[]))
-
+    @pytest.mark.skip(reason="segfault")
     def test_missing_dict_key(self, initialize_monetdblite):
         # FIXME: segfault
         # missing dict key in insert
+        monetdblite.create('pylite09', dict(a=[], b=[], c=[]))
         with pytest.raises(monetdblite.DatabaseError):
-            monetdblite.insert('pylite08', dict(a=33, b=44))
+            monetdblite.insert('pylite09', dict(a=33, b=44))
 
     def test_bad_column_number(self, initialize_monetdblite):
         # too few columns in insert
+        monetdblite.create('pylite10', dict(a=[], b=[], c=[]))
         with pytest.raises(monetdblite.DatabaseError):
-            monetdblite.insert('pylite08', [[33], [44]])
+            monetdblite.insert('pylite10', [[33], [44]])
 
     def test_many_sql_statements(self, initialize_monetdblite):
         for i in range(5):  # FIXME 1000
             conn = monetdblite.connectclient()
             monetdblite.sql('START TRANSACTION', client=conn)
-            monetdblite.sql('CREATE TABLE pylite09 (i INTEGER)', client=conn)
-            monetdblite.insert('pylite09', {'i': numpy.arange(10)}, client=conn)
-            result = monetdblite.sql('SELECT * FROM pylite09', client=conn)
+            monetdblite.sql('CREATE TABLE pylite11 (i INTEGER)', client=conn)
+            monetdblite.insert('pylite11', {'i': numpy.arange(10)}, client=conn)
+            result = monetdblite.sql('SELECT * FROM pylite11', client=conn)
             assert result['i'][0] == 0, "Invalid result"
-            monetdblite.sql('DROP TABLE pylite09', client=conn)
+            monetdblite.sql('DROP TABLE pylite11', client=conn)
             monetdblite.sql('ROLLBACK', client=conn)
             del conn
 
