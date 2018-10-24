@@ -36,7 +36,7 @@ def monetdblite_cursor_autocommit():
         shutil.rmtree(test_dbfarm)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def initialize_monetdblite():
     test_dbfarm = tempfile.mkdtemp()
     monetdblite.init(test_dbfarm)
