@@ -2,15 +2,20 @@
 
 import monetdblite
 import numpy
-import sys
 import os
-import pytest
 import shutil
+import sys
+import pytest
 
 PY26 = sys.version_info[0] == 2 and sys.version_info[1] <= 6
 
 
 class TestMonetDBLiteBase(object):
+    def test_uninitialized(self):
+        # select before init
+        with pytest.raises(monetdblite.DatabaseError):
+            monetdblite.sql('select * from tables')
+
     def test_regular_selection(self, initialize_monetdblite):
         monetdblite.sql('CREATE TABLE pylite00 (i INTEGER)')
         monetdblite.sql('INSERT INTO pylite00 VALUES (1), (2), (3), (4), (5)')
@@ -68,11 +73,6 @@ class TestMonetDBLiteBase(object):
         result = monetdblite.sql('SELECT MIN(i) AS minimum FROM pylite05', client=conn2)
         assert result['minimum'][0] == 0, "Incorrect result"
 
-    def test_uninitialized(self):
-        # select before init
-        with pytest.raises(monetdblite.DatabaseError):
-            monetdblite.sql('select * from tables')
-
     def test_erroneous_initialization(self):
         # init with weird argument
         with pytest.raises(Exception):
@@ -93,7 +93,7 @@ class TestMonetDBLiteBase(object):
         with pytest.raises(monetdblite.DatabaseError):
             monetdblite.create('pylite06', {33: []})
 
-    @pytest.mark.skip(reason='Bug in upstream MonetDB')
+    @pytest.mark.xfail(reason='Bug in upstream MonetDB')
     def test_empty_colnames(self, initialize_monetdblite):
         # empty colnames
         with pytest.raises(monetdblite.DatabaseError):
@@ -132,11 +132,17 @@ class TestMonetDBLiteBase(object):
             monetdblite.sql('ROLLBACK', client=conn)
             del conn
 
+    # This test must be executed after all others because it
+    # initializes monetdblite independently out of the fixture
+    # initialize_monetdblite
+    @pytest.mark.xfail(reason="We should not be testing as root!")
     def test_unwriteable_dir(self):
         # init in unwritable directory
         os.mkdir('/tmp/unwriteabledir')
         os.chmod('/tmp/unwriteabledir', 0o555)
         with pytest.raises(monetdblite.DatabaseError):
             monetdblite.init('/tmp/unwriteabledir')
+
+        monetdblite.shutdown()
         os.chmod('/tmp/unwriteabledir', 0o755)
         shutil.rmtree('/tmp/unwriteabledir')

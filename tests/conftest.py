@@ -7,39 +7,40 @@ import tempfile
 import monetdblite
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def monetdblite_cursor():
-        test_dbfarm = tempfile.mkdtemp()
-        connection = monetdblite.make_connection(test_dbfarm)
-        cursor = connection.cursor()
-        cursor.create('integers', {'i': numpy.arange(10)})
-        cursor.execute('INSERT INTO integers VALUES(NULL)')
-        yield cursor
+    test_dbfarm = tempfile.mkdtemp()
+    connection = monetdblite.make_connection(test_dbfarm)
+    cursor = connection.cursor()
+    cursor.create('integers', {'i': numpy.arange(10)})
+    cursor.execute('INSERT INTO integers VALUES(NULL)')
+    yield cursor
 
-        cursor.close()
-        connection.close()
-        if os.path.isdir(test_dbfarm):
-                shutil.rmtree(test_dbfarm)
+    cursor.close()
+    connection.close()
+    if os.path.isdir(test_dbfarm):
+        shutil.rmtree(test_dbfarm)
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def monetdblite_cursor_autocommit():
-        test_dbfarm = tempfile.mkdtemp()
-        connection = monetdblite.make_connection(test_dbfarm)
-        connection.set_autocommit(True)
-        cursor = connection.cursor()
-        yield (cursor, connection, test_dbfarm)
+    test_dbfarm = tempfile.mkdtemp()
+    connection = monetdblite.make_connection(test_dbfarm)
+    connection.set_autocommit(True)
+    cursor = connection.cursor()
+    yield (cursor, connection, test_dbfarm)
 
-        cursor.close()
-        connection.close()
-        if os.path.isdir(test_dbfarm):
-                shutil.rmtree(test_dbfarm)
+    cursor.close()
+    connection.close()
+    if os.path.isdir(test_dbfarm):
+        shutil.rmtree(test_dbfarm)
 
-@pytest.fixture
+
+@pytest.fixture(scope="module")
 def initialize_monetdblite():
-        test_dbfarm = tempfile.mkdtemp()
-        monetdblite.init(test_dbfarm)
-        yield test_dbfarm
-        monetdblite.shutdown()
-        if os.path.isdir(test_dbfarm):
-                shutil.rmtree(test_dbfarm)
+    test_dbfarm = tempfile.mkdtemp()
+    monetdblite.init(test_dbfarm)
+    yield test_dbfarm
+    monetdblite.shutdown()
+    if os.path.isdir(test_dbfarm):
+        shutil.rmtree(test_dbfarm)
