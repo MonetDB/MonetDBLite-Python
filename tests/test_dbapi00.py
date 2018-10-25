@@ -1,24 +1,20 @@
-#simple DB API testcase
+# simple DB API testcase
 
 import numpy
 import pandas
 import pytest
-import tempfile
 import monetdblite as mdbl
 
 
 class TestSimpleDBAPI(object):
-    def test_double_initialization(self):
-        dbdir = tempfile.mkdtemp()
-        mdbl.init(dbdir)
+    def test_double_initialization(self, initialize_monetdblite):
         with pytest.raises(mdbl.exceptions.DatabaseError):
-            mdbl.init(dbdir)
-        mdbl.shutdown()
+            mdbl.init(initialize_monetdblite)
 
     def test_regular_selection(self, monetdblite_cursor):
         monetdblite_cursor.execute('SELECT * FROM integers')
         result = monetdblite_cursor.fetchall()
-        assert result == [[0],[1],[2],[3],[4],[5],[6],[7],[8],[9], [None]], "Incorrect result returned"
+        assert result == [[0], [1], [2], [3], [4], [5], [6], [7], [8], [9], [None]], "Incorrect result returned"
 
     def test_numpy_selection(self, monetdblite_cursor):
         monetdblite_cursor.execute('SELECT * FROM integers')
@@ -48,7 +44,6 @@ class TestSimpleDBAPI(object):
 
         assert str(result['i']) == str(data_dict['i']), "Incorrect result returned"
         assert str(result['v']) == str(data_dict['v']), "Incorrect result returned"
-
 
     def test_pandas_creation(self, monetdblite_cursor):
         data_dict = {'i': numpy.arange(10), 'v': numpy.random.randint(100, size=10)}
