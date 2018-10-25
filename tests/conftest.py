@@ -18,6 +18,7 @@ def monetdblite_cursor():
 
     cursor.close()
     connection.close()
+    monetdblite.shutdown()
     if os.path.isdir(test_dbfarm):
         shutil.rmtree(test_dbfarm)
 
@@ -32,6 +33,7 @@ def monetdblite_cursor_autocommit():
 
     cursor.close()
     connection.close()
+    monetdblite.shutdown()
     if os.path.isdir(test_dbfarm):
         shutil.rmtree(test_dbfarm)
 
