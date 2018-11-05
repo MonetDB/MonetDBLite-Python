@@ -5,7 +5,7 @@
 # Copyright 1997 - July 2008 CWI, August 2008 - 2016 MonetDB B.V.
 from itertools import repeat
 
-from monetdblite.exceptions import *
+from monetdblite.exceptions import ProgrammingError
 from monetdblite import embeddedmonetdb
 from monetdblite import monetize
 import numpy
@@ -101,13 +101,12 @@ class Cursor(object):
         if not self.__executed:
             self.__exception_handler(ProgrammingError, "do a execute() first")
 
-
     def close(self):
         """ Close the cursor now (rather than whenever __del__ is
         called).  The cursor will be unusable from this point
         forward; an Error (or subclass) exception will be raised
         if any operation is attempted with the cursor."""
-        if self.connection != None:
+        if self.connection is not None:
             self.connection.remove_cursor(self)
             self.connection = None
 
@@ -148,7 +147,10 @@ class Cursor(object):
 
         query = embeddedmonetdb.utf8_encode(query)
         result = self.connection.execute(query)
-        result_set_length = 0 if type(result) != type({}) or len(result) == 0 else len(result[list(result.keys())[0]])
+        if result is None or isinstance(type(result), dict) or len(result) == 0:
+            result_set_length = 0
+        else:
+            result_set_length = len(result[list(result.keys())[0]])
 
         if result:
             keys, dtypes = zip(*((k, v.dtype) for k, v in result.items()))
@@ -188,7 +190,7 @@ class Cursor(object):
         if self.rownumber >= (self.__offset + self.__results[0][2]):
             self.nextset()
 
-        rownumber = self.rownumber - self.__offset;
+        rownumber = self.rownumber - self.__offset
         result = [self.__results[0][1][key][rownumber] for key in self.__results[0][0]]
         result = [x if x is not numpy.ma.masked else None for x in result]
         self.rownumber += 1
@@ -250,7 +252,7 @@ class Cursor(object):
         return result
 
     def fetchnumpy(self):
-        """Fetches the current result set as a dictionary of NumPy 
+        """Fetches the current result set as a dictionary of NumPy
         arrays. This is the most efficient fetch function as this
         is the way the connector actually stores the result, so
         no conversion to Python objects is necessary.
@@ -276,7 +278,7 @@ class Cursor(object):
     def insert(self, table, values, schema=None):
         """Inserts a set of values into the specified table. The values must
            be either a pandas dataframe or a dictionary of values. If no schema
-           is specified, the "sys" schema is used. If no client context is 
+           is specified, the "sys" schema is used. If no client context is
            provided, the default client context is used. """
         if not self.connection:
             self.__exception_handler(ProgrammingError, "cursor is closed")
@@ -379,4 +381,3 @@ class Cursor(object):
         to the message list """
         self.messages.append((exception_class, message))
         raise exception_class(message)
-
