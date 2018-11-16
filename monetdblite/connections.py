@@ -68,6 +68,8 @@ turn it back on.
         embeddedmonetdb.sql('ROLLBACK', self.__monetdblite_connection)
 
     def cursor(self):
+        if not embeddedmonetdb.is_initialized():
+            raise exceptions.ProgrammingError("This connection has not been initialized or has been closed")
         cursor = cursors.Cursor(self)
         self.__cursors.append(cursor)
         return cursor
