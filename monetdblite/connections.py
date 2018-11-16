@@ -73,15 +73,3 @@ class Connection(object):
 
     def get_connection(self):
         return self.__monetdblite_connection
-
-    # Warning = exceptions.Warning
-    # Error = exceptions.Error
-    # InterfaceError = exceptions.InterfaceError
-    # DatabaseError = exceptions.DatabaseError
-    # DataError = exceptions.DataError
-    # OperationalError = exceptions.OperationalError
-    # IntegrityError = exceptions.IntegrityError
-    # InternalError = exceptions.InternalError
-    # ProgrammingError = exceptions.ProgrammingError
-    # NotSupportedError = exceptions.NotSupportedError
-
