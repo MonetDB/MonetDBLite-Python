@@ -59,9 +59,13 @@ be initially off. An interface method (autocommit) may be provided to
 turn it back on.
 
         """
+        if not embeddedmonetdb.is_initialized():
+            raise exceptions.ProgrammingError("Connection not initialized")
         embeddedmonetdb.sql('COMMIT', self.__monetdblite_connection)
 
     def rollback(self):
+        if not embeddedmonetdb.is_initialized():
+            raise exceptions.ProgrammingError("Connection not initialized")
         embeddedmonetdb.sql('ROLLBACK', self.__monetdblite_connection)
 
     def cursor(self):

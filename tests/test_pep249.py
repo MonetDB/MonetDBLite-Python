@@ -20,19 +20,19 @@ class TestPEP249Compliance(object):
         test_dbfarm = tempfile.mkdtemp()
         connection = monetdblite.connect(test_dbfarm)
         connection.close()
-        with pytest.raises(monetdblite.Error):
+        with pytest.raises(monetdblite.ProgrammingError):
             connection.commit()
 
     def test_rollback_after_close(self):
         test_dbfarm = tempfile.mkdtemp()
         connection = monetdblite.connect(test_dbfarm)
         connection.close()
-        with pytest.raises(monetdblite.Error):
+        with pytest.raises(monetdblite.ProgrammingError):
             connection.rollback()
 
     def test_cursor_after_close(self):
         test_dbfarm = tempfile.mkdtemp()
         connection = monetdblite.connect(test_dbfarm)
         connection.close()
-        with pytest.raises(monetdblite.Error):
+        with pytest.raises(monetdblite.ProgrammingError):
             connection.cursor()
