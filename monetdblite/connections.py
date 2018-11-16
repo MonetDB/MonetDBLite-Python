@@ -38,23 +38,15 @@ class Connection(object):
         self.replysize = 1
         self.__cursors = []
 
-    def remove_cursor(self, cursor):
-        self.__cursors.remove(cursor)
-
     def close(self):
         for cursor in self.__cursors:
             cursor.close()
         self.__cursors = []
         embeddedmonetdb.shutdown()
 
-    def set_autocommit(self, autocommit):
-        embeddedmonetdb.set_autocommit(autocommit, self.__monetdblite_connection)
-        pass
-
-    def transaction(self):
-        embeddedmonetdb.sql('START TRANSACTION', self.__monetdblite_connection)
-
     def commit(self):
+        # if not embeddedmonetdb.is_initialized():
+        #     raise exceptions.Error("This connection has been closed")
         embeddedmonetdb.sql('COMMIT', self.__monetdblite_connection)
 
     def rollback(self):
@@ -65,23 +57,31 @@ class Connection(object):
         self.__cursors.append(cursor)
         return cursor
 
+    # MonetDB specific API
+    def remove_cursor(self, cursor):
+        self.__cursors.remove(cursor)
+
+    def set_autocommit(self, autocommit):
+        embeddedmonetdb.set_autocommit(autocommit, self.__monetdblite_connection)
+        pass
+
+    def transaction(self):
+        embeddedmonetdb.sql('START TRANSACTION', self.__monetdblite_connection)
+
     def execute(self, query):
         return embeddedmonetdb.sql(query, self.__monetdblite_connection)
 
     def get_connection(self):
         return self.__monetdblite_connection
 
-    Warning = exceptions.Warning
-    Error = exceptions.Error
-    InterfaceError = exceptions.InterfaceError
-    DatabaseError = exceptions.DatabaseError
-    DataError = exceptions.DataError
-    OperationalError = exceptions.OperationalError
-    IntegrityError = exceptions.IntegrityError
-    InternalError = exceptions.InternalError
-    ProgrammingError = exceptions.ProgrammingError
-    NotSupportedError = exceptions.NotSupportedError
-
-
-
+    # Warning = exceptions.Warning
+    # Error = exceptions.Error
+    # InterfaceError = exceptions.InterfaceError
+    # DatabaseError = exceptions.DatabaseError
+    # DataError = exceptions.DataError
+    # OperationalError = exceptions.OperationalError
+    # IntegrityError = exceptions.IntegrityError
+    # InternalError = exceptions.InternalError
+    # ProgrammingError = exceptions.ProgrammingError
+    # NotSupportedError = exceptions.NotSupportedError
 
