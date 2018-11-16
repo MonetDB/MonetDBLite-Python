@@ -26,10 +26,10 @@ class Connection(object):
         global MONETDBLITE_CURRENT_DATABASE
         if database is None:
             if not embeddedmonetdb.is_initialized():
-                raise Exception("No database supplied and MonetDBLite was not initialized")
+                raise exceptions.ProgrammingError("No database supplied and MonetDBLite was not initialized")
         elif database != embeddedmonetdb.dbpath():
             if embeddedmonetdb.is_initialized():
-                raise Exception("MonetDBLite is already initialized. Close the previous connection first.")
+                raise exceptions.ProgrammingError("MonetDBLite is already initialized. Close the previous connection first.")
             embeddedmonetdb.init(database)
             MONETDBLITE_CURRENT_DATABASE = database
 
