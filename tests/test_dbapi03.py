@@ -22,7 +22,7 @@ class TestShutdown(object):
         cursor.commit()
         connection.close()
 
-        connection = monetdblite.make_connection(dbfarm)
+        connection = monetdblite.connect(dbfarm)
         cursor = connection.cursor()
         cursor.execute('SELECT * FROM integers')
         assert result == [[0], [1], [2]], "Incorrect result returned"
@@ -37,7 +37,7 @@ class TestShutdown(object):
         assert result == [[0], [1], [2]], "Incorrect result returned"
         connection.close()
 
-        connection = monetdblite.make_connection(dbfarm)
+        connection = monetdblite.connect(dbfarm)
         cursor = connection.cursor()
         if not PY26:
             with pytest.raises(monetdblite.DatabaseError):
@@ -54,7 +54,7 @@ class TestShutdown(object):
             assert result == [[5]], "Incorrect result returned"
             connection.close()
 
-            connection = monetdblite.make_connection(dbfarm)
+            connection = monetdblite.connect(dbfarm)
             connection.set_autocommit(True)
             cursor = connection.cursor()
 
