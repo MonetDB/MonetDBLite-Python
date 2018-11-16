@@ -11,15 +11,12 @@ from monetdblite import embeddedmonetdb
 
 class Connection(object):
     """A MonetDBLite SQL database connection"""
-    def __init__(self, database=None, autocommit=False,
-                 hostname=None, username="monetdb", password="monetdb",
-                 host=None, user=None, dsn=None):
+    def __init__(self, database=None, autocommit=False):
         """ Initializes the MonetDBLite database.
         args:
             database (str): path to the database directory
             autocommit (bool):  enable/disable auto commit (default: False)
 
-            Ignored Parameters: hostname, username, password, host, user, dsn
         returns:
             Connection object
         """
