@@ -39,14 +39,29 @@ class Connection(object):
         self.__cursors = []
 
     def close(self):
+        """Close the connection now (rather than whenever .__del__() is called).
+
+The connection will be unusable from this point forward; a
+ProgrammingError exception will be raised if any operation is
+attempted with the connection. The same applies to all cursor objects
+trying to use the connection. Note that closing a connection without
+committing the changes first will cause an implicit rollback to be
+performed.
+
+        """
         for cursor in self.__cursors:
             cursor.close()
         self.__cursors = []
         embeddedmonetdb.shutdown()
 
     def commit(self):
-        # if not embeddedmonetdb.is_initialized():
-        #     raise exceptions.Error("This connection has been closed")
+        """Commit any pending transaction to the database.
+
+Note that if the database supports an auto-commit feature, this must
+be initially off. An interface method (autocommit) may be provided to
+turn it back on.
+
+        """
         embeddedmonetdb.sql('COMMIT', self.__monetdblite_connection)
 
     def rollback(self):
@@ -58,12 +73,18 @@ class Connection(object):
         return cursor
 
     # MonetDB specific API
+    # TODO: rename this method to "autocommit"
+    def set_autocommit(self, autocommit):
+        """Set the autocommit on or off
+
+Toggle autocommit, on or off. The value `autocommit` should be `True` or
+`False`. By default autocommit is off (See PEP249).
+
+        """
+        embeddedmonetdb.set_autocommit(autocommit, self.__monetdblite_connection)
+
     def remove_cursor(self, cursor):
         self.__cursors.remove(cursor)
-
-    def set_autocommit(self, autocommit):
-        embeddedmonetdb.set_autocommit(autocommit, self.__monetdblite_connection)
-        pass
 
     def transaction(self):
         embeddedmonetdb.sql('START TRANSACTION', self.__monetdblite_connection)
