@@ -36,3 +36,18 @@ class TestPEP249Compliance(object):
         connection.close()
         with pytest.raises(monetdblite.ProgrammingError):
             connection.cursor()
+
+    def test_closing_rolls_back_changes(self):
+        test_dbfarm = tempfile.mkdtemp()
+        connection = monetdblite.connect(test_dbfarm)
+        cursor = connection.cursor()
+        cursor.execute("CREATE TABLE test_tbl (i INTEGER)")
+        cursor.execute("INSERT INTO test_tbl VALUES (1), (2), (3)")
+        connection.close()
+
+        connection = monetdblite.connect(test_dbfarm)
+        cursor = connection.cursor()
+        with pytest.raises(monetdblite.DatabaseError):
+            cursor.execute("SELECT * FROM test_tbl")
+
+        connection.close()
