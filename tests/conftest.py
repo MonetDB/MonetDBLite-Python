@@ -68,3 +68,18 @@ def initialize_monetdblite(request, tmp_path):
 
     monetdblite.init(test_dbfarm)
     return test_dbfarm
+
+
+@pytest.fixture(scope="function")
+def raw_connection(request, tmp_path):
+    test_dbfarm = tmp_path.resolve().as_posix()
+
+    def finalizer():
+        monetdblite.shutdown()
+        if tmp_path.is_dir():
+            shutil.rmtree(test_dbfarm)
+
+    request.addfinalizer(finalizer)
+
+    connection = monetdblite.connect(test_dbfarm)
+    return (connection, test_dbfarm)
