@@ -11,10 +11,10 @@ environment:
     #   PYPATH: "C:\\Python34"
     - PYTHON_VERSION: 3.5
       PYPATH: "C:\\Python35"
-    - PYTHON_VERSION: 3.6
-      PYPATH: "C:\\Python36"
-    - PYTHON_VERSION: 3.7
-      PYPATH: "C:\\Python37"
+    # - PYTHON_VERSION: 3.6
+      # PYPATH: "C:\\Python36"
+    # - PYTHON_VERSION: 3.7
+      # PYPATH: "C:\\Python37"
 
 image: Visual Studio 2015
 
@@ -53,9 +53,8 @@ artifacts:
   - path: dist\*
 
 on_success:
-  - cd dist
   - pip install twine
-  - twine upload --repository-url https://test.pypi.org/legacy/
+  - twine upload --repository-url https://test.pypi.org/legacy/ dist\*
 #  You can use this step to upload your artifacts to a public website.
 #  See Appveyor's documentation for more details. Or you can simply
 #  access your wheels from the Appveyor "artifacts" tab for your build.
