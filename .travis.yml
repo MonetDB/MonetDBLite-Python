@@ -22,31 +22,13 @@ script:
 deploy:
   sudo: required
   provider: pypi
-  server: https://test.pypi.org/legacy/
+  # server: https://test.pypi.org/legacy/
   user: kutsurak
   password:
-    secure: "GRjtbiq6mgqaej6N/eVmpWHs+Um4aeGhp8+rnK03q9X5Ho7TsFZKjg56d45564GBcpdEdXdUnjfe61UzqQlSN0YhLafUHMiyUHz7SX+v4N0vzFUfXpoisnCT+WlYwWC8dOP2O/kvnS4elxOOB9BGRlxPxV5cxW1wUBRvg8NJBbucuxS5bi30lCwcnaN+hYOMsT+5iSNrAR8CHhL3Qm/OULBRYSR0TzI6Vi0Spm6tbvdq7eNZHL8nVRek+y9sivyVBzAMJze87veaCjj6eTycQzyo0vVRnZG+0RCIQQWllUbF19DiDfdu0AdQYzAYjUBUdNKVTSf6ws/9kBUY7iDROe5OwiI02batAq1+8hTa/xxj7R9scf9ctIf255GH4SMdQDukqbn6xIHKRVRQrfOyNI3SBTPAWz1Mmx5WzZpmWS7hySyBw5Uv1rg53mHWXZmClkxvhDGJVQ4JVxsTK4sP4pTxcf534IOWN7ljyerUJKh9xujuGpw5CR2Q52AOhOkMqNEDTvWNjj1f34BhgUVQhqbUWvhGveQBnZ9mkXaHUO8Lud1doNOuzspSosr1ZB1o75ioh7NX7fGDjUvIZXGLNzJdenmb0VXv6e45gHdJku8L5thiy2Wd51qWQdTD03tDfAQ2f2QEEtWbRimKC6DmrqlOKCPnR+SJjW26c6cNNDs="
+    # test.pypi.org
+    # secure: "GRjtbiq6mgqaej6N/eVmpWHs+Um4aeGhp8+rnK03q9X5Ho7TsFZKjg56d45564GBcpdEdXdUnjfe61UzqQlSN0YhLafUHMiyUHz7SX+v4N0vzFUfXpoisnCT+WlYwWC8dOP2O/kvnS4elxOOB9BGRlxPxV5cxW1wUBRvg8NJBbucuxS5bi30lCwcnaN+hYOMsT+5iSNrAR8CHhL3Qm/OULBRYSR0TzI6Vi0Spm6tbvdq7eNZHL8nVRek+y9sivyVBzAMJze87veaCjj6eTycQzyo0vVRnZG+0RCIQQWllUbF19DiDfdu0AdQYzAYjUBUdNKVTSf6ws/9kBUY7iDROe5OwiI02batAq1+8hTa/xxj7R9scf9ctIf255GH4SMdQDukqbn6xIHKRVRQrfOyNI3SBTPAWz1Mmx5WzZpmWS7hySyBw5Uv1rg53mHWXZmClkxvhDGJVQ4JVxsTK4sP4pTxcf534IOWN7ljyerUJKh9xujuGpw5CR2Q52AOhOkMqNEDTvWNjj1f34BhgUVQhqbUWvhGveQBnZ9mkXaHUO8Lud1doNOuzspSosr1ZB1o75ioh7NX7fGDjUvIZXGLNzJdenmb0VXv6e45gHdJku8L5thiy2Wd51qWQdTD03tDfAQ2f2QEEtWbRimKC6DmrqlOKCPnR+SJjW26c6cNNDs="
+    # pypi.org
+    secure: "Ewjxz/Zs7Ii07JXjC4Zu8hp6GnyrJ0biM/9vjDcVHIH4pildNqB8LrFOCNRmiee1bmSjncvn46thePusRoNU9ZwDLGJGcPLri4A+S64fvXxL/0g1uRhahOVT1Ewt1r6FUMRNp/5QXFvkrUctxzk4HCkSyYigS8zJpiIHOF8jKJAhFq86yiwCeaXHEHsUvjlKWkdmar9ly8PV2NY4q2FtpB3kh3R/l+muzvkGod5JFTY6U1gOJ2qnT7ft1WR1cs3IvJBm8u4/mwHXpj8oJwxvkBcMljt4bDPlHaEDmTwczrydsnKGaMmEaNvEjQNlUDflCgNJlhJLP+CL8ui6MrlgR9Q6xUqKmWbxI3XnMild3IUtRhCx8uySdMN9cmLi07t8hlJdlh8EJs3QHdT2LT7JepgWoknwNp1xcdt2W/G0Z6o98HdDHXgZuBPW75fI7Vg6t4K4oroymxDbLEzLWm0GumUKkANLRaiExYX9mS3DRFnCp14MLuoLQmFTDyEcq252aX42vH+ekGvShysbb4piM0nQxlpIHT4tdmTtKV4E/8lmdRoBLYmK8TDkw/PJ8H/ArNeK4OFBY/MUxky/tCultR7+dC/Oe3coSvCSsI7jnVSXdVYXNhZLu5vKxp+77qEAXZPqXaHRkQi2SEW0HtF0xW+95553kl0qu7aMyQNFhDg="
   on:
     tags: true
-    branch: distutils
-
-# Old version
-# python:
-#   - "2.7"
-#   - "3.4"
-#   - "3.5"
-#   - "3.6"
-# matrix:
-#   include:
-#     - python: 3.7
-#       dist: xenial
-#       sudo: true
-# install:
-#   - pip install -r requirements.txt
-#   - python setup.py install
-# script:
-#   - pytest
-
-# notifications:
-#   email: false
-
+    branch: master
