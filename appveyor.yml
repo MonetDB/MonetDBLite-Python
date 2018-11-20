@@ -52,9 +52,9 @@ after_test:
 artifacts:
   - path: dist\*
 
-on_success:
-  - pip install twine
-  - twine upload --repository-url https://test.pypi.org/legacy/ dist\*
+# on_success:
+#   - pip install twine
+#   - twine upload --repository-url https://test.pypi.org/legacy/ dist\*
 #  You can use this step to upload your artifacts to a public website.
 #  See Appveyor's documentation for more details. Or you can simply
 #  access your wheels from the Appveyor "artifacts" tab for your build.
