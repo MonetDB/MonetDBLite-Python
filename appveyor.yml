@@ -11,15 +11,15 @@ environment:
     #   PYPATH: "C:\\Python34"
     - PYTHON_VERSION: 3.5
       PYPATH: "C:\\Python35"
-    # - PYTHON_VERSION: 3.6
-      # PYPATH: "C:\\Python36"
-    # - PYTHON_VERSION: 3.7
-      # PYPATH: "C:\\Python37"
+    - PYTHON_VERSION: 3.6
+      PYPATH: "C:\\Python36"
+    - PYTHON_VERSION: 3.7
+      PYPATH: "C:\\Python37"
 
 image: Visual Studio 2015
 
 platform:
-  # - x86
+  - x86
   - x64
 
 init:
