@@ -14,7 +14,7 @@ def monetdblite_cursor(request, tmp_path):
         print("Running cursor fixture finalizer")
         monetdblite.shutdown()
         if tmp_path.is_dir():
-            shutil.rmtree(tmp_path)
+            shutil.rmtree(test_dbfarm)
 
     request.addfinalizer(finalizer)
 
