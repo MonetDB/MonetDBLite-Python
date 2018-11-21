@@ -2,47 +2,58 @@ import numpy
 import os
 import pytest
 import shutil
-import tempfile
 
 import monetdblite
 
 
 @pytest.fixture(scope="function")
-def monetdblite_cursor():
-    test_dbfarm = tempfile.mkdtemp()
+def monetdblite_cursor(request, tmp_path):
+    test_dbfarm = tmp_path.resolve().as_posix()
+
+    def finalizer():
+        print("Running cursor fixture finalizer")
+        monetdblite.shutdown()
+        if tmp_path.is_dir():
+            shutil.rmtree(tmp_path)
+
+    request.addfinalizer(finalizer)
+
     connection = monetdblite.make_connection(test_dbfarm)
     cursor = connection.cursor()
     cursor.create('integers', {'i': numpy.arange(10)})
     cursor.execute('INSERT INTO integers VALUES(NULL)')
-    yield cursor
-
-    cursor.close()
-    connection.close()
-    monetdblite.shutdown()
-    if os.path.isdir(test_dbfarm):
-        shutil.rmtree(test_dbfarm)
+    return cursor
 
 
 @pytest.fixture(scope="function")
-def monetdblite_cursor_autocommit():
-    test_dbfarm = tempfile.mkdtemp()
+def monetdblite_cursor_autocommit(request, tmp_path):
+    test_dbfarm = tmp_path.resolve().as_posix()
+
+    def finalizer():
+        print("Running cursor autocommit fixture finalizer")
+        monetdblite.shutdown()
+        if tmp_path.is_dir():
+            shutil.rmtree(test_dbfarm)
+
+    request.addfinalizer(finalizer)
+
     connection = monetdblite.make_connection(test_dbfarm)
     connection.set_autocommit(True)
     cursor = connection.cursor()
-    yield (cursor, connection, test_dbfarm)
-
-    cursor.close()
-    connection.close()
-    monetdblite.shutdown()
-    if os.path.isdir(test_dbfarm):
-        shutil.rmtree(test_dbfarm)
+    return (cursor, connection, test_dbfarm)
 
 
 @pytest.fixture(scope="function")
-def initialize_monetdblite():
-    test_dbfarm = tempfile.mkdtemp()
+def initialize_monetdblite(request, tmp_path):
+    test_dbfarm = tmp_path.resolve().as_posix()
+
+    def finalizer():
+        print("Running monetdblite finalizer")
+        monetdblite.shutdown()
+        if tmp_path.is_dir():
+            shutil.rmtree(test_dbfarm)
+
+    request.addfinalizer(finalizer)
+
     monetdblite.init(test_dbfarm)
-    yield test_dbfarm
-    monetdblite.shutdown()
-    if os.path.isdir(test_dbfarm):
-        shutil.rmtree(test_dbfarm)
+    return test_dbfarm
