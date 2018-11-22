@@ -11,7 +11,6 @@ def monetdblite_cursor(request, tmp_path):
     test_dbfarm = tmp_path.resolve().as_posix()
 
     def finalizer():
-        print("Running cursor fixture finalizer")
         monetdblite.shutdown()
         if tmp_path.is_dir():
             shutil.rmtree(test_dbfarm)
@@ -30,7 +29,6 @@ def monetdblite_cursor_autocommit(request, tmp_path):
     test_dbfarm = tmp_path.resolve().as_posix()
 
     def finalizer():
-        print("Running cursor autocommit fixture finalizer")
         monetdblite.shutdown()
         if tmp_path.is_dir():
             shutil.rmtree(test_dbfarm)
@@ -48,7 +46,6 @@ def initialize_monetdblite(request, tmp_path):
     test_dbfarm = tmp_path.resolve().as_posix()
 
     def finalizer():
-        print("Running monetdblite finalizer")
         monetdblite.shutdown()
         if tmp_path.is_dir():
             shutil.rmtree(test_dbfarm)
