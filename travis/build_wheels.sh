@@ -4,7 +4,7 @@ set -e -x
 
 #yum install pandoc
 
-pyver_list=(cp27-cp27m cp34-cp34m cp35-cp35m cp36-cp36m cp37-cp37m)
+pyver_list=(cp27-cp27m cp27-cp27mu cp34-cp34m cp35-cp35m cp36-cp36m cp37-cp37m)
 
 pushd /io/
 
