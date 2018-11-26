@@ -30,6 +30,7 @@ deploy:
   provider: pypi
   server: https://test.pypi.org/legacy/
   user: kutsurak
+  skip_existing: true
   on:
     # tags: true
     branch: master
