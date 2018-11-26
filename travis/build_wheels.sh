@@ -35,7 +35,7 @@ popd
 # Install packages and test
 for ptn in "${pyver_list[@]}"; do
     PYBIN="/opt/python/${ptn}/bin"
-    "${PYBIN}/pip" install monetdblite --no-index -f /io/dist
+    "${PYBIN}/pip" install monetdblite_test --no-index -f /io/dist
     "${PYBIN}/python" -m pytest
 done
 
