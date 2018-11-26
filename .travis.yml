@@ -22,6 +22,8 @@ script:
 
 before_deploy:
   - sudo chown -R $USER dist/
+  - sudo chown -R $USER lib/
+  - sudo chown -R $USER tests/
 
 deploy:
   provider: pypi
