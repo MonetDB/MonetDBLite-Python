@@ -26,6 +26,7 @@ before_deploy:
   - sudo chown -R $USER tests/
 
 deploy:
+  skip_cleanup: true
   provider: pypi
   server: https://test.pypi.org/legacy/
   user: kutsurak
