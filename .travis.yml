@@ -2,6 +2,16 @@ language: python
 python: 3.6
 sudo: required
 
+env:
+  global:
+    # COVERALLS_TOKEN=<the actual token>
+    # test.pypi.org
+    secure: "GFbZn6aVVF+8KgsMStcv8+sJb3o3AtAetwCaUmu30M2M1MOUO7wRlbuJb+n8qvoi4tKlUwucGQeYoobrFGBNLgibbuF/aB7PWDibOvsOf44o2ZP7AjD6GynxcCgIHIBddsxkdU49SGUc6pbrIN+3KLibb9tNAG+mcoZpuxbl+BcgxyHZc6UzgUnAfibThH+qu01m6Dz4WluY/wayb0VDCKz4AdQN/6zjN/P3OdvGGOnXf9ku3AsyKy/3uN1z+5PQnhgTgBF5eW2nJeOSl0qnRiOeWDaeG47YVI3HD4ZKWm2Sa1MR8PSfNFBXGOHtuV7wdhv77dwJVB03ZELInXpU2oNbPEEYmQgsR1kNijyiEgx71snVcRJChOQrNMmJ/QF5Kk39tAmwBXH6eMI0elDTZLATiDy+rIM72wNyU+VpbOOlq/6PMRljEFV9ETeKziF17xifHYL1PCbG8fq/teuVhP8V/E5C3MuF4N2sMUeYjm0Gk1AHCbprvRsIoMUMssj0cYpqBWCY2C1g/kPLX061pIATZyD5r8UY6/OL6W8b460LSJk8SvawPBq/tJb8NWE8aodtJroCp+OpNNCR8lwgHw9Q4XyMMpeaAKBNiTey5j75X4NC4z6j8biRsR4P77WTA1rF/VyNWAU7RVnOUwYgj97HYa3xNt4jZUcV91dqIg0="
+    # pypi.org
+    # secure: "mxIICYKvUKsl/k/mxaih7kZGpux4pF2MmHOC7g2M2diVMzv9bisKbTVCPfO5AB+0K6DOZgefw6QBFWsTilu+01O6h5nnlKjBEbCYkQ69ZCz78xf1Q1vEBxFO44IZpj25QNz6hmWIyvyvdEYq0zSnMsGUOF5PcTyZJDVEXtrqgzpXrCcifbMR0PNR1Qso5sS04SFrxBKKur6XFJsgIbY4QpRD3P7/fGn3fgJEaIu9hWXcDdKBxSVUpRVdBtkAeWK0n4R5V5DCDueypNc67kDrD+X+yj34uKNfGM0p37CszwYOp98WJGaNOKGXnPP7Kyb/10QWmkeOHEzE/EsaUDNQCYjeVfL5IS7hljaCIVHvLJaIbgbcdMwdmqMzBW/rF3AWFoH/Q1QLNk/oU7dtpBgslteIUQpa/4Fh6wXLNTnwNjtIyAgVkAvlA+ha5GrKgeqlSsN6aLCb+aqex62lXetLSsyFtlBKhQ8mmrFq/h19R/QSvAEcCINUPo8i11MKAFRu+mC6eJAqSnYDsgWW6FQcnnE4cq+337piV0NgMHOVqlNrxAghdoEM322Hb385xraD9IkY7Kah8ENggjfdGn3dJAvs4gsDnBQVjtqVfmH6pug3r3jaCgGZvj8MNWYhiYG+2eZcxfc+hZl1+aXfy9tBrlFNaRlP45CrXj7i32HImOo="
+
+
+
 matrix:
   include:
     - sudo: required
@@ -18,7 +28,7 @@ install:
   - docker pull $DOCKER_IMAGE
 
 script:
-  - docker run --rm -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build_wheels.sh
+  - docker run --rm -e COVERALLS_REPO_TOKEN=$COVERALLS_TOKEN -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build_wheels.sh
 
 before_deploy:
   - sudo chown -R $USER dist/
