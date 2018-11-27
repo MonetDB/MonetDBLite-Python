@@ -5,7 +5,8 @@ set -e -x
 #yum install pandoc
 
 # pyver_list=(cp27-cp27m cp27-cp27mu cp34-cp34m cp35-cp35m cp36-cp36m cp37-cp37m)
-pyver_list=(cp27-cp27mu cp34-cp34m cp35-cp35m cp36-cp36m cp37-cp37m)
+# pyver_list=(cp27-cp27mu cp34-cp34m cp35-cp35m cp36-cp36m cp37-cp37m)
+pyver_list=(cp37-cp37m)
 
 pushd /io/
 
@@ -38,7 +39,7 @@ for ptn in "${pyver_list[@]}"; do
     "${PYBIN}/pip" install monetdblite --no-index -f /io/dist
     # Prepare and upload a coverage report when using the latest
     # python
-    if [ ptn == "cp37-cp37m" ]; then
+    if [ "${ptn}" == "cp37-cp37m" ]; then
 	coverage run --source=/io/lib/monetdblite setup.py test
 	coveralls
     else
