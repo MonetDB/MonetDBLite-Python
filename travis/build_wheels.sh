@@ -39,10 +39,13 @@ for ptn in "${pyver_list[@]}"; do
     "${PYBIN}/pip" install monetdblite --no-index -f /io/dist
     # Prepare and upload a coverage report when using the latest
     # python
-    if [ "${ptn}" == "cp37-cp37m" ]; then
+    set +x
+    if [ -n "${COVERALL_REPO_TOKEN+x}" && "${ptn}" == "cp37-cp37m" ]; then
+	set -x
 	"${PYBIN}/coverage" run --source=/io/lib/monetdblite setup.py test
 	"${PYBIN}/coveralls"
     else
+	set -x
 	"${PYBIN}/python" setup.py test
     fi
 done
