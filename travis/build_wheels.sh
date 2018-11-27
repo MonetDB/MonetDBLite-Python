@@ -40,8 +40,8 @@ for ptn in "${pyver_list[@]}"; do
     # Prepare and upload a coverage report when using the latest
     # python
     if [ "${ptn}" == "cp37-cp37m" ]; then
-	coverage run --source=/io/lib/monetdblite setup.py test
-	coveralls
+	"${PYBIN}/coverage" run --source=/io/lib/monetdblite setup.py test
+	"${PYBIN}/coveralls"
     else
 	"${PYBIN}/python" setup.py test
     fi
