@@ -1,6 +1,6 @@
 
 [![Build Status](https://travis-ci.org/hannesmuehleisen/MonetDBLite-Python.svg)](https://travis-ci.org/hannesmuehleisen/MonetDBLite-Python)
-[![Coverage Status](https://coveralls.io/repos/github/hannesmuehleisen/MonetDBLite-Python/badge.svg?branch=master&service=github)](https://coveralls.io/github/hannesmuehleisen/MonetDBLite-Python)
+[![Coverage Status](https://coveralls.io/repos/github/hannesmuehleisen/MonetDBLite-Python/badge.svg?branch=HEAD&service=github)](https://coveralls.io/github/hannesmuehleisen/MonetDBLite-Python)
 # MonetDBLite for Python
 
 [MonetDBLite](https://www.monetdb.org/blog/monetdblite-r) is a serverless SQL database that runs inside of your Python process and does not require the installation of any external software. MonetDBLite is based on free and open-source [MonetDB](https://www.monetdb.org/Home), a product of the [Centrum Wiskunde & Informatica](http://www.cwi.nl).
