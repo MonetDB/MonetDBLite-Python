@@ -40,7 +40,7 @@ for ptn in "${pyver_list[@]}"; do
     # Prepare and upload a coverage report when using the latest
     # python
     set +x
-    if [[ -n "${COVERALL_REPO_TOKEN+x}" && "${ptn}" == "cp37-cp37m" ]]; then
+    if [[ -n "${COVERALLS_REPO_TOKEN+x}" && "${ptn}" == "cp37-cp37m" ]]; then
 	set -x
 	"${PYBIN}/coverage" run --source=/io/lib/monetdblite setup.py test
 	"${PYBIN}/coveralls"
