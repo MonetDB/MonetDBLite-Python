@@ -65,6 +65,8 @@ setup(
         'numpy>=1.7',
         'pandas>=0.20'
     ],
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest'],
     # zip_safe = False,
     classifiers = [
         'License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)',
