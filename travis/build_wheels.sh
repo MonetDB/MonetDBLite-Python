@@ -35,8 +35,15 @@ popd
 # Install packages and test
 for ptn in "${pyver_list[@]}"; do
     PYBIN="/opt/python/${ptn}/bin"
-    "${PYBIN}/pip" install monetdblit --no-index -f /io/dist
-    "${PYBIN}/python" -m pytest
+    "${PYBIN}/pip" install monetdblite --no-index -f /io/dist
+    # Prepare and upload a coverage report when using the latest
+    # python
+    if [ ptn == "cp37-cp37m" ]; then
+	coverage run --source=/io/lib/monetdblite setup.py test
+	coveralls
+    else
+	"${PYBIN}/python" setup.py test
+    fi
 done
 
 # Cleanup
