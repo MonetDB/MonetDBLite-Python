@@ -2,15 +2,9 @@
 
 import numpy
 import pandas
-import pytest
-import monetdblite as mdbl
 
 
 class TestSimpleDBAPI(object):
-    def test_double_initialization(self, initialize_monetdblite):
-        with pytest.raises(mdbl.exceptions.DatabaseError):
-            mdbl.init(initialize_monetdblite)
-
     def test_regular_selection(self, monetdblite_cursor):
         monetdblite_cursor.execute('SELECT * FROM integers')
         result = monetdblite_cursor.fetchall()
