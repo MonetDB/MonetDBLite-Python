@@ -111,10 +111,11 @@ def init(directory):
     global MONETDBLITE_IS_INITIALIZED
     if is_initialized():
         raise exceptions.DatabaseError('Directory {} has already been initialized'.format(directory))
+
     if directory == ':memory:':
         directory = None
     else:
-        directory = utf8_encode(directory)
+        directory = utf8_encode(os.path.abspath(directory))
     retval = dll.python_monetdb_init(directory, 0)
     if retval is not None:
         raise __throw_exception(str(retval) + ' in ' + str(directory))
