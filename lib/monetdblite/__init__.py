@@ -31,8 +31,8 @@ paramstyle = "pyformat"
 
 
 def connect(*args, **kwargs):
-    # return Connection(*args, **kwargs)
-    return embeddedmonetdb.connect()
+    return Connection(*args, **kwargs)
+    #return embeddedmonetdb.connect()
 
 # connect.__doc__ = Connection.__init__.__doc__
 connect.__doc__ = embeddedmonetdb.connect.__doc__
