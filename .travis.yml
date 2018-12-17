@@ -13,8 +13,6 @@ matrix:
       services:
         - docker
       env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
-
-      # secure: "jsC4Ysy9wHouTUOT7t6ixNqwGF+QkuYj6bAAgeodd7LChj0q347s43vHdPVyJZoslNlELTCiEQwf4fZ9wheU7YOem5/yT8U0NoQIrAajtH7fvwP2XaLk+G1BjnbCyhOWwVcdyAfQ54RH5FNDPgdYuW3a+htWTTsfYuKt4KqIKilylur3JjmLd2bou5uvds5zwGLdIBKaGIezkZeKQ3hBsz7XjglcMuvGU60vdTr2RV4NA8URhUgAe9Vj9qkrdWDs3QkDYUeOqxUc4IjU/IB4hbxf1v5bdnLQTfd1d1WoHSKbq+uhIrdO/2KIQN7jwM5+DOnOYKxVCnK8h9WcJDSi6HIWcoxetSkDRfKNHcMDn2La/kCD+promXUbPyYRPZIPw/+9kZqbNB+1pD5BsO9fsFQU8jaw6zE+I4B2AaaAdQA6NADIh+inmMNcXwcyuVEXt3sU3GFB+GjODfxjYlXyUi5qO+1Q2xvVV0/F6rN9ZkxyHZ5Ltyaswv/vzLF9SvvJB8/0Kc2UpwHFV10cT5Gjgq2N/RJufoy34+MdV4umUev5px0rQW5THDe3IhiRYGkst1pvQKaarLNB13vYlxB3lxaOgLYWqe+J18j3IRNOryCfqARLl1c+17i5BVETyzZCPtS29Tl4LxB6qKRG4EMTcByha9xK74pDP0HZJd5lfbA="
     - sudo: required
       services:
         - docker
