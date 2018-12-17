@@ -41,7 +41,7 @@ for ptn in "${pyver_list[@]}"; do
     # python
     if [ "${ptn}" == "cp37-cp37m" ]; then
 	"${PYBIN}/coverage" run --source=/io/lib/monetdblite setup.py test
-	"${PYBIN}/coveralls"
+	# "${PYBIN}/coveralls"
     else
 	"${PYBIN}/python" setup.py test
     fi

@@ -5,7 +5,7 @@ sudo: required
 env:
   global:
     # COVERALLS_TOKEN=<the actual token>
-    secure: "jsC4Ysy9wHouTUOT7t6ixNqwGF+QkuYj6bAAgeodd7LChj0q347s43vHdPVyJZoslNlELTCiEQwf4fZ9wheU7YOem5/yT8U0NoQIrAajtH7fvwP2XaLk+G1BjnbCyhOWwVcdyAfQ54RH5FNDPgdYuW3a+htWTTsfYuKt4KqIKilylur3JjmLd2bou5uvds5zwGLdIBKaGIezkZeKQ3hBsz7XjglcMuvGU60vdTr2RV4NA8URhUgAe9Vj9qkrdWDs3QkDYUeOqxUc4IjU/IB4hbxf1v5bdnLQTfd1d1WoHSKbq+uhIrdO/2KIQN7jwM5+DOnOYKxVCnK8h9WcJDSi6HIWcoxetSkDRfKNHcMDn2La/kCD+promXUbPyYRPZIPw/+9kZqbNB+1pD5BsO9fsFQU8jaw6zE+I4B2AaaAdQA6NADIh+inmMNcXwcyuVEXt3sU3GFB+GjODfxjYlXyUi5qO+1Q2xvVV0/F6rN9ZkxyHZ5Ltyaswv/vzLF9SvvJB8/0Kc2UpwHFV10cT5Gjgq2N/RJufoy34+MdV4umUev5px0rQW5THDe3IhiRYGkst1pvQKaarLNB13vYlxB3lxaOgLYWqe+J18j3IRNOryCfqARLl1c+17i5BVETyzZCPtS29Tl4LxB6qKRG4EMTcByha9xK74pDP0HZJd5lfbA="
+    # secure: "jsC4Ysy9wHouTUOT7t6ixNqwGF+QkuYj6bAAgeodd7LChj0q347s43vHdPVyJZoslNlELTCiEQwf4fZ9wheU7YOem5/yT8U0NoQIrAajtH7fvwP2XaLk+G1BjnbCyhOWwVcdyAfQ54RH5FNDPgdYuW3a+htWTTsfYuKt4KqIKilylur3JjmLd2bou5uvds5zwGLdIBKaGIezkZeKQ3hBsz7XjglcMuvGU60vdTr2RV4NA8URhUgAe9Vj9qkrdWDs3QkDYUeOqxUc4IjU/IB4hbxf1v5bdnLQTfd1d1WoHSKbq+uhIrdO/2KIQN7jwM5+DOnOYKxVCnK8h9WcJDSi6HIWcoxetSkDRfKNHcMDn2La/kCD+promXUbPyYRPZIPw/+9kZqbNB+1pD5BsO9fsFQU8jaw6zE+I4B2AaaAdQA6NADIh+inmMNcXwcyuVEXt3sU3GFB+GjODfxjYlXyUi5qO+1Q2xvVV0/F6rN9ZkxyHZ5Ltyaswv/vzLF9SvvJB8/0Kc2UpwHFV10cT5Gjgq2N/RJufoy34+MdV4umUev5px0rQW5THDe3IhiRYGkst1pvQKaarLNB13vYlxB3lxaOgLYWqe+J18j3IRNOryCfqARLl1c+17i5BVETyzZCPtS29Tl4LxB6qKRG4EMTcByha9xK74pDP0HZJd5lfbA="
 
 
 
@@ -25,7 +25,7 @@ install:
   - docker pull $DOCKER_IMAGE
 
 script:
-  - docker run --rm -e COVERALLS_REPO_TOKEN=$COVERALLS_TOKEN -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build_wheels.sh
+  - docker run --rm -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build_wheels.sh
 
 before_deploy:
   - sudo chown -R $USER dist/
@@ -35,7 +35,7 @@ before_deploy:
 deploy:
   skip_cleanup: true
   provider: pypi
-  server: https://test.pypi.org/legacy/
+  # server: https://test.pypi.org/legacy/
   user: kutsurak
   skip_existing: true
   on:
