@@ -6,9 +6,22 @@ matrix:
       services:
         - docker
       env: PIP=pip
+           CIBW_BUILD='*-manylinux1_x86_64'
+           CIBW_SKIP='cp34-*'
+    - sudo: required
+      services:
+        - docker
+      env: PIP=pip
+           CIBW_BUILD='*-manylinux1_i686'
+           CIBW_SKIP='cp34-*'
     - os: osx
       language: generic
       env: PIP=pip2
+           CIBW_BUILD='cp27-* cp35-*'
+    - os: osx
+      language: generic
+      env: PIP=pip2
+           CIBW_BUILD='cp36-* cp37-*'
 
 env:
   global:
