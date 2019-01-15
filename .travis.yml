@@ -14,7 +14,7 @@ env:
   global:
     - CIBW_BEFORE_BUILD='pip install -r requirements.txt'
     - CIBW_TEST_REQUIRES='pytest pytest-cov'
-    - CIBW_TEST_COMMAND='pytest --cov=monetdblite'
+    - CIBW_TEST_COMMAND='pytest --cov=monetdblite {project}/tests'
 
 script:
   - $PIP install cibuildwheel==0.10.0
