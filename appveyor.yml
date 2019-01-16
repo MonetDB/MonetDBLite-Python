@@ -1,60 +1,80 @@
 environment:
   global:
-    TWINE_USERNAME: kutsurak
-    TWINE_PASSWORD:
-      secure: "Qs2d8ylRZ8xP6GXu7LgOWr+3ZiM28F4Pl4ZoJLii9PhP095fzwbA8/kDE3Y3x+K9A66A7QqaWJQMtEqPPKYLTciuvTakqSfQfX3NX6ROPH9CMdXu19e9406k9a17TsBCY/5uqI2nIE916MPSzlax41/N0xUX6B2EIAO78Q+VdLPQ5yc+oB+8VEwJdDOtNuJmvdweCrLsTqzQsQu6SwU18T/+xU8dQ9k5Y1uU+OVHDqIdz61tmfxMq6XAn46SMJm7l2rWhMMfnev3oKEynubovgYIC+EVidvbiLzq/JAU1XWKtwuGv2l0H0WWCRizqXQgvVM4wNDl6nJ8PUluGZ7GnkwnDGXDzRT45jtlt2hKTmyHzaI8Q9kSsv2k5EsVMGRKYOrIayGiZTh3dENy+h7cbtg6wzoWZVgZWjA+T2hy4lodWAp4Wbejzouz54hii21mYUJ+jQaKpw8ZYxUy0kfTWchL8LpwZwEomDjNrhhmul22mYIBn6j/M89SOFOHmR0IQdiDtMTtcBwJ4ulRTOHsIkLZrl0nHYGhG3CtPK9RZUM/PN7l4LRZKZe5MAy8yzYl8YVsfRgepg0RfGJKNyuQzPmdxattqqsOK0ZDbFcxTMpuVIMUrAsTvjKurzCkLVchiQXbbkitve3EgdUR8DUaWUdy0mwZUIoq31yhTo4Ba7M="
+    CIBW_TEST_REQUIRES: "pytest pytest-cov"
+    CIWB_TEST_COMMAND: "pytest --cov=monetdblite {project}\\tests"
+    CIWB_BEFORE_BUILD: "pip install -r requirements.txt"
 
   matrix:
-    # - PYTHON_VERSION: 2.7
-    #   PYPATH: "C:\\Python27"
-    # - PYTHON_VERSION: 3.4
-    #   PYPATH: "C:\\Python34"
-    - PYTHON_VERSION: 3.5
-      PYPATH: "C:\\Python35"
-    - PYTHON_VERSION: 3.6
-      PYPATH: "C:\\Python36"
-    - PYTHON_VERSION: 3.7
-      PYPATH: "C:\\Python37"
+    - CIBW_BUILD: "cp27-* cp35-*"
+      # CIBW_SKIP: "*-win32"
 
-image: Visual Studio 2015
-
-platform:
-  - x86
-  - x64
-
-init:
-  - ps: if ($Env:PLATFORM -eq "x64") {
-            $Env:PYPATH = "${Env:PYPATH}-x64";
-            "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd /x64";
-            "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat x64";
-        } else {
-            "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat x86";
-        }
-  - ps: Write-Host $Env:PYPATH
-
-install:
-  - "%PYPATH%\\python.exe -m pip install wheel"
-  - "%PYPATH%\\python.exe -m pip install pytest"
-  - "%PYPATH%\\python.exe -m pip install numpy"
-  # Make sure the compiler is accessible
-  # - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
-
-test_script:
-  - "%PYPATH%\\python.exe -m pytest"
+    - CIBW_BUILD: "cp36-* cp37-*"
+      # CIBW_SKIP: "*-win32"
 
 build_script:
-  - "%PYPATH%\\python.exe setup.py install"
-
-
-after_test:
-  - "%PYPATH%\\python.exe setup.py bdist_wheel"
+  - pip install cibuildwheel==0.10.0
+  - cibuildwheel --output-dir wheelhouse
 
 artifacts:
-  - path: dist\*
+  - path: "wheelhouse\\*.whl"
+    name: Wheels
+# environment:
+#   global:
+#     TWINE_USERNAME: kutsurak
+#     TWINE_PASSWORD:
+#       secure: "Qs2d8ylRZ8xP6GXu7LgOWr+3ZiM28F4Pl4ZoJLii9PhP095fzwbA8/kDE3Y3x+K9A66A7QqaWJQMtEqPPKYLTciuvTakqSfQfX3NX6ROPH9CMdXu19e9406k9a17TsBCY/5uqI2nIE916MPSzlax41/N0xUX6B2EIAO78Q+VdLPQ5yc+oB+8VEwJdDOtNuJmvdweCrLsTqzQsQu6SwU18T/+xU8dQ9k5Y1uU+OVHDqIdz61tmfxMq6XAn46SMJm7l2rWhMMfnev3oKEynubovgYIC+EVidvbiLzq/JAU1XWKtwuGv2l0H0WWCRizqXQgvVM4wNDl6nJ8PUluGZ7GnkwnDGXDzRT45jtlt2hKTmyHzaI8Q9kSsv2k5EsVMGRKYOrIayGiZTh3dENy+h7cbtg6wzoWZVgZWjA+T2hy4lodWAp4Wbejzouz54hii21mYUJ+jQaKpw8ZYxUy0kfTWchL8LpwZwEomDjNrhhmul22mYIBn6j/M89SOFOHmR0IQdiDtMTtcBwJ4ulRTOHsIkLZrl0nHYGhG3CtPK9RZUM/PN7l4LRZKZe5MAy8yzYl8YVsfRgepg0RfGJKNyuQzPmdxattqqsOK0ZDbFcxTMpuVIMUrAsTvjKurzCkLVchiQXbbkitve3EgdUR8DUaWUdy0mwZUIoq31yhTo4Ba7M="
 
-# on_success:
-#   - pip install twine
-#   - twine upload --repository-url https://test.pypi.org/legacy/ dist\*
-#  You can use this step to upload your artifacts to a public website.
-#  See Appveyor's documentation for more details. Or you can simply
-#  access your wheels from the Appveyor "artifacts" tab for your build.
+#   matrix:
+#     # - PYTHON_VERSION: 2.7
+#     #   PYPATH: "C:\\Python27"
+#     # - PYTHON_VERSION: 3.4
+#     #   PYPATH: "C:\\Python34"
+#     - PYTHON_VERSION: 3.5
+#       PYPATH: "C:\\Python35"
+#     - PYTHON_VERSION: 3.6
+#       PYPATH: "C:\\Python36"
+#     - PYTHON_VERSION: 3.7
+#       PYPATH: "C:\\Python37"
+
+# image: Visual Studio 2015
+
+# platform:
+#   - x86
+#   - x64
+
+# init:
+#   - ps: if ($Env:PLATFORM -eq "x64") {
+#             $Env:PYPATH = "${Env:PYPATH}-x64";
+#             "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd /x64";
+#             "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat x64";
+#         } else {
+#             "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat x86";
+#         }
+#   - ps: Write-Host $Env:PYPATH
+
+# install:
+#   - "%PYPATH%\\python.exe -m pip install wheel"
+#   - "%PYPATH%\\python.exe -m pip install pytest"
+#   - "%PYPATH%\\python.exe -m pip install numpy"
+#   # Make sure the compiler is accessible
+#   # - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
+
+# test_script:
+#   - "%PYPATH%\\python.exe -m pytest"
+
+# build_script:
+#   - "%PYPATH%\\python.exe setup.py install"
+
+
+# after_test:
+#   - "%PYPATH%\\python.exe setup.py bdist_wheel"
+
+# artifacts:
+#   - path: dist\*
+
+# # on_success:
+# #   - pip install twine
+# #   - twine upload --repository-url https://test.pypi.org/legacy/ dist\*
+# #  You can use this step to upload your artifacts to a public website.
+# #  See Appveyor's documentation for more details. Or you can simply
+# #  access your wheels from the Appveyor "artifacts" tab for your build.
