@@ -1,8 +1,8 @@
 environment:
   global:
     CIBW_TEST_REQUIRES: "pytest pytest-cov"
-    CIWB_TEST_COMMAND: "pytest --cov=monetdblite {project}\\tests"
-    CIWB_BEFORE_BUILD: "pip install -r requirements.txt"
+    CIBW_TEST_COMMAND: "pytest --cov=monetdblite {project}\\tests"
+    CIBW_BEFORE_BUILD: "pip install -r requirements.txt"
 
   matrix:
     - CIBW_BUILD: "cp27-* cp35-*"
