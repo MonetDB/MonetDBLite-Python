@@ -28,6 +28,7 @@ matrix:
         - docker
       env: PIP=pip2
            CIBW_BUILD='cp37-manylinux1_x86_64'
+           CIBW_ENVIRONMENT="TRAVIS_COMMIT=$TRAVIS_COMMIT"
     - os: osx
       language: generic
       env: PIP=pip2
