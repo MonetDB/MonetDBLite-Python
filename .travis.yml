@@ -27,7 +27,7 @@ env:
   global:
     - CIBW_BEFORE_BUILD='pip install -r requirements.txt'
     - CIBW_TEST_REQUIRES='pytest codecov'
-    - CIBW_TEST_COMMAND='coverage run --source=monetdblite setup.py test && codecov'
+    - CIBW_TEST_COMMAND='coverage run --source=monetdblite {project}/setup.py test && codecov'
     - secure: "lbm/rtVwaeHTOG9pXCMXhAbNJTUdfTN9SGptiTAC6/R5kM5Wi4ehcriWfHL5I6sHNcauQ/sb8XLgyi8ao8OlFnv/YATqN2CtZxws0rzpy9KoTy5Tfny/uxzlEdCUiNdcnhbZmR9L5aC4FUwPFKlPTzk0/BehGIyLNj+3CihZzBfKvS3Wd4/ckwb5I80eR3BD44ELJtI8MM2JMmP81Lv+pepoSIyLbimcCj64DAPIWK1nn4iUeH4A5l4Edmkx1Bap1ct3rP6jNK+XtKj+HFYA6/M7ATLlRqcj0w160vAF4M0OmyiJfCLO1bzoxJESB6SXbw6DnOUg8JIcqEYHEqEtpl6zM7Szs4CeaXkYQZwo3T4wxmFURbFcOLis5E54byOuGWAfyLnRoW8ujWlowU2sx/weALVE/1TUKTcE6GtPviNyBe8M+9HTZWL8au2T4OgbdR978BESLtxI+q2bCaJPk8mAKCyRtqCIqM1Ufzz60xyKhmY1OdGb2sZ9K7bW/XwIvtLRv8/wyouKl/iFx8ERIDQf7df6H9K80HH6NSFMwGAmBpReSGMWIaVhq29lCgP3tRkyVKnYpDeBusX9vXjDJh6EXM7yLIIxAyM06g4V+e0mc1iHBLDSuIH39nFrfSHQZ3wD9h7jk9S1rF6QhtX2euQl0eTE0wvTM039zvjI+yg="
 
 
