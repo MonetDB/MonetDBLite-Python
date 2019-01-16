@@ -2,13 +2,7 @@ environment:
   CIBW_TEST_REQUIRES: "pytest pytest-cov"
   CIBW_TEST_COMMAND: "pytest --cov=monetdblite {project}\\tests"
   CIBW_BEFORE_BUILD: "pip install -r {project}\\requirements.txt"
-
-  matrix:
-    - CIBW_BUILD: "cp27-* cp35-*"
-      # CIBW_SKIP: "*-win32"
-
-    - CIBW_BUILD: "cp36-* cp37-*"
-      # CIBW_SKIP: "*-win32"
+  CIBW_SKIP: "cp27-* cp34-* *-win32"
 
 install:
   # Make sure we are using a recent Python 3
