@@ -26,19 +26,20 @@ matrix:
     - sudo: required
       services:
         - docker
-      env: PIP=pip2
+      env: PIP=pip
            CIBW_BUILD='cp37-manylinux1_x86_64'
+           CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && codecov --commit=$(cd /host/home/travis/build/kutsurak/MonetDBLite-Python/ && git rev-parse HEAD)'
     - os: osx
       language: generic
       env: PIP=pip2
            CIBW_BUILD='cp37-*'
+           CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && codecov'
 
 env:
   global:
     - CIBW_BEFORE_BUILD='pip install -r requirements.txt'
     - CIBW_TEST_REQUIRES='pytest codecov'
-    - CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && codecov --commit=$TRAVIS_COMMIT'
-    - secure: "nNglg/v/L6KLgLd+j0kF0Fa+rJ8uAFdXanniMCfDeSjEV8ndIy1wKg57coL1/+0hTTIH0VrWcvsTxW+v/i5KIcdHsp65sYcQ/bEzFD2wcJTvyYt0zqSS+45bHVE/4bCsjpNTctFqlsrfDbYz6ozG1uF1PQGYJ6RyeDt4ySXFyyW19Xik0kbx4J8lFZINaqdfkfzAWfNm8qkLQIDkH+8X6xgt/3r/SG7ttd9qB0AEltE+aZGCdeMRVj92FHJrvOY1EaEg0jqsPbL9UnFfGwynRM+R7Mkb3hqhAJVYkUDp97BpG8VbUdSZqBnESxkfjQhk0Us0XO+iaeTDmeXYuf0LNJt6JCHGTL6oNS4qNi/sTzqG3a3ll2ESu7J93Nd+HYRMqR7IH1B18ETkrhmrOPpUD/dNtt5j2trDdqhYlFg84Ra82wk1i7y4HmX2mBDrjLLU/lWB2c1t4wOcdObu/3E6x6eiU4PA7pxwlKRHvDbnC9U9SE54MWrIAiVw5PtgZ9s6irLnegvvtCQaf69gxZhlxoZWaHBinjv451fB0jFjoV9l5nj7wiWaXSHc7ROv2wkCJaG/mbOxKmF72p5FR9fGxuzebNseWpWRlghYIgThR4KMJ0OOI25Zcz9F3UWuPNabfFQD6RxhvO7fbu8sbs8VU6LWJI7neFxT12KrvtRmOok="
+    - secure: "oVbssS4jdGFdojwZRycEs7r4drupieCex2aaH7bEXXNlFPIvYo1ovWl6BsO0cSphtnPeVmiDUQQ37YhM5pCnYKycVd2aetRbnsWZcmaMthGvS21llApadOU2BT7sUJpKuVrehes9SNM2JRvWCF5GN0d3bTiWw31xH1iUC48R4wxg0NqVoZIN0vhrlZ2v7sSjJWbMNzNchTQ9Paz91RpH5wFh6GA059ruqh4eqlErg1DV0EER2TWqQZP78rrdYeoTepIgAgG8Lrgb/ZvjTnmixwjwlOqYXAybJy9klhhXRUdCIu1AixBmPHm9Dd7dslsrnAGNWp66EHB8cJ5AdE/GD7wqdTN//VLvSIBsL2+OYk2NNk4CJQY4JeQgE1Ka2BpSyy3AHw4QePVnmfWGEHbSzlycjb7D2ksDsEMvGQIRT+FyjZ8NM+TfPxsyXEo/B9KwHFwRqqEo4mUNAyuI+h1qRD/zjCIQpwHXH7zR7/lROjBEnUk9B7p8kFVQWOwU4g3JSW4vgh8pgTLsywZrSkogtjWzAyB946wNbhBG3ZTI5yqAhOePCy+IRUakn+NzT3fJvLzOZw5PGnQyrV5LZWcJc8agg0hOiPKeEzSbfK0GrSj57VcQlQTGgi11XeRpa28/sIK8fP9EpJxB4qc+6EqTryvlABkohWzsCvQQLN7xXnQ="
 
 script:
   - $PIP install cibuildwheel==0.10.0
