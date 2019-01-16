@@ -28,7 +28,6 @@ matrix:
         - docker
       env: PIP=pip2
            CIBW_BUILD='cp37-manylinux1_x86_64'
-           CIBW_ENVIRONMENT="TRAVIS_COMMIT=$TRAVIS_COMMIT"
     - os: osx
       language: generic
       env: PIP=pip2
@@ -38,9 +37,8 @@ env:
   global:
     - CIBW_BEFORE_BUILD='pip install -r requirements.txt'
     - CIBW_TEST_REQUIRES='pytest codecov'
-    - CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && codecov --commit=${TRAVIS_COMMIT}'
-    - secure: "lbm/rtVwaeHTOG9pXCMXhAbNJTUdfTN9SGptiTAC6/R5kM5Wi4ehcriWfHL5I6sHNcauQ/sb8XLgyi8ao8OlFnv/YATqN2CtZxws0rzpy9KoTy5Tfny/uxzlEdCUiNdcnhbZmR9L5aC4FUwPFKlPTzk0/BehGIyLNj+3CihZzBfKvS3Wd4/ckwb5I80eR3BD44ELJtI8MM2JMmP81Lv+pepoSIyLbimcCj64DAPIWK1nn4iUeH4A5l4Edmkx1Bap1ct3rP6jNK+XtKj+HFYA6/M7ATLlRqcj0w160vAF4M0OmyiJfCLO1bzoxJESB6SXbw6DnOUg8JIcqEYHEqEtpl6zM7Szs4CeaXkYQZwo3T4wxmFURbFcOLis5E54byOuGWAfyLnRoW8ujWlowU2sx/weALVE/1TUKTcE6GtPviNyBe8M+9HTZWL8au2T4OgbdR978BESLtxI+q2bCaJPk8mAKCyRtqCIqM1Ufzz60xyKhmY1OdGb2sZ9K7bW/XwIvtLRv8/wyouKl/iFx8ERIDQf7df6H9K80HH6NSFMwGAmBpReSGMWIaVhq29lCgP3tRkyVKnYpDeBusX9vXjDJh6EXM7yLIIxAyM06g4V+e0mc1iHBLDSuIH39nFrfSHQZ3wD9h7jk9S1rF6QhtX2euQl0eTE0wvTM039zvjI+yg="
-
+    - CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && codecov --commit=$TRAVIS_COMMIT'
+    - secure: "nNglg/v/L6KLgLd+j0kF0Fa+rJ8uAFdXanniMCfDeSjEV8ndIy1wKg57coL1/+0hTTIH0VrWcvsTxW+v/i5KIcdHsp65sYcQ/bEzFD2wcJTvyYt0zqSS+45bHVE/4bCsjpNTctFqlsrfDbYz6ozG1uF1PQGYJ6RyeDt4ySXFyyW19Xik0kbx4J8lFZINaqdfkfzAWfNm8qkLQIDkH+8X6xgt/3r/SG7ttd9qB0AEltE+aZGCdeMRVj92FHJrvOY1EaEg0jqsPbL9UnFfGwynRM+R7Mkb3hqhAJVYkUDp97BpG8VbUdSZqBnESxkfjQhk0Us0XO+iaeTDmeXYuf0LNJt6JCHGTL6oNS4qNi/sTzqG3a3ll2ESu7J93Nd+HYRMqR7IH1B18ETkrhmrOPpUD/dNtt5j2trDdqhYlFg84Ra82wk1i7y4HmX2mBDrjLLU/lWB2c1t4wOcdObu/3E6x6eiU4PA7pxwlKRHvDbnC9U9SE54MWrIAiVw5PtgZ9s6irLnegvvtCQaf69gxZhlxoZWaHBinjv451fB0jFjoV9l5nj7wiWaXSHc7ROv2wkCJaG/mbOxKmF72p5FR9fGxuzebNseWpWRlghYIgThR4KMJ0OOI25Zcz9F3UWuPNabfFQD6RxhvO7fbu8sbs8VU6LWJI7neFxT12KrvtRmOok="
 
 script:
   - $PIP install cibuildwheel==0.10.0
