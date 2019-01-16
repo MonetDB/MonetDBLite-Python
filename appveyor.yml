@@ -1,7 +1,7 @@
 environment:
   CIBW_TEST_REQUIRES: "pytest pytest-cov"
   CIBW_TEST_COMMAND: "pytest --cov=monetdblite {project}\\tests"
-  CIBW_BEFORE_BUILD: "pip install -r {project}\\requirements.txt"
+  # CIBW_BEFORE_BUILD: "pip install -r {project}\\requirements.txt"
 
   matrix:
     - CIBW_BUILD: "cp27-* cp35-*"
@@ -14,6 +14,7 @@ install:
   # Make sure we are using a recent Python 3
   - set PATH=C:\Python37;%PATH%
   - cmd: python -m pip install cibuildwheel==0.10.0
+  - cmd: python -m pip install -r requirements.txt
 
 build_script:
   - cmd: python -m cibuildwheel --output-dir wheelhouse
