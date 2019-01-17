@@ -24,23 +24,26 @@ matrix:
   #          CIBW_BUILD='cp36-* cp37-*'
   include:
     - sudo: required
+      python: 3.6
       services:
         - docker
       env: PIP=pip
            CIBW_BUILD='cp37-manylinux1_x86_64'
-           CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && codecov --commit=$(cd /host/home/travis/build/kutsurak/MonetDBLite-Python/ && git rev-parse HEAD)'
+
     - os: osx
       language: generic
       env: PIP=pip2
            CIBW_BUILD='cp37-*'
-           CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && codecov'
 
 env:
   global:
     - CIBW_BEFORE_BUILD='pip install -r requirements.txt'
-    - CIBW_TEST_REQUIRES='pytest codecov'
-    - secure: "oVbssS4jdGFdojwZRycEs7r4drupieCex2aaH7bEXXNlFPIvYo1ovWl6BsO0cSphtnPeVmiDUQQ37YhM5pCnYKycVd2aetRbnsWZcmaMthGvS21llApadOU2BT7sUJpKuVrehes9SNM2JRvWCF5GN0d3bTiWw31xH1iUC48R4wxg0NqVoZIN0vhrlZ2v7sSjJWbMNzNchTQ9Paz91RpH5wFh6GA059ruqh4eqlErg1DV0EER2TWqQZP78rrdYeoTepIgAgG8Lrgb/ZvjTnmixwjwlOqYXAybJy9klhhXRUdCIu1AixBmPHm9Dd7dslsrnAGNWp66EHB8cJ5AdE/GD7wqdTN//VLvSIBsL2+OYk2NNk4CJQY4JeQgE1Ka2BpSyy3AHw4QePVnmfWGEHbSzlycjb7D2ksDsEMvGQIRT+FyjZ8NM+TfPxsyXEo/B9KwHFwRqqEo4mUNAyuI+h1qRD/zjCIQpwHXH7zR7/lROjBEnUk9B7p8kFVQWOwU4g3JSW4vgh8pgTLsywZrSkogtjWzAyB946wNbhBG3ZTI5yqAhOePCy+IRUakn+NzT3fJvLzOZw5PGnQyrV5LZWcJc8agg0hOiPKeEzSbfK0GrSj57VcQlQTGgi11XeRpa28/sIK8fP9EpJxB4qc+6EqTryvlABkohWzsCvQQLN7xXnQ="
+    - CIBW_TEST_REQUIRES='pytest'
+    - CIBW_TEST_COMMAND='pytest {project}/tests'
 
 script:
   - $PIP install cibuildwheel==0.10.0
   - cibuildwheel --output-dir wheelhouse
+
+
+  
