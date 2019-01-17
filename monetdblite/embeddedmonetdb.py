@@ -14,9 +14,16 @@ from monetdblite import exceptions
 PY3 = sys.version_info[0] >= 3
 
 basedir = os.path.dirname(os.path.abspath(__file__))
-libs = [x for x in os.listdir(basedir) if
-        x.startswith('libmonetdb5') and
-        (x.endswith('.so') or x.endswith('.dylib') or x.endswith('.dll') or x.endswith('.pyd'))]
+sys.path.append(basedir)
+
+libs = list()
+for directory in sys.path:
+    if not os.path.isdir(directory):
+        continue
+    for filename in os.listdir(directory):
+        full_filename = os.path.join(directory, filename)
+        if os.path.isfile(full_filename) and filename.startswith('libmonetdb5') and (filename.endswith('.so') or filename.endswith('.dylib') or filename.endswith('.dll') or filename.endswith('.pyd')):
+            libs.append(full_filename)
 
 if len(libs) == 0:
     raise Exception('Could not locate library file "libmonetdb5.[dll|so|dylib|pyd] in folder %s' % basedir)
