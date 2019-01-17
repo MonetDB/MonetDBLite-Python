@@ -32,9 +32,8 @@ matrix:
       after_success:
         - $PIP install numpy>=1.17 pandas>=0.20.0
         - $PIP install --no-index -f wheelhouse/ monetdblite
-        - $PIP install pytest codecov
-        - cd ../
-        - coverage run --source=monetdblite -m pytest MonetDBLite-Python/tests
+        - $PIP install pytest pytest-cov codecov
+        - pytest --cov=monetdblite 
         - codecov
 
     - os: osx
