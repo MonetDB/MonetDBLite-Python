@@ -33,7 +33,8 @@ matrix:
         - $PIP install numpy>=1.17 pandas>=0.20.0
         - $PIP install --no-index -f wheelhouse/ monetdblite
         - $PIP install pytest codecov
-        - coverage run --source=monetdblite -m pytest
+        - cd $HOME
+        - coverage run --source=monetdblite -m pytest $HOME/$TRAVIS_REPO_SLUG/tests
         - codecov
 
     - os: osx
