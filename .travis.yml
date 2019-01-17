@@ -28,9 +28,10 @@ matrix:
       services:
         - docker
       env: PIP=pip
-           CIBW_BUILD='cp37-manylinux1_x86_64'
+           CIBW_BUILD='cp36-manylinux1_x86_64'
       after_success:
-        - $PIP install --no-index -f wheelhouse monetdblite
+        - $PIP install numpy>=1.17 pandas>=0.20.0
+        - $PIP install --no-index -f wheelhouse/ monetdblite
         - $PIP install pytest codecov
         - coverage run --source=monetdblite -m pytest
         - codecov
