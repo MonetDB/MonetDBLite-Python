@@ -29,11 +29,9 @@ matrix:
         - docker
       env: PIP=pip
            CIBW_BUILD='cp36-manylinux1_x86_64'
+           CIBW_TEST_REQUIRES='pytest codecov'
+           CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && cp .coverage /host/$HOME/$TRAVIS_REPO_SLUG'
       after_success:
-        - $PIP install numpy>=1.17 pandas>=0.20.0
-        - $PIP install --no-index -f wheelhouse/ monetdblite
-        - $PIP install pytest pytest-cov codecov
-        - pytest --cov=monetdblite 
         - codecov
 
     - os: osx
@@ -44,8 +42,9 @@ matrix:
 env:
   global:
     - CIBW_BEFORE_BUILD='pip install -r requirements.txt'
-    - CIBW_TEST_REQUIRES='pytest'
-    - CIBW_TEST_COMMAND='pytest {project}/tests'
+    - CIBW_TEST_REQUIRES='pytest codecov'
+    - CIBW_TEST_COMMAND='coverage run --source=monetdblite -m
+  {project}/tests && cp '
 
 script:
   - $PIP install cibuildwheel==0.10.0
