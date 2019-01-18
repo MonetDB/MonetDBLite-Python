@@ -30,9 +30,10 @@ matrix:
       env: PIP=pip
            CIBW_BUILD='cp36-manylinux1_x86_64'
            CIBW_TEST_REQUIRES='pytest codecov'
-           CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && cp .coverage /host/$HOME/$TRAVIS_REPO_SLUG'
+           CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && cp .coverage /host/tmp'
       after_success:
         - $PIP install codecov
+        - cp /tmp/.coverage .
         - codecov
 
     - os: osx
