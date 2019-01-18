@@ -1,2 +1,3 @@
 fixes:
-  - "*/monetdblite/::MonetDBLite-Python/monetdblite/"
+  # - "*/monetdblite/::/home/travis/build/kutsurak/MonetDBLite-Python/monetdblite/"
+  - "*/monetdblite/::kutsurak/MonetDBLite-Python/monetdblite/"
