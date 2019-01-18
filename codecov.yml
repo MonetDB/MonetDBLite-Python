@@ -1,2 +1,2 @@
 fixes:
-  - "*monetdblite/::monetdblite/"
+  - "*/monetdblite/::MonetDBLite-Python/monetdblite/"
