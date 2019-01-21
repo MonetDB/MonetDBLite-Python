@@ -1,45 +1,31 @@
 language: python
 
 matrix:
-  # include:
-  #   - sudo: required
-  #     services:
-  #       - docker
-  #     env: PIP=pip
-  #          CIBW_BUILD='*-manylinux1_x86_64'
-  #          CIBW_SKIP='cp34-*'
-  #   - sudo: required
-  #     services:
-  #       - docker
-  #     env: PIP=pip
-  #          CIBW_BUILD='*-manylinux1_i686'
-  #          CIBW_SKIP='cp34-*'
-  #   - os: osx
-  #     language: generic
-  #     env: PIP=pip2
-  #          CIBW_BUILD='cp27-* cp35-*'
-  #   - os: osx
-  #     language: generic
-  #     env: PIP=pip2
-  #          CIBW_BUILD='cp36-* cp37-*'
   include:
     - sudo: required
-      python: 3.6
       services:
         - docker
       env: PIP=pip
-           CIBW_BUILD='cp36-manylinux1_x86_64'
+           CIBW_BUILD='*-manylinux1_x86_64'
+           CIBW_SKIP='cp34-*'
            CIBW_TEST_REQUIRES='pytest'
            CIBW_TEST_COMMAND='python -m pytest {project}/tests'
-      after_success:
-        - $PIP install codecov
-        - cp /tmp/.coverage .
-        - codecov
-
+    - sudo: required
+      services:
+        - docker
+      env: PIP=pip
+           CIBW_BUILD='*-manylinux1_i686'
+           CIBW_SKIP='cp34-*'
+           CIBW_TEST_REQUIRES='pytest'
+           CIBW_TEST_COMMAND='python -m pytest {project}/tests'
     - os: osx
       language: generic
       env: PIP=pip2
-           CIBW_BUILD='cp37-*'
+           CIBW_BUILD='cp27-* cp35-*'
+    - os: osx
+      language: generic
+      env: PIP=pip2
+           CIBW_BUILD='cp36-* cp37-*'
 
 env:
   global:
