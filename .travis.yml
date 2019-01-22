@@ -1,35 +1,45 @@
 language: python
 
 matrix:
+  # include:
+  #   - sudo: required
+  #     services:
+  #       - docker
+  #     env: PIP=pip
+  #          CIBW_BUILD='*-manylinux1_x86_64'
+  #          CIBW_SKIP='cp34-*'
+  #   - sudo: required
+  #     services:
+  #       - docker
+  #     env: PIP=pip
+  #          CIBW_BUILD='*-manylinux1_i686'
+  #          CIBW_SKIP='cp34-*'
+  #   - os: osx
+  #     language: generic
+  #     env: PIP=pip2
+  #          CIBW_BUILD='cp27-* cp35-*'
+  #   - os: osx
+  #     language: generic
+  #     env: PIP=pip2
+  #          CIBW_BUILD='cp36-* cp37-*'
   include:
     - sudo: required
+      python: 3.6
       services:
         - docker
       env: PIP=pip
-           # CIBW_BUILD='*-manylinux1_x86_64'
-           # CIBW_SKIP='cp34-*'
-           CIBW_BUILD='cp37-manylinux1_x86_64'
-           CIBW_TEST_REQUIRES='pytest'
-           CIBW_TEST_COMMAND='python -m pytest {project}/tests'
+           CIBW_BUILD='cp36-manylinux1_x86_64'
+           CIBW_TEST_REQUIRES='pytest codecov'
            CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && cp .coverage /host/tmp'
       after_success:
-        - cp /tmp/.coverage ./
-        - python ./scripts/codecov
-    # - sudo: required
-    #   services:
-    #     - docker
-    #   env: PIP=pip
-    #        CIBW_BUILD='*-manylinux1_i686'
-    #        CIBW_SKIP='cp34-*'
-    #        CIBW_TEST_REQUIRES='pytest'
-    # - os: osx
-    #   language: generic
-    #   env: PIP=pip2
-    #        CIBW_BUILD='cp27-* cp35-*'
-    # - os: osx
-    #   language: generic
-    #   env: PIP=pip2
-    #        CIBW_BUILD='cp36-* cp37-*'
+        - $PIP install codecov
+        - cp /tmp/.coverage .
+        - python scripts/codecov.py
+
+    - os: osx
+      language: generic
+      env: PIP=pip2
+           CIBW_BUILD='cp37-*'
 
 env:
   global:
@@ -41,5 +51,3 @@ script:
   - $PIP install cibuildwheel==0.10.0
   - cibuildwheel --output-dir wheelhouse
 
-
-  
