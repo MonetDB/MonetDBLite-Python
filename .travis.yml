@@ -6,26 +6,30 @@ matrix:
       services:
         - docker
       env: PIP=pip
-           CIBW_BUILD='*-manylinux1_x86_64'
-           CIBW_SKIP='cp34-*'
+           # CIBW_BUILD='*-manylinux1_x86_64'
+           # CIBW_SKIP='cp34-*'
+           CIBW_BUILD='cp37-manylinux1_x86_64'
            CIBW_TEST_REQUIRES='pytest'
            CIBW_TEST_COMMAND='python -m pytest {project}/tests'
-    - sudo: required
-      services:
-        - docker
-      env: PIP=pip
-           CIBW_BUILD='*-manylinux1_i686'
-           CIBW_SKIP='cp34-*'
-           CIBW_TEST_REQUIRES='pytest'
-           CIBW_TEST_COMMAND='python -m pytest {project}/tests'
-    - os: osx
-      language: generic
-      env: PIP=pip2
-           CIBW_BUILD='cp27-* cp35-*'
-    - os: osx
-      language: generic
-      env: PIP=pip2
-           CIBW_BUILD='cp36-* cp37-*'
+           CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && cp .coverage /host/tmp'
+      after_success:
+        - cp /tmp/.coverage ./
+        - python ./scripts/codecov
+    # - sudo: required
+    #   services:
+    #     - docker
+    #   env: PIP=pip
+    #        CIBW_BUILD='*-manylinux1_i686'
+    #        CIBW_SKIP='cp34-*'
+    #        CIBW_TEST_REQUIRES='pytest'
+    # - os: osx
+    #   language: generic
+    #   env: PIP=pip2
+    #        CIBW_BUILD='cp27-* cp35-*'
+    # - os: osx
+    #   language: generic
+    #   env: PIP=pip2
+    #        CIBW_BUILD='cp36-* cp37-*'
 
 env:
   global:
