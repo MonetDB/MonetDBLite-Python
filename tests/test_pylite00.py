@@ -132,6 +132,13 @@ class TestMonetDBLiteBase(object):
             monetdblite.sql('ROLLBACK', client=conn)
             del conn
 
+    def test_null_string_insertion_bug(self, initialize_monetdblite):
+        monetdblite.sql("CREATE TABLE pylite12 (s varchar(2))")
+        monetdblite.insert('pylite12', {'s': ['a', None]})
+        result = monetdblite.sql("SELECT * FROM pylite12")
+        expected = numpy.ma.masked_array(['a', 'a'], mask=[0, 1])
+        assert str(result['s']) == str(expected)
+
     # This test must be executed after all others because it
     # initializes monetdblite independently out of the fixture
     # initialize_monetdblite
