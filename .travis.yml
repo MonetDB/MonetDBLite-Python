@@ -7,7 +7,7 @@ matrix:
         - docker
       env: PIP=pip
            CIBW_BUILD='*-manylinux1_x86_64'
-           CIBW_SKIP='cp34-*'
+           CIBW_SKIP='cp27-* cp34-*'
            CIBW_TEST_REQUIRES='pytest'
            CIBW_TEST_COMMAND='python -m pytest {project}/tests'
     - sudo: required
@@ -15,7 +15,7 @@ matrix:
         - docker
       env: PIP=pip
            CIBW_BUILD='*-manylinux1_i686'
-           CIBW_SKIP='cp34-*'
+           CIBW_SKIP='cp27-* cp34-*'
            CIBW_TEST_REQUIRES='pytest'
            CIBW_TEST_COMMAND='python -m pytest {project}/tests'
     - os: osx
