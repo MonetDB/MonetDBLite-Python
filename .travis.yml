@@ -34,5 +34,5 @@ env:
     - CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && codecov'
 
 script:
-  - $PIP install cibuildwheel==0.10.0
+  - $PIP install cibuildwheel==0.10.1
   - cibuildwheel --output-dir wheelhouse
