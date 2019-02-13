@@ -1,4 +1,5 @@
 
+[![PyPI](https://img.shields.io/pypi/v/monetdblite.svg)](https://pypi.python.org/pypi/monetdblite)
 [![Build Status](https://travis-ci.org/hannesmuehleisen/MonetDBLite-Python.svg)](https://travis-ci.org/hannesmuehleisen/MonetDBLite-Python)
 [![Coverage Status](https://coveralls.io/repos/github/hannesmuehleisen/MonetDBLite-Python/badge.svg?branch=HEAD&service=github)](https://coveralls.io/github/hannesmuehleisen/MonetDBLite-Python)
 # MonetDBLite for Python
