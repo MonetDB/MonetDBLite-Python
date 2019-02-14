@@ -176,7 +176,10 @@ def insert(table, values, schema=None, client=None):
     else:
         vals = {}
         for tpl in values.items():
-            vals[tpl[0]] = numpy.array(tpl[1])
+            if isinstance(tpl[1], numpy.ma.core.MaskedArray):
+                vals[tpl[0]] = tpl[1]
+            else:
+                vals[tpl[0]] = numpy.array(tpl[1])
         values = vals
     retval = dll.python_monetdb_insert(client_object, utf8_encode(schema),
                                        utf8_encode(table), values)
@@ -195,7 +198,10 @@ def create(table, values, schema=None, client=None):
     else:
         vals = {}
         for tpl in values.items():
-            vals[tpl[0]] = numpy.array(tpl[1])
+            if isinstance(tpl[1], numpy.ma.core.MaskedArray):
+                vals[tpl[0]] = tpl[1]
+            else:
+                vals[tpl[0]] = numpy.array(tpl[1])
         values = vals
     if schema is None:
         schema = "sys"
