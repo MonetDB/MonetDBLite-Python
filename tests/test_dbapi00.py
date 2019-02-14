@@ -73,3 +73,14 @@ class TestSimpleDBAPI(object):
 
         assert str(result['i']) == str(data_dict['i']), "Incorrect result returned"
         assert str(result['v']) == str(data_dict['v']), "Incorrect result returned"
+
+    def test_masked_array_insertion(self, monetdblite_cursor):
+        data_dict = {'i': numpy.ma.masked_array(numpy.arange(10), mask=([False]*9 + [True]))}
+        monetdblite_cursor.execute("CREATE TABLE masked_array_insertion (i INT)")
+        monetdblite_cursor.insert("masked_array_insertion", data_dict)
+        monetdblite_cursor.commit()
+
+        monetdblite_cursor.execute("SELECT * FROM masked_array_insertion")
+        result = monetdblite_cursor.fetchnumpy()
+
+        assert str(result['i']) == str(data_dict['i'])
