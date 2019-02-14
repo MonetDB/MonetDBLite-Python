@@ -29,7 +29,7 @@ matrix:
 
 env:
   global:
-    - CIBW_BEFORE_BUILD='pip install "numpy>=1.7" && pip install "pandas>=0.20"
+    - CIBW_BEFORE_BUILD='pip install "numpy>=1.7" && pip install "pandas>=0.20"'
     - CIBW_TEST_REQUIRES='pytest codecov'
     - CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && codecov'
 
