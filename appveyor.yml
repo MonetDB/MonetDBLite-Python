@@ -7,7 +7,7 @@ environment:
 install:
   # Make sure we are using a recent Python 3
   - set PATH=C:\Python37;%PATH%
-  - cmd: python -m pip install cibuildwheel==0.10.0
+  - cmd: python -m pip install cibuildwheel==0.10.1
   - cmd: python -m pip install numpy
 
 build_script:
