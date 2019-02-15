@@ -7,9 +7,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 ## Added
-- Coverage reports from OS X with codecov
+- Coverage reports from OS X with [codecov](https://codecov.io/gh/MonetDB/MonetDBLite-Python)
 ## Changed
-- Reworked the build system to use [cibuildwheel](https://github.com/joerick/cibuildwheel)
+- Reworked the build system to use [cibuildwheel](https://github.com/joerick/cibuildwheel) (fixed #18)
+- Fixed the iterator protocol for cursors (fixed #34)
 ## 0.6.2
 ### Added
 - Added Python 3.7 to the build matrix

@@ -120,6 +120,15 @@ class TestShutdown(object):
         with pytest.raises(IndexError):
             monetdblite_cursor.scroll(20)
 
+    def test_cursor_iteration_protocol(self, monetdblite_cursor):
+        monetdblite_cursor.execute("SELECT * FROM integers WHERE i IS NOT NULL")
+
+        counter = 0
+        for i in monetdblite_cursor:
+            assert i[0] == counter
+            counter += 1
+
+        assert counter == 10
     # TODO: rewrite this one
     # def test_use_old_cursor(self, monetdblite_cursor):
     #     self.connection.close()
