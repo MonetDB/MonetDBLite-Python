@@ -7,7 +7,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 ## Added
-- Coverage reports when running the test suite with py37
+- Coverage reports from OS X with codecov
+## Changed
+- Reworked the build system to use [cibuildwheel](https://github.com/joerick/cibuildwheel)
 ## 0.6.2
 ### Added
 - Added Python 3.7 to the build matrix
