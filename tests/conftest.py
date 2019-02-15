@@ -7,6 +7,20 @@ import monetdblite
 
 
 @pytest.fixture(scope="function")
+def monetdblite_empty_cursor(request, tmp_path):
+    test_dbfarm = tmp_path.resolve().as_posix()
+
+    def finalizer():
+        monetdblite.shutdown()
+        if tmp_path.is_dir():
+            shutil.rmtree(test_dbfarm)
+
+    request.addfinalizer(finalizer)
+    connection = monetdblite.make_connection(test_dbfarm)
+    cursor = connection.cursor()
+    return cursor
+
+@pytest.fixture(scope="function")
 def monetdblite_cursor(request, tmp_path):
     test_dbfarm = tmp_path.resolve().as_posix()
 
