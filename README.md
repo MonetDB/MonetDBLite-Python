@@ -1,7 +1,8 @@
 [![PyPI](https://img.shields.io/pypi/v/monetdblite.svg)](https://pypi.python.org/pypi/monetdblite)
-[![Build Status](https://travis-ci.org/hannesmuehleisen/MonetDBLite-Python.svg)](https://travis-ci.org/hannesmuehleisen/MonetDBLite-Python)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/hannesmuehleisen/MonetDBLite-Python?branch=master&svg=true)](https://ci.appveyor.com/project/hannesmuehleisen/MonetDBLite-Python)
-[![Coverage Status](https://coveralls.io/repos/github/hannesmuehleisen/MonetDBLite-Python/badge.svg?branch=HEAD&service=github)](https://coveralls.io/github/hannesmuehleisen/MonetDBLite-Python)
+[![Build Status](https://travis-ci.org/MonetDB/MonetDBLite-Python.svg?branch=master)](https://travis-ci.org/MonetDB/MonetDBLite-Python)
+[![Build status](https://ci.appveyor.com/api/projects/status/vcau5l4iu1td3qv7?svg=true)](https://ci.appveyor.com/project/kutsurak/monetdblite-python-6eb7s)
+[![codecov](https://codecov.io/gh/MonetDB/MonetDBLite-Python/branch/master/graph/badge.svg)](https://codecov.io/gh/MonetDB/MonetDBLite-Python)
+[![CodeFactor](https://www.codefactor.io/repository/github/monetdb/monetdblite-python/badge)](https://www.codefactor.io/repository/github/monetdb/monetdblite-python)
 # MonetDBLite for Python
 
 [MonetDBLite](https://www.monetdb.org/blog/monetdblite-r) is a serverless SQL database that runs inside of your Python process and does not require the installation of any external software. MonetDBLite is based on free and open-source [MonetDB](https://www.monetdb.org/Home), a product of the [Centrum Wiskunde & Informatica](http://www.cwi.nl).
