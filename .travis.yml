@@ -42,5 +42,5 @@ script:
   - |
     if [[ $TRAVIS_TAG ]]; then
       $PIP install twine
-      python -m twine upload wheelhouse/*.whl
+      python -m twine upload --skip-existing wheelhouse/*.whl
     fi
