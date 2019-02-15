@@ -32,7 +32,15 @@ env:
     - CIBW_BEFORE_BUILD='pip install "numpy>=1.7" && pip install "pandas>=0.20"'
     - CIBW_TEST_REQUIRES='pytest codecov'
     - CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && codecov'
+    - TWINE_USERNAME=kutsurak
+      # test-pypi (kutsurak)
+    - secure: "N/2VBmvUIObXTx/S9KayL75TsaeJWJUkXN4TvySuymrdwlop8VrUD/EclKbKUxHIcil7XLwembbl8nvcn8kEX81LChKkMDG9Kp0oknBNPR/MAYcvvxMQk1vLbiKnnVloaCURNgpeYz1x3iqOpXG9vpLr8x878j/fPOxPoeZkl3b17B3Wx8pmYNtV4j0m0Tzwdtb6M/rfzHbRAG+LsX7HI2XpvdAVRZVnHnQVhElpcqfu1SlhWzgsqGTO7VWoVVAw7+5/GKo+PGm4+iTkPgEoyQUOqN5bIoz86dAM0mFlOhgHL53ty6LYNVQ0w5zXlSdP4A8KjPZhS4boTlwe/PSbeKuGytp1hfxJx0qJHL3XrvfQa4YJ7VZEyqLFVSOKHv1wvcwxFy7MNe/+zfRunvU23h0vbUO4N8u4iZM7E2Zt5uyBYrqiaMVe2esGPU4sn5bPbNYrnGczcBu1EmZqv3bUtihaNsVeR+/ayxiV7O39oFKDha28q3VwxcOxHWtfqmTRaI4UQyBgRu2loTe5OjGaMcQu08qBdO/6Kcr5/W5W2NGOQaElZYsOLAUoPN1VLVn3mraoH48rChhYkPR3e9eCkX0ikM0+SigOwTftyMiwVi84lqHurkmLk1H6VzEKK7G0DBYJS/M8kKc0Mc9L2ruE6eXRZoYXHeToNgM6/CG+HZk="
 
 script:
   - $PIP install cibuildwheel==0.10.1
   - cibuildwheel --output-dir wheelhouse
+  - |
+    if [[ $TRAVIS_TAG ]]; then
+      $PIP install twine
+      python -m twine upload wheelhouse/*.whl
+    fi

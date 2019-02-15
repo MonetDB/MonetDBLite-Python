@@ -3,6 +3,10 @@ environment:
   CIBW_TEST_COMMAND: "pytest --cov=monetdblite {project}\\tests"
   CIBW_BEFORE_BUILD: "pip install -r {project}\\requirements.txt"
   CIBW_SKIP: "cp27-* cp34-* *-win32"
+  TWINE_USERNAME: kutsurak
+  # test-pypi (kutsurak)
+  TWINE_PASSWORD:
+    secure: "Qs2d8ylRZ8xP6GXu7LgOWr+3ZiM28F4Pl4ZoJLii9PhP095fzwbA8/kDE3Y3x+K9A66A7QqaWJQMtEqPPKYLTciuvTakqSfQfX3NX6ROPH9CMdXu19e9406k9a17TsBCY/5uqI2nIE916MPSzlax41/N0xUX6B2EIAO78Q+VdLPQ5yc+oB+8VEwJdDOtNuJmvdweCrLsTqzQsQu6SwU18T/+xU8dQ9k5Y1uU+OVHDqIdz61tmfxMq6XAn46SMJm7l2rWhMMfnev3oKEynubovgYIC+EVidvbiLzq/JAU1XWKtwuGv2l0H0WWCRizqXQgvVM4wNDl6nJ8PUluGZ7GnkwnDGXDzRT45jtlt2hKTmyHzaI8Q9kSsv2k5EsVMGRKYOrIayGiZTh3dENy+h7cbtg6wzoWZVgZWjA+T2hy4lodWAp4Wbejzouz54hii21mYUJ+jQaKpw8ZYxUy0kfTWchL8LpwZwEomDjNrhhmul22mYIBn6j/M89SOFOHmR0IQdiDtMTtcBwJ4ulRTOHsIkLZrl0nHYGhG3CtPK9RZUM/PN7l4LRZKZe5MAy8yzYl8YVsfRgepg0RfGJKNyuQzPmdxattqqsOK0ZDbFcxTMpuVIMUrAsTvjKurzCkLVchiQXbbkitve3EgdUR8DUaWUdy0mwZUIoq31yhTo4Ba7M="
 
 install:
   # Make sure we are using a recent Python 3
@@ -12,6 +16,11 @@ install:
 
 build_script:
   - cmd: python -m cibuildwheel --output-dir wheelhouse
+  - ps: >-
+      if ($env:APPVEYOR_REPO_TAG -eq "true") {
+        python -m pip install twine
+        twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse\*
+      }
 
 artifacts:
   - path: "wheelhouse\\*.whl"
