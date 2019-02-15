@@ -1,6 +1,6 @@
-
 [![PyPI](https://img.shields.io/pypi/v/monetdblite.svg)](https://pypi.python.org/pypi/monetdblite)
 [![Build Status](https://travis-ci.org/hannesmuehleisen/MonetDBLite-Python.svg)](https://travis-ci.org/hannesmuehleisen/MonetDBLite-Python)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/hannesmuehleisen/MonetDBLite-Python?branch=master&svg=true)](https://ci.appveyor.com/project/hannesmuehleisen/MonetDBLite-Python)
 [![Coverage Status](https://coveralls.io/repos/github/hannesmuehleisen/MonetDBLite-Python/badge.svg?branch=HEAD&service=github)](https://coveralls.io/github/hannesmuehleisen/MonetDBLite-Python)
 # MonetDBLite for Python
 
@@ -63,7 +63,7 @@ monetdblite.insert('integers', {'i': numpy.arange(100)})
 Changes made to the database will automatically be written to disk as they are made, unless they are wrapped in a transaction.
 
 ### Shutdown
-Only a single monetdblite instance can be active within your Python process. It is however possible to shutdown the currently running monetdblite instance and relaunch it using a different directory. This can be done using the ```monetdblite.shutdown``` command. 
+Only a single monetdblite instance can be active within your Python process. It is however possible to shutdown the currently running monetdblite instance and relaunch it using a different directory. This can be done using the ```monetdblite.shutdown``` command.
 
 ```python
 # shutdown the currently running monetdblite instance
@@ -85,4 +85,3 @@ monetdblite.sql('SELECT * FROM table', client = conn)
 # close the connection
 del conn
 ```
-
