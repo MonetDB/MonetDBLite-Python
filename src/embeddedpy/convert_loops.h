@@ -292,7 +292,7 @@
 	        utf8_string = GDKzalloc(utf8_size);                                                                                                                           \
 	        for (iu = 0; iu < ret->count; iu++) {                                                                                                                         \
 	            PyObject *obj = *((PyObject**) &data[(index_offset * ret->count + iu) * ret->memory_size]);                                                               \
-	            if (mask != NULL && (mask[index_offset * ret->count + iu]) == TRUE || obj == Py_None) {                                                                   \
+	            if ((mask != NULL && (mask[index_offset * ret->count + iu]) == TRUE) || obj == Py_None) { \
 	                b->tnil = 1;                                                                                                                                          \
 	                (void) BUNappend(b, str_nil, FALSE);                                                                                                                  \
 	            } else {                                                                                                                                                  \
