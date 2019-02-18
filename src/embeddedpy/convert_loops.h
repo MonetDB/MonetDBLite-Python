@@ -297,7 +297,10 @@
 	                (void) BUNappend(b, str_nil, FALSE);                                                                                                                  \
 	            } else {                                                                                                                                                  \
 	                /* we try to handle as many types as possible */                                                                                                      \
-	                pyobject_to_str(((PyObject**) &data[(index_offset * ret->count + iu) * ret->memory_size]), utf8_size, &utf8_string);                                  \
+	                msg = pyobject_to_str(((PyObject**) &data[(index_offset * ret->count + iu) * ret->memory_size]), utf8_size, &utf8_string);                            \
+	                if (msg != NULL) {                                                                                                                                    \
+	                    goto wrapup;                                                                                                                                      \
+	                }                                                                                                                                                     \
 	                (void) BUNappend(b, utf8_string, FALSE);                                                                                                                     \
 	            }                                                                                                                                                         \
 	        }                                                                                                                                                             \

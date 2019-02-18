@@ -780,6 +780,9 @@ BAT *PyObject_ConvertToBAT(PyReturn *ret, sql_subtype *type, int bat_type, int i
 				b = COLnew(seqbase, TYPE_str, (BUN) ret->count, TRANSIENT);
 				b->tnil = 0; b->tnonil = 1;
 				b->tkey = 0; b->tsorted = 0; b->trevsorted = 0;
+				/* This probably does not need to be a macro, since
+				 * this is the only place it is used...
+				 */
 				NP_INSERT_STRING_BAT(b);
 				if (utf8_string) GDKfree(utf8_string);
 				BATsetcount(b, (BUN) ret->count);
