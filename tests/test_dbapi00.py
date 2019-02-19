@@ -15,8 +15,7 @@ class TestSimpleDBAPI(object):
         result = monetdblite_cursor.fetchnumpy()
         arr = numpy.ma.masked_array(numpy.arange(11))
         arr.mask = [False] * 10 + [True]
-        arr = {'i': arr}
-        assert str(result) == str(arr), "Incorrect result returned"
+        numpy.testing.assert_array_equal(result['i'], arr, "Incorrect result returned")
 
     def test_pandas_selection(self, monetdblite_cursor):
         monetdblite_cursor.execute('SELECT * FROM integers')
@@ -25,7 +24,8 @@ class TestSimpleDBAPI(object):
         arr.mask = [False] * 10 + [True]
         arr = {'i': arr}
         arr = pandas.DataFrame.from_dict(arr)
-        assert str(result) == str(arr), "Incorrect result returned"
+        # assert str(result) == str(arr), "Incorrect result returned"
+        pandas.testing.assert_frame_equal(result, arr)
 
     def test_numpy_creation(self, monetdblite_cursor):
         # numpyarray = {'i': numpy.arange(10), 'v': numpy.random.randint(100, size=(1, 10))}  # segfaults
@@ -36,8 +36,8 @@ class TestSimpleDBAPI(object):
         monetdblite_cursor.execute('SELECT * FROM numpy_creation')
         result = monetdblite_cursor.fetchnumpy()
 
-        assert str(result['i']) == str(data_dict['i']), "Incorrect result returned"
-        assert str(result['v']) == str(data_dict['v']), "Incorrect result returned"
+        numpy.testing.assert_array_equal(result['i'], data_dict['i'])
+        numpy.testing.assert_array_equal(result['v'], data_dict['v'])
 
     def test_pandas_creation(self, monetdblite_cursor):
         data_dict = {'i': numpy.arange(10), 'v': numpy.random.randint(100, size=10)}
@@ -46,8 +46,9 @@ class TestSimpleDBAPI(object):
 
         monetdblite_cursor.execute('SELECT * FROM dframe_creation')
         result = monetdblite_cursor.fetchnumpy()
-        assert str(result['i']) == str(data_dict['i']), "Incorrect result returned"
-        assert str(result['v']) == str(data_dict['v']), "Incorrect result returned"
+
+        numpy.testing.assert_array_equal(result['i'], data_dict['i'])
+        numpy.testing.assert_array_equal(result['v'], data_dict['v'])
 
     def test_numpy_insertion(self, monetdblite_cursor):
         data_dict = {'i': numpy.arange(10), 'v': numpy.random.randint(100, size=10)}
@@ -58,8 +59,8 @@ class TestSimpleDBAPI(object):
         monetdblite_cursor.execute("SELECT * FROM numpy_insertion")
         result = monetdblite_cursor.fetchnumpy()
 
-        assert str(result['i']) == str(data_dict['i']), "Incorrect result returned"
-        assert str(result['v']) == str(data_dict['v']), "Incorrect result returned"
+        numpy.testing.assert_array_equal(result['i'], data_dict['i'])
+        numpy.testing.assert_array_equal(result['v'], data_dict['v'])
 
     def test_pandas_insertion(self, monetdblite_cursor):
         data_dict = {'i': numpy.arange(10), 'v': numpy.random.randint(100, size=10)}
@@ -71,8 +72,8 @@ class TestSimpleDBAPI(object):
         monetdblite_cursor.execute("SELECT * FROM pandas_insertion")
         result = monetdblite_cursor.fetchnumpy()
 
-        assert str(result['i']) == str(data_dict['i']), "Incorrect result returned"
-        assert str(result['v']) == str(data_dict['v']), "Incorrect result returned"
+        numpy.testing.assert_array_equal(result['i'], data_dict['i'])
+        numpy.testing.assert_array_equal(result['v'], data_dict['v'])
 
     def test_masked_array_insertion(self, monetdblite_cursor):
         data_dict = {'i': numpy.ma.masked_array(numpy.arange(10), mask=([False]*9 + [True]))}
@@ -83,4 +84,4 @@ class TestSimpleDBAPI(object):
         monetdblite_cursor.execute("SELECT * FROM masked_array_insertion")
         result = monetdblite_cursor.fetchnumpy()
 
-        assert str(result['i']) == str(data_dict['i'])
+        numpy.testing.assert_array_equal(result['i'], data_dict['i'])

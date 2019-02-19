@@ -14,4 +14,6 @@ class TestMultipleResultSets(object):
         monetdblite_cursor.execute('SELECT * FROM integers')
         monetdblite_cursor.execute('SELECT * FROM integers')
         result = monetdblite_cursor.fetchnumpy()
-        assert str(result) == str({'i': numpy.ma.masked_array(numpy.arange(11), [False]*10 + [True])}), "Incorrect result returned"
+        expected = numpy.ma.masked_array(numpy.arange(11), mask=([False]*10 + [True]))
+
+        numpy.testing.assert_array_equal(result['i'], expected)
