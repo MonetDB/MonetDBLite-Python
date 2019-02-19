@@ -137,7 +137,7 @@ class TestMonetDBLiteBase(object):
         monetdblite.insert('pylite12', {'s': ['a', None]})
         result = monetdblite.sql("SELECT * FROM pylite12")
         expected = numpy.ma.masked_array(['a', 'a'], mask=[0, 1])
-        assert str(result['s']) == str(expected)
+        numpy.testing.assert_array_equal(result['s'], expected)
 
     # This test must be executed after all others because it
     # initializes monetdblite independently out of the fixture
