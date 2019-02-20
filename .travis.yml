@@ -34,7 +34,7 @@ env:
     - CIBW_TEST_COMMAND='coverage run --source=monetdblite -m pytest {project}/tests && codecov'
     - TWINE_USERNAME=kutsurak
       # test-pypi (kutsurak)
-    - secure: "N/2VBmvUIObXTx/S9KayL75TsaeJWJUkXN4TvySuymrdwlop8VrUD/EclKbKUxHIcil7XLwembbl8nvcn8kEX81LChKkMDG9Kp0oknBNPR/MAYcvvxMQk1vLbiKnnVloaCURNgpeYz1x3iqOpXG9vpLr8x878j/fPOxPoeZkl3b17B3Wx8pmYNtV4j0m0Tzwdtb6M/rfzHbRAG+LsX7HI2XpvdAVRZVnHnQVhElpcqfu1SlhWzgsqGTO7VWoVVAw7+5/GKo+PGm4+iTkPgEoyQUOqN5bIoz86dAM0mFlOhgHL53ty6LYNVQ0w5zXlSdP4A8KjPZhS4boTlwe/PSbeKuGytp1hfxJx0qJHL3XrvfQa4YJ7VZEyqLFVSOKHv1wvcwxFy7MNe/+zfRunvU23h0vbUO4N8u4iZM7E2Zt5uyBYrqiaMVe2esGPU4sn5bPbNYrnGczcBu1EmZqv3bUtihaNsVeR+/ayxiV7O39oFKDha28q3VwxcOxHWtfqmTRaI4UQyBgRu2loTe5OjGaMcQu08qBdO/6Kcr5/W5W2NGOQaElZYsOLAUoPN1VLVn3mraoH48rChhYkPR3e9eCkX0ikM0+SigOwTftyMiwVi84lqHurkmLk1H6VzEKK7G0DBYJS/M8kKc0Mc9L2ruE6eXRZoYXHeToNgM6/CG+HZk="
+    - secure: "f8bDgNpnuZp+SN/ByBtABRLpopWM3/5uR1GrRne8M0JvOM18t7F1xsxZHuAfqIBSeZGPaOJkRfBYZE2jOl1YO9ZYEXzK1QJ5CbRAdd4cAvBbf0uexe5LFimXpMSeicXYoulY32IJi6ZYgxPWwFEwUGBKhQ/lZbaOp36XEka4WFnHk+5fGjuFYyGtnVYxQ36CuNE4Y1ivZZPOzbryrEsHSZm8d9pWkY9hgA50Z824N79pZBvsN8lbwW1jgvo5VeBWlZ/VumZNTeEoHkW5i+MK56u3Wi1LANgKy8wp+0Rwf4dGyLg+tS5XZgAW+Z/2jlVKtAwyjIRjIWiwa2rboUiUAQPv9Nw/VHh48AWP1FDAKcL5LEhLOUSuobjgFI1klwzZYVftOap6lMQIqFA1QvaEO11A7ZyRWdmUKXXaWiPdeo54miDPq4LyDOqsCO3keZ9RTWKiayn/D4Z0nZQ+MudbSL7/orbd7CKhbKVJEvmpgm4d/zsxjdhzXBWSQ4XtSXp51fBLYMKbRB+F6yTYeYk9QnaId8fPyKcfC7xrTNn9y0oHInhex0Pqh1gE/NUhEFdo5fYw/Tx+JfpbZ8adgj1vA+QfurybfUM75rwweAnDao26nIQrLgInSWwuSX/n9D62nMDbLZucCGfjDgk3bVcWhE6IFjbo1JIcC90F7Y5fDwo="
 
 script:
   - $PIP install cibuildwheel==0.10.1
@@ -42,5 +42,5 @@ script:
   - |
     if [[ $TRAVIS_TAG ]]; then
       $PIP install twine
-      python -m twine upload --skip-existing wheelhouse/*.whl
+      python -m twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/*.whl
     fi

@@ -5,7 +5,8 @@ environment:
   CIBW_SKIP: "cp27-* cp34-* *-win32"
   TWINE_USERNAME: kutsurak
   TWINE_PASSWORD:
-    secure: J1D0IVMyIRXPyZYlhSNt26ZwNdP2zQ3cVUqzhMGHX1s=
+    # test.pypi.org
+    secure: FI99drs2RsYAJqo198nJT/D6RhTMYFncW5Ccn7h6o2M=
 
 install:
   # Make sure we are using a recent Python 3
@@ -18,7 +19,7 @@ build_script:
   - ps: >-
       if ($env:APPVEYOR_REPO_TAG -eq "true") {
         python -m pip install twine
-        twine upload --skip-existing wheelhouse\*
+        twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse\*
       }
 
 artifacts:
