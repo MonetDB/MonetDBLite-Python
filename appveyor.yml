@@ -16,11 +16,13 @@ install:
 
 build_script:
   - cmd: python -m cibuildwheel --output-dir wheelhouse
-  - ps: >-
-      if ($env:APPVEYOR_REPO_TAG -eq "true") {
+  - >
+      IF "%APPVEYOR_REPO_TAG%" == "true"
+      (
         python -m pip install twine
+        &&
         twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse\*
-      }
+      )
 
 artifacts:
   - path: "wheelhouse\\*.whl"
