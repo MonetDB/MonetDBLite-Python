@@ -4,9 +4,18 @@ environment:
   CIBW_BEFORE_BUILD: "pip install -r {project}\\requirements.txt"
   CIBW_SKIP: "cp27-* cp34-* *-win32"
   TWINE_USERNAME: kutsurak
+
+  # To securely? change the password twine uses to upload wheels at
+  # PyPI register an account at appveyor and go to #
+  # https://ci.appveyor.com/tools/encrypt Enter the password in the
+  # form there, encrypt it and copy-paste the encrypted value below.
+
   TWINE_PASSWORD:
-    # test.pypi.org
-    secure: FI99drs2RsYAJqo198nJT/D6RhTMYFncW5Ccn7h6o2M=
+    # test.pypi.org (kutsurak)
+    # secure: FI99drs2RsYAJqo198nJT/D6RhTMYFncW5Ccn7h6o2M=
+
+    # pypi (kutsurak)
+    secure: TwnBmDB0PDYXEE6bNN+0JWDEJEL8X0euJe8Pk12zWO4=
 
 install:
   # Make sure we are using a recent Python 3
