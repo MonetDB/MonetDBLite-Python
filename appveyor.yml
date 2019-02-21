@@ -28,7 +28,7 @@ build_script:
   - ps: >-
       if ($env:APPVEYOR_REPO_TAG -eq "true") {
         python -m pip install twine
-        python -m twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse\*
+        python -m twine upload --skip-existing wheelhouse\*
       }
 
 artifacts:
