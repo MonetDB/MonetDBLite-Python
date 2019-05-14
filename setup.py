@@ -37,17 +37,17 @@ generate_sources_includes('src/embeddedpy')
 generate_sources_includes('src/monetdblite/src')
 
 libmonetdb5 = Extension('monetdblite.libmonetdb5',
-                        define_macros=[('LIBGDK',              None),
-                                       ('LIBMAL',              None),
-                                       ('LIBOPTIMIZER',        None),
-                                       ('LIBSTREAM',           None),
-                                       ('LIBSQL',              None),
-                                       ('LIBPYAPI',            None),
+                        define_macros=[('LIBGDK', None),
+                                       ('LIBMAL', None),
+                                       ('LIBOPTIMIZER', None),
+                                       ('LIBSTREAM', None),
+                                       ('LIBSQL', None),
+                                       ('LIBPYAPI', None),
                                        ('MONETDBLITE_COMPILE', None)],
-    include_dirs=includes,
-    sources=sources,
-    extra_compile_args=['-std=c99'],  # needed for linux build
-    language='c')
+                        include_dirs=includes,
+                        sources=sources,
+                        extra_compile_args=['-std=c99'],  # needed for linux build
+                        language='c')
 
 setup(
     name = "monetdblite",
