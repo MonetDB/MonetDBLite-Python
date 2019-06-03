@@ -164,9 +164,26 @@ class TestMonetDBLiteBase(object):
     def test_bad_insert_crash(self, initialize_monetdblite):
         monetdblite.sql("CREATE TABLE pylite14 (i INT)")
         monetdblite.insert('pylite14', {'i': 1})
-        result = monetdblite.sql("SELECT * FROM pylite13")
+        result = monetdblite.sql("SELECT * FROM pylite14")
         expected = numpy.array([1])
         numpy.testing.assert_array_equal(result['i'], expected)
+
+    def test_non_persistent_commits(self, tmp_path):
+        db_path = tmp_path.resolve().as_posix()
+        nitems = 1000
+        monetdblite.init(db_path)
+        monetdblite.sql("CREATE TABLE pylite15 (f FLOAT)")
+        monetdblite.shutdown()
+        f = numpy.random.rand(nitems)
+        c = monetdblite.make_connection(db_path)
+        cc = c.cursor()
+        cc.insert('pylite15', {'f': f})
+        cc.commit()
+
+        cc.execute("SELECT count(*) FROM pylite15")
+        r = cc.fetchone()
+        assert r[0] == nitems
+
 
     # This test must be executed after all others because it
     # initializes monetdblite independently out of the fixture
