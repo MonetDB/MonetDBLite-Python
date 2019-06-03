@@ -1,5 +1,8 @@
-# Test basic monetdblite statements
-
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0.  If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright 1997 - July 2008 CWI, August 2008 - 2019 MonetDB B.V.
 import monetdblite
 import numpy
 import os
@@ -35,7 +38,14 @@ class TestMonetDBLiteBase(object):
 
     def test_monetdblite_create_multiple_columns(self, initialize_monetdblite):
         arrays = numpy.arange(100000).reshape((5, 20000))
-        monetdblite.create('pylite03', {'i': arrays[0], 'j': arrays[1], 'k': arrays[2], 'l': arrays[3], 'm': arrays[4]})
+        monetdblite.create(
+            'pylite03', {
+                'i': arrays[0],
+                'j': arrays[1],
+                'k': arrays[2],
+                'l': arrays[3],
+                'm': arrays[4]
+            })
         result = monetdblite.sql('select * from pylite03')
         assert len(result) == 5, "Incorrect amount of columns"
         assert len(result['i']) == 20000, "Incorrect amount of rows"
@@ -57,10 +67,12 @@ class TestMonetDBLiteBase(object):
         conn2 = monetdblite.connectclient()
         # create a table within a transaction in one client
         monetdblite.sql('START TRANSACTION', client=conn)
-        monetdblite.create('pylite05', {'i': numpy.arange(100000)}, client=conn)
+        monetdblite.create('pylite05', {'i': numpy.arange(100000)},
+                           client=conn)
 
         # check that table was successfully created
-        result = monetdblite.sql('SELECT MIN(i) AS minimum FROM pylite05', client=conn)
+        result = monetdblite.sql('SELECT MIN(i) AS minimum FROM pylite05',
+                                 client=conn)
         assert result['minimum'][0] == 0, "Incorrect result"
         # attempt to query the table from another client
         if not PY26:
@@ -70,7 +82,8 @@ class TestMonetDBLiteBase(object):
         # now commit the table
         monetdblite.sql('COMMIT', client=conn)
         # query the table again from the other client, this time it should be there
-        result = monetdblite.sql('SELECT MIN(i) AS minimum FROM pylite05', client=conn2)
+        result = monetdblite.sql('SELECT MIN(i) AS minimum FROM pylite05',
+                                 client=conn2)
         assert result['minimum'][0] == 0, "Incorrect result"
 
     def test_erroneous_initialization(self):
@@ -125,7 +138,8 @@ class TestMonetDBLiteBase(object):
             conn = monetdblite.connectclient()
             monetdblite.sql('START TRANSACTION', client=conn)
             monetdblite.sql('CREATE TABLE pylite11 (i INTEGER)', client=conn)
-            monetdblite.insert('pylite11', {'i': numpy.arange(10)}, client=conn)
+            monetdblite.insert('pylite11', {'i': numpy.arange(10)},
+                               client=conn)
             result = monetdblite.sql('SELECT * FROM pylite11', client=conn)
             assert result['i'][0] == 0, "Invalid result"
             monetdblite.sql('DROP TABLE pylite11', client=conn)

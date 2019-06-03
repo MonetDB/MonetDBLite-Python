@@ -1,9 +1,11 @@
-# test database shutdown/startup
-
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0.  If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright 1997 - July 2008 CWI, August 2008 - 2019 MonetDB B.V.
 import monetdblite
 import sys
 import pytest
-
 
 PY26 = sys.version_info[0] == 2 and sys.version_info[1] <= 6
 
@@ -15,7 +17,8 @@ class TestShutdown(object):
         (cursor, connection, dbfarm) = monetdblite_cursor_autocommit
         cursor.transaction()
         cursor.execute('CREATE TABLE integers (i INTEGER)')
-        cursor.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(3)])
+        cursor.executemany('INSERT INTO integers VALUES (%s)',
+                           [[x] for x in range(3)])
         cursor.execute('SELECT * FROM integers')
         result = cursor.fetchall()
         assert result == [[0], [1], [2]], "Incorrect result returned"
@@ -27,11 +30,13 @@ class TestShutdown(object):
         cursor.execute('SELECT * FROM integers')
         assert result == [[0], [1], [2]], "Incorrect result returned"
 
-    def test_transaction_aborted_on_shutdown(self, monetdblite_cursor_autocommit):
+    def test_transaction_aborted_on_shutdown(self,
+                                             monetdblite_cursor_autocommit):
         (cursor, connection, dbfarm) = monetdblite_cursor_autocommit
         cursor.transaction()
         cursor.execute('CREATE TABLE integers (i INTEGER)')
-        cursor.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(3)])
+        cursor.executemany('INSERT INTO integers VALUES (%s)',
+                           [[x] for x in range(3)])
         cursor.execute('SELECT * FROM integers')
         result = cursor.fetchall()
         assert result == [[0], [1], [2]], "Incorrect result returned"
@@ -48,7 +53,8 @@ class TestShutdown(object):
         for i in range(10):
             cursor.transaction()
             cursor.execute('CREATE TABLE integers (i INTEGER)')
-            cursor.executemany('INSERT INTO integers VALUES (%s)', [[x] for x in range(10)])
+            cursor.executemany('INSERT INTO integers VALUES (%s)',
+                               [[x] for x in range(10)])
             cursor.execute('SELECT MIN(i * 3 + 5) FROM integers')
             result = cursor.fetchall()
             assert result == [[5]], "Incorrect result returned"
@@ -66,7 +72,8 @@ class TestShutdown(object):
         with pytest.raises(monetdblite.exceptions.ProgrammingError):
             monetdblite_empty_cursor.fetchall()
 
-    def test_fetchnumpy_without_executing_raises(self, monetdblite_empty_cursor):
+    def test_fetchnumpy_without_executing_raises(self,
+                                                 monetdblite_empty_cursor):
         with pytest.raises(monetdblite.exceptions.ProgrammingError):
             monetdblite_empty_cursor.fetchnumpy()
 
@@ -120,9 +127,11 @@ class TestShutdown(object):
         with pytest.raises(IndexError):
             monetdblite_cursor.scroll(20)
 
-    @pytest.mark.xfail(reason="We do not implement correctly the iterator protocol for py27")
+    @pytest.mark.xfail(
+        reason="We do not implement correctly the iterator protocol for py27")
     def test_cursor_iteration_protocol(self, monetdblite_cursor):
-        monetdblite_cursor.execute("SELECT * FROM integers WHERE i IS NOT NULL")
+        monetdblite_cursor.execute(
+            "SELECT * FROM integers WHERE i IS NOT NULL")
 
         counter = 0
         for i in monetdblite_cursor:
@@ -130,6 +139,7 @@ class TestShutdown(object):
             counter += 1
 
         assert counter == 10
+
     # TODO: rewrite this one
     # def test_use_old_cursor(self, monetdblite_cursor):
     #     self.connection.close()

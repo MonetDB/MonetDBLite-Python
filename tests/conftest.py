@@ -1,5 +1,9 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0.  If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright 1997 - July 2008 CWI, August 2008 - 2019 MonetDB B.V.
 import numpy
-import os
 import pytest
 import shutil
 
@@ -19,6 +23,7 @@ def monetdblite_empty_cursor(request, tmp_path):
     connection = monetdblite.make_connection(test_dbfarm)
     cursor = connection.cursor()
     return cursor
+
 
 @pytest.fixture(scope="function")
 def monetdblite_cursor(request, tmp_path):
