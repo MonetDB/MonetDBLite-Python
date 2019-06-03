@@ -6,6 +6,14 @@ Changelog](https://keepachangelog.com/en/1.0.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+### Changed
+- Fixed an off by one error that would occasionally crash the Python process.
+### Added
+- Issue template for github
+### Removed
+- Removed support for:
+  + Python < 3.5
+  + All 32-bit platforms
 ## 0.6.3
 ### Added
 - Coverage reports from OS X with [codecov](https://codecov.io/gh/MonetDB/MonetDBLite-Python)
