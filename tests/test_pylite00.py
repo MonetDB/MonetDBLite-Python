@@ -153,6 +153,13 @@ class TestMonetDBLiteBase(object):
         expected = numpy.ma.masked_array(['a', 'a'], mask=[0, 1])
         numpy.testing.assert_array_equal(result['s'], expected)
 
+    def test_decimal_insertion_bug(self, initialize_monetdblite):
+        monetdblite.sql("CREATE TABLE pylite13 (d DECIMAL(3, 2))")
+        monetdblite.insert('pylite13', {'d': [1.3]})
+        result = monetdblite.sql("SELECT * FROM pylite13")
+        expected = numpy.array([1.3])
+        numpy.testing.assert_array_equal(result['d'], expected)
+
     # This test must be executed after all others because it
     # initializes monetdblite independently out of the fixture
     # initialize_monetdblite
