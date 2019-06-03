@@ -160,6 +160,14 @@ class TestMonetDBLiteBase(object):
         expected = numpy.array([1.3])
         numpy.testing.assert_array_equal(result['d'], expected)
 
+    @pytest.mark.skip(reason="Crash")
+    def test_bad_insert_crash(self, initialize_monetdblite):
+        monetdblite.sql("CREATE TABLE pylite14 (i INT)")
+        monetdblite.insert('pylite14', {'i': 1})
+        result = monetdblite.sql("SELECT * FROM pylite13")
+        expected = numpy.array([1])
+        numpy.testing.assert_array_equal(result['i'], expected)
+
     # This test must be executed after all others because it
     # initializes monetdblite independently out of the fixture
     # initialize_monetdblite
