@@ -11,6 +11,7 @@ matrix:
            CIBW_TEST_REQUIRES='pytest'
            CIBW_TEST_COMMAND='python -m pytest {project}/tests'
     - os: osx
+      osx_image: xcode11.2
       language: shell
       env: PIP=pip3
            CIBW_BUILD='cp35-* cp36-* cp37-* cp38-*'
