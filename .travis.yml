@@ -6,14 +6,14 @@ matrix:
       services:
         - docker
       env: PIP=pip
-           CIBW_BUILD='cp35-* cp36-* cp37-*'
+           CIBW_BUILD='cp35-* cp36-* cp37-* cp38-*'
            CIBW_SKIP='*-manylinux1_i686'
            CIBW_TEST_REQUIRES='pytest'
            CIBW_TEST_COMMAND='python -m pytest {project}/tests'
     - os: osx
       language: generic
       env: PIP=pip2
-           CIBW_BUILD='cp35-* cp36-* cp37-*'
+           CIBW_BUILD='cp35-* cp36-* cp37-* cp38-*'
 
 env:
   global:
@@ -26,7 +26,7 @@ env:
     # pypi (kutsurak)
     - secure: "JeI84LgwppnCEV2qslRHow4dEsU3r5pS/cvIrIA863XPoT8bUFPAYuf0NcMAwRr/6MLw5r5dFBtAviB7OBncvKvqNpbpDsEt72i6vlbZNk06xnCSjAiPRvBqF2N6NJURCTSa2gV//enkkoGMVA2zOLOWMMyN6DYSUUk2mR5d46cVzrdkDS8AD35ycH8aYyxqS/Kv/Vp1RX2osxZCa02D/gEH3C5WE2TYk+yKC7LTXgUKpswhLaJV0lcBI1D9RLwYSzVKBuzQNL6hHwUT8MCk1W6Ivl1aFYL5YZoXSH915TAuaeel5Sy/C+QDH7VwgqlAjjNINmRrG7hEGtHfKmDh3zraJeQ3tJpDetk8IfnzBPnslWri0vZZRvyZrG9Xm014oHW+ZvbhRo9Tf6cMIoExAt/d5LCVJaA6OKMe/Or39RIbWZBPuWyUxWiZsO9ypcak7y5FLHakVUnOjcdv7gTCnGyiTgy7Z1E48czesa9dl5fZP5CaRahq2o4IuXXsOykN/SFiDsIns6IpA3Rnu3TmKGFlO+NgpayKu+ji+oClFGDqj7daTjvyT3vwyq6vre1D4jCYM+5edMT6UjLgOuOUZRczJSMnI7Y8GWjWIfuuGQZ+B4oJrOphdAqVuasSIgjP6BToZYmyMwjQWoQ3FnOH9bhp0mDJDFVfSbJFkp98oZk="
 script:
-  - $PIP install cibuildwheel==0.10.1
+  - $PIP install cibuildwheel==1.4.1
   - cibuildwheel --output-dir wheelhouse
   - |
     if [[ $TRAVIS_TAG ]]; then
