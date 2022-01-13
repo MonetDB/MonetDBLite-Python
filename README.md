@@ -1,3 +1,5 @@
+This repository has been archived. Please see MonetDB/e ([code examples here](https://github.com/MonetDBSolutions/monetdbe-examples)) for the replacement project and [MonetDB/e-Python](https://github.com/MonetDBSolutions/MonetDBe-Python) for the Python bindings.
+
 [![PyPI](https://img.shields.io/pypi/v/monetdblite.svg)](https://pypi.python.org/pypi/monetdblite)
 [![Build Status](https://travis-ci.org/MonetDB/MonetDBLite-Python.svg?branch=master)](https://travis-ci.org/MonetDB/MonetDBLite-Python)
 [![Build status](https://ci.appveyor.com/api/projects/status/vcau5l4iu1td3qv7?svg=true)](https://ci.appveyor.com/project/kutsurak/monetdblite-python-6eb7s)
